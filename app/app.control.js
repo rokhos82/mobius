@@ -48,6 +48,7 @@ mobiusEngine.controller = mobiusEngine.app.controller("mobiusCtl",["$scope","$lo
 		this.fleets.attacker.name = obj.name;
 		this.fleets.attacker.faction = obj.faction;
 		this.fleets.attacker.breakoff = obj.breakoff;
+		this.fleets.attacker.units = obj.units;
 		$log.log(obj)
 	};
 
