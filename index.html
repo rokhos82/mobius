@@ -1,13 +1,61 @@
 <!DOCTYPE html>
-<html ng-app="be2" lang="en">
+<html>
 	<head>
 		<title>Mobius Engine</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<meta charset="utf-8">
 		<link rel="stylesheet" type="text/css" href="css\slate\bootstrap.min.css" />
 		<link rel="stylesheet" type="text/css" href="css\angular-editable-text.css" />
+		<link rel="stylesheet" type="text/css" href="css\mobius.css" />
 	</head>
 	<body>
+		<nav class="navbar navbar-inverse navbar-fixed-top">
+			<div class="container">
+				<div class="navbar-header">
+					<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+						<span class="sr-only">Toggle navigation</span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+					</button>
+					<a class="navbar-brand" href="#">Mobius Engine</a>
+				</div>
+				<div id="navbar" class="collapse navbar-collapse">
+					<ul class="nav navbar-nav">
+						<li><a href=""><span class="glyphicon glyphicon-tower"></span> Fleets</a></li>
+						<li><a href=""><span class="glyphicon glyphicon-send"></span> Units</a></li>
+						<li><a href=""><span class="glyphicon glyphicon-fire"></span> Combat</a></li>
+					</ul>
+					<ul class="nav navbar-nav navbar-right">
+						<li class="dropdown">
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> <span class="caret"></span></a>
+							<ul class="dropdown-menu" role="menu">
+								<li><a href="#">Save Data</a></li>
+								<li><a href="#">Load Data</a></li>
+								<li><a href="#">Purge Data</a></li>
+								<li class="divider"></li>
+								<li><a href="#">Export Data</a></li>
+								<li><a href="#">Import Data</a></li>
+								<li class="divider"></li>
+								<li><a href="#">Load Example</a></li>
+								<li><a href="#">Data Dump</a></li>
+							</ul>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</nav>
+		<div class="container">
+			<div class="jumbotron">
+				<h1>Mobius Engine</h1>
+				<p>Welcome to the Mobius Engine.  Please use the navbar above to access features.</p>
+			</div>
+			<div class="row">
+				<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+					Hi
+				</div>
+			</div>
+		</div>
 		<script type="text/javascript" src="js/uuid.js"></script>
 		<script type="text/javascript" src="js/jquery-3.1.0.js"></script>
 		<script type="text/javascript" src="js/bootstrap.js"></script>

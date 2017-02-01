@@ -1,9 +1,9 @@
-BattleEngine2.faction = angular.module("be2.faction",["be2.data"]);
+BattleEngine2.faction = angular.module("mobius.faction",["mobius.data"]);
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
 // FactionService
 ////////////////////////////////////////////////////////////////////////////////////////////////
-BattleEngine2.faction.factory("be2.faction.service",["$log","be2.data.store",function($log,$data)
+BattleEngine2.faction.factory("mobius.faction.service",["$log","mobius.data.store",function($log,$data)
 	var _factionDefaults = {
 		"fleets": {},
 		"enemies": {},

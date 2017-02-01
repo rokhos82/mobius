@@ -1,9 +1,9 @@
-BattleEngine2.data = angular.module("be2.data",[]);
+mobiusEngine.data = angular.module("mobius.data",[]);
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
 // be2.data - this is the main data store for the entire application
 ////////////////////////////////////////////////////////////////////////////////////////////////
-BattleEngine2.data.factory("be2.data.store",[function(){
+mobiusEngine.data.factory("mobius.data.store",[function(){
 	var _data = {
 		state: {
 			factions: {
