@@ -40,9 +40,13 @@ mobiusEngine.controller = mobiusEngine.app.controller("mobiusCtl",["$scope","$lo
 	this.worker = undefined;
 
 	this.startCombat = function() {
+		var self = this;
 		this.combat.state = mobiusEngine.states.started;
 		this.worker = new Worker("app/app.worker.js");
-		this.worker.onmessage = this.combatListener;
+		this.worker.onmessage = function(event) {
+			self.combat.logs.push(event.data);
+			$scope.$apply();
+		};
 		this.worker.postMessage(this.fleets);
 		$log.log("Starting Combat!");
 	};
@@ -56,6 +60,10 @@ mobiusEngine.controller = mobiusEngine.app.controller("mobiusCtl",["$scope","$lo
 
 	this.clearCombat = function() {
 		this.combat.state = mobiusEngine.states.reset;
+		if(!_.isUndefined(this.worker)) {
+			this.stopCombat();
+		}
+		this.combat.logs.length = 0;
 		$log.log("Clearing Combat!");
 	};
 
@@ -89,9 +97,5 @@ mobiusEngine.controller = mobiusEngine.app.controller("mobiusCtl",["$scope","$lo
 		$log.log("Clearing defending fleet!");
 		delete this.fleets.defender;
 		this.fleets.defender = {};
-	};
-
-	this.combatListener = function(event) {
-		$log.log(event.data);
 	};
 }]);
