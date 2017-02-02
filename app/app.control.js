@@ -18,6 +18,13 @@ mobiusEngine.controller = mobiusEngine.app.controller("mobiusCtl",["$scope","$lo
 		state: mobiusEngine.states.reset
 	};
 
+	this.states = {
+		unitTables: {
+			attacker: true,
+			defender: true
+		}
+	};
+
 	this.fleets = {
 		attacker: {},
 		defender: {}
@@ -29,8 +36,6 @@ mobiusEngine.controller = mobiusEngine.app.controller("mobiusCtl",["$scope","$lo
 	};
 
 	this.alerts = [
-		{type:"info",msg:"Welcome to Mobius Engine!"},
-		{type:"warning",msg:"Hide yo daughters! Hide yo wife!"}
 	];
 
 	this.closeAlert = function(index) {
