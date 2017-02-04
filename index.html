@@ -161,7 +161,9 @@
 						<div class="panel-body">
 							<div class="panel panel-default" ng-repeat="entry in ctl.combat.logs">
 								<div class="panel-heading">Turn: {{entry.turn}}</div>
-								<div class="panel-body"></div>
+								<div class="panel-body">
+									<span style="display: block;" ng-repeat="line in entry.logs track by $index">{{line}}</span>
+								</div>
 								<div class="panel-footer"></div>
 							</div>
 						</div>
