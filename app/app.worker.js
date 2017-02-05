@@ -16,26 +16,92 @@ combat.functions = {
 		var enemy = combat.fleets[fleet].enemy;
 		var target = combat.fleets[enemy].units[i];
 		return target;
+	},
+	getNumericTag: function(unit,tag) {
+		var sum = 0;
+		_.each(unit,function(section) {
+			// Does the tag exist?
+			if(_.isNumber(section[tag])) {
+				sum += section[tag];
+			}
+		});
+		return sum;
+	},
+	unitTargetBonus: function(unit) {
+		return combat.functions.getNumericTag(unit,"target");
+	},
+	unitDefenseBonus: function(unit) {
+		return combat.functions.getNumericTag(unit,"defense");
+	},
+	unitYieldBonus: function(unit) {
+		return combat.functions.getNumericTag(unit,"yield");
+	},
+	unitResistBonus: function(unit) {
+		return combat.functions.getNumericTag(unit,"resist");
 	}
 };
 
 var actions = {
+	// select_target
 	"select_target": {
-		"script": "var _t = new token(unit,actions[\"fire_weapons\"]); _t.target = combat.functions.getTarget(unit); stack.push(_t); logs.push(unit.unit.name + \" is taking aim at \" + _t.target.unit.name);",
+		"script":
+'t.target = combat.functions.getTarget(unit);\
+t.action = actions["fire_weapons"];\
+stack.push(t);',
 		"name": "select_target"
 	},
+	// ready_weapons
 	"ready_weapons": {
-		"script": "_.each(unit[\"direct-fire\"],function(weapon){var t = new token(unit,actions[\"select_target\"]);t.weapon=weapon;stack.push(t);}); logs.push(unit.unit.name + \" is readying weapons\");",
+		"script":
+'_.each(unit["direct-fire"],function(weapon){\
+	var t = new token(unit,actions["select_target"]);\
+	t.weapon = weapon;\
+	stack.push(t);\
+});',
 		"name": "ready_weapons"
 	},
+	// resolve_damage
 	"resolve_damage": {
-		"script": "",
+		"script":
+'var target = t.target;\
+if(target.shield && target.shield.current > 0) {\
+	target.shield.current -= t.damage;\
+	target.shield.current = target.shield.current < 0 ? 0 : target.shield.current;\
+}\
+else {\
+	target.hull.current -= t.damage;\
+	target.combat.destroyed = target.hull.current <= 0 ? true : false;\
+}',
 		"name": "resolve_damage"
 	},
+	// fire_weapons
 	"fire_weapons": {
-		"script": "logs.push(unit.unit.name + \" is firing at \" + t.target.unit.name);",
+		"script":
+'var hitThreshold = t.weapon.target + combat.functions.unitTargetBonus(unit) - combat.functions.unitDefenseBonus(t.target);\
+hitThreshold = hitThreshold > 90 ? 90 : hitThreshold;\
+hitThreshold = hitThreshold < 10 ? 10 : hitThreshold;\
+var hitRoll = _.random(1,100);\
+t.hitSuccess = hitRoll < hitThreshold ? true : false;\
+var msg = unit.unit.name + " is firing at " + t.target.unit.name + " (" + hitRoll + "/" + hitThreshold + ")";\
+if(t.hitSuccess) {\
+	msg += " and hits";\
+	var damagePercent = _.random(1,100) + (t.weapon.yield ? t.weapon.yeild : 0) + combat.functions.unitYieldBonus(unit) - combat.functions.unitResistBonus(t.target);\
+	damagePercent = damagePercent > 100 ? 100 : damagePercent;\
+	damagePercent = damagePercent < 0 ? 0 : damagePercent;\
+	var damage = 0;\
+	if(_.isNumber(t.weapon.volley)) { damage = Math.round(t.weapon.volley * damagePercent); }\
+	else { damage = Math.round(t.weapon.volley[0] * damagePercent / 100);}\
+	msg += " for " + damage + " damage (" + damagePercent + "%)";\
+	t.damage = damage;\
+	t.action = actions["resolve_damage"];\
+	stack.push(t);\
+} else {\
+	msg += " and misses";\
+}\
+logs.push(msg);',
 		"name": "fire_weapons"
 	},
+	// test
 	"test": {
 		"script": "console.log(t.msg);",
 		"name": "test"
@@ -59,6 +125,7 @@ var token = function(unit,act) {
 
 var message = function(t) {
 	this.turn = t;
+	this.fleets = combat.fleets;
 };
 
 self.importScripts("../js/underscore.js");
@@ -95,14 +162,24 @@ function doCombatSimulation() {
 		var stack = [];
 		var logs = [];
 		_.each(combat.fleets.attacker.units,function(unit) {
-			var s = new token(unit,actions["ready_weapons"]);
-			unit.fleet = "attacker";
-			stack.push(s);
+			if(!_.isObject(unit.combat)) {
+				unit.combat = {};
+			}
+			if(!unit.combat.destroyed) {
+				var s = new token(unit,actions["ready_weapons"]);
+				unit.fleet = "attacker";
+				stack.push(s);
+			}
 		});
 		_.each(combat.fleets.defender.units,function(unit) {
-			var s = new token(unit,actions["ready_weapons"]);
-			unit.fleet = "defender";
-			stack.push(s);
+			if(!_.isObject(unit.combat)) {
+				unit.combat = {};
+			}
+			if(!unit.combat.destroyed) {
+				var s = new token(unit,actions["ready_weapons"]);
+				unit.fleet = "defender";
+				stack.push(s);
+			}
 		});
 
 		while(stack.length > 0) {

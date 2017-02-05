@@ -162,7 +162,19 @@
 							<div class="panel panel-default" ng-repeat="entry in ctl.combat.logs">
 								<div class="panel-heading">Turn: {{entry.turn}}</div>
 								<div class="panel-body">
-									<span style="display: block;" ng-repeat="line in entry.logs track by $index">{{line}}</span>
+									<div class="well well-sm">
+										<span style="display: block;" ng-repeat="line in entry.logs track by $index">{{line}}</span>
+									</div>
+									<div class="well well-sm" ng-repeat="fleet in entry.fleets">
+										<table class="table table-striped table-hover">
+											<thead>
+												<tr><th>Unit</th><th>Shield</th><th>Hull</th></tr>
+											</thead>
+											<tbody>
+												<tr ng-repeat="unit in fleet.units track by $index" ng-class="{'danger':unit.combat.destroyed}"><td>{{unit.unit.name}}</td><td>{{unit.shield.current}}</td><td>{{unit.hull.current}}</td>
+											</tbody>
+										</table>
+									</div>
 								</div>
 								<div class="panel-footer"></div>
 							</div>
