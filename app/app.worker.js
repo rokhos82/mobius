@@ -126,6 +126,7 @@ var token = function(unit,act) {
 var message = function(t) {
 	this.turn = t;
 	this.fleets = combat.fleets;
+	this.done = false;
 };
 
 self.importScripts("../js/underscore.js");
@@ -147,6 +148,14 @@ function doCombatSimulation() {
 	combat.targets.defender = _.chain(combat.fleets.attacker.units).keys().value();
 	combat.fleets.attacker.enemy = "defender";
 	combat.fleets.defender.enemy = "attacker";
+
+	// Fleet initialization
+	_.each(combat.fleets,function(fleet) {
+		fleet.combat = {
+			loseCount: 0,
+			unitCount: fleet.units.length
+		};
+	});
 
 	// Check for long range weapons
 
@@ -189,10 +198,30 @@ function doCombatSimulation() {
 			eval(action.script);
 		}
 
+		// Check for destroyed units
+		_.each(combat.fleets,function(fleet) {
+			var count = 0;
+			_.each(fleet.units,function(unit) {
+				if(unit.combat.destroyed) {
+					count++;
+					console.log(unit.unit.name + " is destroyed");
+				}
+			});
+			fleet.combat.loseCount = count;
+		});
+
+		// Check for end of combat
+		_.each(combat.fleets,function(fleet) {
+			console.log(fleet.name + ": " + fleet.combat.loseCount + " of " + fleet.combat.unitCount);
+			if(fleet.combat.loseCount >= fleet.combat.unitCount) {
+				combat.status = combat.statuses.done;
+				m.done = true;
+			}
+		});
+
 		var m = new message(combat.turn);
 		m.logs = logs;
 		self.postMessage(m);
-		sleep(1000);
 	}
 }
 

@@ -116,7 +116,9 @@ mobiusEngine.controller = mobiusEngine.app.controller("mobiusCtl",["$scope","$lo
 		this.worker = new Worker("app/app.worker.js");
 		this.worker.onmessage = function(event) {
 			self.combat.logs.push(event.data);
-			//console.log(event.data);
+			if(event.data.done) {
+				self.stopCombat();
+			}
 			$scope.$apply();
 		};
 		this.worker.postMessage(this.fleets);

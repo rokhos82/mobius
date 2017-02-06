@@ -150,6 +150,7 @@
 								<label class="btn btn-danger" ng-click="ctl.stopCombat()">Stop</label>
 								<label class="btn btn-warning" ng-click="ctl.clearCombat()">Clear</label>
 							</div>
+							<h4>Combat Status: {{ctl.combat.state}}</h4>
 						</div>
 					</div>
 				</div>
@@ -163,9 +164,11 @@
 								<div class="panel-heading">Turn: {{entry.turn}}</div>
 								<div class="panel-body">
 									<div class="well well-sm">
+										<h3 class="text-info">Combat Log</h3>
 										<span style="display: block;" ng-repeat="line in entry.logs track by $index">{{line}}</span>
 									</div>
 									<div class="well well-sm" ng-repeat="fleet in entry.fleets">
+										<h3 class="text-info">{{fleet.name}} - {{fleet.faction}} : End of Turn Results</h3>
 										<table class="table table-striped table-hover">
 											<thead>
 												<tr><th>Unit</th><th>Shield</th><th>Hull</th></tr>
