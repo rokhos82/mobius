@@ -1,2 +1,5 @@
 body {
+	background-image: url("../img/dark_scribed_lines.png");
+	background-attachment: fixed;
+	opacity: 0.85;
 }

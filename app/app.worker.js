@@ -42,23 +42,28 @@ combat.functions = {
 };
 
 var actions = {
-	// select_target
-	"select_target": {
+	// target
+	"target": {
 		"script":
 't.target = combat.functions.getTarget(unit);\
+var weapon = t.weapon;\
+if(weapon.sticky) { eval(tags.sticky.target); }\
 t.action = actions["fire_weapons"];\
 stack.push(t);',
-		"name": "select_target"
+		"name": "target"
 	},
 	// ready_weapons
-	"ready_weapons": {
+	"ready": {
 		"script":
 '_.each(unit["direct-fire"],function(weapon){\
-	var t = new token(unit,actions["select_target"]);\
+	var t = new token(unit,actions["target"]);\
 	t.weapon = weapon;\
+	if (weapon.sticky) {\
+		eval(tags.sticky.ready);\
+	}\
 	stack.push(t);\
 });',
-		"name": "ready_weapons"
+		"name": "ready"
 	},
 	// resolve_damage
 	"resolve_damage": {
@@ -71,6 +76,7 @@ if(target.shield && target.shield.current > 0) {\
 else {\
 	target.hull.current -= t.damage;\
 	target.combat.destroyed = target.hull.current <= 0 ? true : false;\
+	if(unit.combat.sticky) { eval(tags.sticky.resolve); }\
 }',
 		"name": "resolve_damage"
 	},
@@ -89,8 +95,11 @@ if(t.hitSuccess) {\
 	damagePercent = damagePercent > 100 ? 100 : damagePercent;\
 	damagePercent = damagePercent < 0 ? 0 : damagePercent;\
 	var damage = 0;\
-	if(_.isNumber(t.weapon.volley)) { damage = Math.round(t.weapon.volley * damagePercent); }\
-	else { damage = Math.round(t.weapon.volley[0] * damagePercent / 100);}\
+	if(_.isNumber(t.weapon.volley)) { damage = Math.round(t.weapon.volley * damagePercent / 100); }\
+	else {\
+		if(t.weapon.sticky) { eval(tags.sticky.damage); }\
+		else { console.error("Unknown weapon volley type."); }\
+	}\
 	msg += " for " + damage + " damage (" + damagePercent + "%)";\
 	t.damage = damage;\
 	t.action = actions["resolve_damage"];\
@@ -110,8 +119,29 @@ logs.push(msg);',
 
 var tags = {
 	"sticky": {
-		"damage": "",
-		"target": ""
+		// Damage
+		"damage":
+'damage = Math.round(t.weapon.volley[t.weapon.sticky.index] * damagePercent / 100);\
+t.weapon.sticky.index++;',
+		// Target
+		"target":
+'if(weapon.sticky.target && weapon.sticky.index > 0) { t.target = weapon.sticky.target; }\
+else { weapon.sticky.target = t.target; }',
+		// Ready
+		"ready":
+'if(_.isObject(weapon.sticky)) {\
+	if(weapon.sticky.target && weapon.sticky.target.combat.destroyed) { weapon.sticky.target = undefined; }\
+	if(weapon.sticky.index > weapon.sticky.max) { weapon.sticky.index = 0; }\
+}\
+else if(weapon.sticky) {\
+	weapon.sticky = {\
+		index: 0,\
+		target: undefined,\
+		max: weapon.volley.length - 1\
+	};\
+}',
+		// Resolve
+		"resolve": ''
 	},
 	"short": {},
 	"long": {}
@@ -175,7 +205,7 @@ function doCombatSimulation() {
 				unit.combat = {};
 			}
 			if(!unit.combat.destroyed) {
-				var s = new token(unit,actions["ready_weapons"]);
+				var s = new token(unit,actions["ready"]);
 				unit.fleet = "attacker";
 				stack.push(s);
 			}
@@ -185,7 +215,7 @@ function doCombatSimulation() {
 				unit.combat = {};
 			}
 			if(!unit.combat.destroyed) {
-				var s = new token(unit,actions["ready_weapons"]);
+				var s = new token(unit,actions["ready"]);
 				unit.fleet = "defender";
 				stack.push(s);
 			}
