@@ -170,21 +170,26 @@ function sleep(milliseconds) {
 	}
 }
 
+var filters = {
+	reserveUnit: function(unit) { return (!_.isNumber(unit.unit.reserve)); }
+};
+
+var maps = {
+	unitName: function(unit) { return unit.unit.name; }
+};
+
 function doCombatSimulation() {
 	// Setup combat objects.
 	// Do target lists first.
 	combat.targets = {};
-	combat.targets.attacker = _.chain(combat.fleets.defender.units).keys().value();
-	combat.targets.defender = _.chain(combat.fleets.attacker.units).keys().value();
+	combat.targets.attacker = _.chain(combat.fleets.defender.units).filter(filters.reserveUnit).map(maps.unitName).value();
+	combat.targets.defender = _.chain(combat.fleets.attacker.units).filter(filters.reserveUnit).map(maps.unitName).value();
 	combat.fleets.attacker.enemy = "defender";
 	combat.fleets.defender.enemy = "attacker";
 
 	// Fleet initialization
 	_.each(combat.fleets,function(fleet) {
-		fleet.combat = {
-			loseCount: 0,
-			unitCount: fleet.units.length
-		};
+		fleet.combat.loseCount = 0;
 	});
 
 	// Check for long range weapons
@@ -205,9 +210,25 @@ function doCombatSimulation() {
 				unit.combat = {};
 			}
 			if(!unit.combat.destroyed) {
-				var s = new token(unit,actions["ready"]);
-				unit.fleet = "attacker";
-				stack.push(s);
+				// Setup reserve units
+				if(unit.unit.reserve && !unit.combat.reserve) {
+					var reserveLevel = Math.ceil(unit.unit.reserve / 100 * (combat.fleets.attacker.combat.unitCount - 1));
+					unit.combat.reserve = reserveLevel;
+				}
+
+				// Is the unit still in reserve?
+				if(unit.combat.reserve && unit.combat.reserve > (combat.fleets.attacker.combat.unitCount - combat.fleets.attacker.combat.loseCount - 1)) {
+					var s = new token(unit,actions["ready"]);
+					unit.fleet = "attacker";
+					stack.push(s);
+				}
+				else if(!unit.combat.reserve) {
+					var s = new token(unit,actions["ready"]);
+					unit.fleet = "attacker";
+					stack.push(s);
+					delete unit.combat.reserve;				
+					combat.targets.defender.push(unit.unit.name);
+				}
 			}
 		});
 		_.each(combat.fleets.defender.units,function(unit) {
@@ -215,9 +236,25 @@ function doCombatSimulation() {
 				unit.combat = {};
 			}
 			if(!unit.combat.destroyed) {
-				var s = new token(unit,actions["ready"]);
-				unit.fleet = "defender";
-				stack.push(s);
+				// Setup reserve units
+				if(unit.unit.reserve && !unit.combat.reserve) {
+					var reserveLevel = Math.ceil(unit.unit.reserve / 100 * (combat.fleets.defender.combat.unitCount - 1));
+					unit.combat.reserve = reserveLevel;
+				}
+
+				// Is the unit still in reserve?
+				if(unit.combat.reserve && unit.combat.reserve > (combat.fleets.defender.combat.unitCount - combat.fleets.defender.combat.loseCount - 1)) {
+					var s = new token(unit,actions["ready"]);
+					unit.fleet = "defender";
+					stack.push(s);
+					delete unit.combat.reserve;
+					combat.targets.attacker.push(unit.unit.name);
+				}
+				else if(!unit.combat.reserve) {
+					var s = new token(unit,actions["ready"]);
+					unit.fleet = "defender";
+					stack.push(s);
+				}
 			}
 		});
 

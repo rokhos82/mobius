@@ -69,7 +69,7 @@
 								<p>Fleet Name: {{attacker.name}}</p>
 								<p>Faction: {{attacker.faction}}</p>
 								<p>Breakoff: {{attacker.breakoff}}</p>
-								<p>Unit Count: {{attacker.units.length}}</p>
+								<p>Unit Count: {{attacker.combat.unitCount}}</p>
 								<div class="btn-group">
 									<label class="btn btn-primary" ng-model="ctl.states.unitTables.attacker" uib-btn-radio="true" uncheckable>Show Units</label>
 									<label class="btn btn-primary" ng-model="ctl.states.unitTables.attacker" uib-btn-radio="false" uncheckable>Hide Units</label>
@@ -112,7 +112,7 @@
 								<p>Fleet Name: {{defender.name}}</p>
 								<p>Faction: {{defender.faction}}</p>
 								<p>Breakoff: {{defender.breakoff}}</p>
-								<p>Unit Count: {{defender.units.length}}</p>
+								<p>Unit Count: {{defender.combat.unitCount}}</p>
 								<div class="btn-group">
 									<label class="btn btn-primary" ng-model="ctl.states.unitTables.defender" uib-btn-radio="true" uncheckable>Show Units</label>
 									<label class="btn btn-primary" ng-model="ctl.states.unitTables.defender" uib-btn-radio="false" uncheckable>Hide Units</label>
