@@ -27,7 +27,7 @@ label.btn,button.btn,ul.nav > li {
 }
 
 textarea.fleet-import {
-	height: 200px;
+	height: 400px;
 	overflow: scroll;
 	white-space: nowrap;
 }
