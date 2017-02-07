@@ -21,3 +21,13 @@ label.btn,button.btn,ul.nav > li {
 .alert-message {
 	font-family: "Iceberg";
 }
+
+.text-shadow-info > a {
+	text-shadow: 0 0 0;
+}
+
+textarea.fleet-import {
+	height: 400px;
+	overflow: scroll;
+	white-space: nowrap;
+}
