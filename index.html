@@ -56,9 +56,9 @@
 				</div>
 			</div>
 			<div class="row">
-				<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-					<div class="panel panel-primary">
-						<div class="panel-heading">Attacking Fleet</div>
+				<div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">
+					<div class="panel panel-default">
+						<div class="panel-heading"><h4 class="text-info">Attacking Fleet</h4></div>
 						<div class="panel-body" ng-show="!ctl.fleets.attacker.name">
 							<button class="btn btn-primary" ng-click="ctl.importAttacker()">Import</button>
 							<textarea class="form-control" ng-model="ctl.import.attacker"></textarea>
@@ -84,7 +84,7 @@
 										</tr>
 									</thead>
 									<tbody>
-										<tr ng-repeat="unit in attacker.units">
+										<tr ng-repeat="unit in attacker.units" ng-class="{'text-info':(unit.unit.type === 'Starship'),'text-success':(unit.unit.type === 'Fighter')}">
 											<td>{{$index+1}}</td>
 											<td>{{unit.unit.name}}</td>
 											<td>{{unit.unit.type}}</td>
@@ -97,11 +97,9 @@
 						<div class="panel-footer"></div>
 					</div>
 				</div>
-			</div>
-			<div class="row">
-				<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-					<div class="panel panel-primary">
-						<div class="panel-heading">Defending Fleet Fleet</div>
+				<div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">
+					<div class="panel panel-default">
+						<div class="panel-heading"><h4 class="text-info">Defending Fleet</h4></div>
 						<div class="panel-body" ng-show="!ctl.fleets.defender.name">
 							<button class="btn btn-primary" ng-click="ctl.importDefender()">Import</button>
 							<textarea class="form-control" ng-model="ctl.import.defender"></textarea>
@@ -127,7 +125,7 @@
 										</tr>
 									</thead>
 									<tbody>
-										<tr ng-repeat="unit in defender.units">
+										<tr ng-repeat="unit in defender.units" ng-class="{'text-info':(unit.unit.type === 'Starship'),'text-success':(unit.unit.type === 'Fighter')}">
 											<td>{{$index+1}}</td>
 											<td>{{unit.unit.name}}</td>
 											<td>{{unit.unit.type}}</td>
@@ -147,6 +145,7 @@
 						<div class="panel-body">
 							<div class="btn-group btn-group-justified">
 								<label class="btn btn-info" ng-click="ctl.startCombat()">Start</label>
+								<label class="btn btn-info disabled">1 Turn</label>
 								<label class="btn btn-danger" ng-click="ctl.stopCombat()">Stop</label>
 								<label class="btn btn-warning" ng-click="ctl.clearCombat()">Clear</label>
 							</div>
@@ -157,8 +156,8 @@
 			</div>
 			<div class="row">
 				<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-					<div class="panel panel-primary">
-						<div class="panel-heading">Combat Results</div>
+					<div class="panel panel-default">
+						<div class="panel-heading"><h4 class="text-info">Combat Results</h4></div>
 						<div class="panel-body">
 							<div class="panel panel-default" ng-repeat="entry in ctl.combat.logs">
 								<div class="panel-heading">Turn: {{entry.turn}}</div>
