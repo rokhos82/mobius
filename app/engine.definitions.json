@@ -1,0 +1,11 @@
+{
+	"actions": {
+		"select_target": {
+			"script": {},
+			"token": "select_target"
+		},
+		"ready_weapons": {},
+		"resolve_damage": {},
+		"fire_weapons": {}
+	}
+}
