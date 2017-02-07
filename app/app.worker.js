@@ -56,21 +56,27 @@ stack.push(t);',
 	"ready": {
 		"script":
 '_.each(unit["direct-fire"],function(weapon) {\
-	var t = new token(unit,actions["target"]);\
-	t.weapon = weapon;\
-	if (weapon.sticky) {\
-		eval(tags.sticky.ready);\
-	}\
-	stack.push(t);\
-});\
-_.each(unit["packet-fire"],function(weapon) {\
-	for(var i = 0;i < weapon.packets;i++) {\
+	if(_.isNumber(weapon.short)) { eval(tags.short.ready); }\
+	if(!weapon.skip) {\
 		var t = new token(unit,actions["target"]);\
 		t.weapon = weapon;\
-		if(weapon.sticky) {\
+		if (weapon.sticky) {\
 			eval(tags.sticky.ready);\
 		}\
 		stack.push(t);\
+	}\
+});\
+_.each(unit["packet-fire"],function(weapon) {\
+	if(_.isNumber(weapon.short)) { eval(tags.short.ready); }\
+	if(!weapon.skip) {\
+		for(var i = 0;i < weapon.packets;i++) {\
+			var t = new token(unit,actions["target"]);\
+			t.weapon = weapon;\
+			if(weapon.sticky) {\
+				eval(tags.sticky.ready);\
+			}\
+			stack.push(t);\
+		}\
 	}\
 });',
 		"name": "ready"
@@ -156,7 +162,16 @@ else if(weapon.sticky) {\
 		// Resolve
 		"resolve": ''
 	},
-	"short": {},
+	"short": {
+		"ready":
+'if(weapon.short > 0) {\
+	console.log("Short range weapon found");\
+	weapon.short--;\
+	weapon.skip = true;\
+} else {\
+	weapon.skip = false;\
+}'
+	},
 	"long": {},
 	"ammo": {
 		"ready": 'if(weapon.ammo < 0) {}',
