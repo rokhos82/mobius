@@ -207,6 +207,27 @@
 	],
 	"template":"Firefly Larvae"
 }
+
+{
+	"unit": {
+		"name":"Blister Bug",
+		"type":"Gunboat",
+		"defense":120,
+		"target":60,
+		"size":1,
+		"cost": 60
+	},
+	"hull": {
+		"max":6,
+		"current":6
+	},
+	"direct-fire":[
+		{"volley":[6,12],"sticky":true,"target":-20,"short":true}
+	],
+	"template":"Blister Bug"
+}
+"Blister Bug": {"unit": {"name":"Blister Bug","type":"Gunboat","defense":120,"target":60,"size":1,"cost": 60},"hull": {"max":6,"current":6},"direct-fire":[{"volley":[6,12],"sticky":true,"target":-20,"short":true}],"template":"Blister Bug"}
+
 {"unit": {"name":"Firefly","type":"Fighter","defense":120,"target":60,"size":1,"cost":5},"hull": {"max":1,"current":1},"direct-fire":[{"volley":[1,2],"sticky":true,"target":10,"short":true}],"template":"Firefly Larvae"},
 {"unit": {"name":"Firefly","type":"Fighter","defense":120,"target":60,"size":1,"cost":5},"hull": {"max":1,"current":1},"direct-fire":[{"volley":[1,2],"sticky":true,"target":10,"short":true}],"template":"Firefly Larvae"},{"unit": {"name":"Firefly","type":"Fighter","defense":120,"target":60,"size":1,"cost":5},"hull": {"max":1,"current":1},"direct-fire":[{"volley":[1,2],"sticky":true,"target":10,"short":true}],"template":"Firefly Larvae"},{"unit": {"name":"Firefly","type":"Fighter","defense":120,"target":60,"size":1,"cost":5},"hull": {"max":1,"current":1},"direct-fire":[{"volley":[1,2],"sticky":true,"target":10,"short":true}],"template":"Firefly Larvae"},{"unit": {"name":"Firefly","type":"Fighter","defense":120,"target":60,"size":1,"cost":5},"hull": {"max":1,"current":1},"direct-fire":[{"volley":[1,2],"sticky":true,"target":10,"short":true}],"template":"Firefly Larvae"},{"unit": {"name":"Firefly","type":"Fighter","defense":120,"target":60,"size":1,"cost":5},"hull": {"max":1,"current":1},"direct-fire":[{"volley":[1,2],"sticky":true,"target":10,"short":true}],"template":"Firefly Larvae"},{"unit": {"name":"Firefly","type":"Fighter","defense":120,"target":60,"size":1,"cost":5},"hull": {"max":1,"current":1},"direct-fire":[{"volley":[1,2],"sticky":true,"target":10,"short":true}],"template":"Firefly Larvae"},{"unit": {"name":"Firefly","type":"Fighter","defense":120,"target":60,"size":1,"cost":5},"hull": {"max":1,"current":1},"direct-fire":[{"volley":[1,2],"sticky":true,"target":10,"short":true}],"template":"Firefly Larvae"},{"unit": {"name":"Firefly","type":"Fighter","defense":120,"target":60,"size":1,"cost":5},"hull": {"max":1,"current":1},"direct-fire":[{"volley":[1,2],"sticky":true,"target":10,"short":true}],"template":"Firefly Larvae"},{"unit": {"name":"Firefly","type":"Fighter","defense":120,"target":60,"size":1,"cost":5},"hull": {"max":1,"current":1},"direct-fire":[{"volley":[1,2],"sticky":true,"target":10,"short":true}],"template":"Firefly Larvae"},{"unit": {"name":"Firefly","type":"Fighter","defense":120,"target":60,"size":1,"cost":5},"hull": {"max":1,"current":1},"direct-fire":[{"volley":[1,2],"sticky":true,"target":10,"short":true}],"template":"Firefly Larvae"},
 
