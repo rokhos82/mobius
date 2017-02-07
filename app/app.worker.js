@@ -52,16 +52,26 @@ t.action = actions["fire_weapons"];\
 stack.push(t);',
 		"name": "target"
 	},
-	// ready_weapons
+	// ready
 	"ready": {
 		"script":
-'_.each(unit["direct-fire"],function(weapon){\
+'_.each(unit["direct-fire"],function(weapon) {\
 	var t = new token(unit,actions["target"]);\
 	t.weapon = weapon;\
 	if (weapon.sticky) {\
 		eval(tags.sticky.ready);\
 	}\
 	stack.push(t);\
+});\
+_.each(unit["packet-fire"],function(weapon) {\
+	for(var i = 0;i < weapon.packets;i++) {\
+		var t = new token(unit,actions["target"]);\
+		t.weapon = weapon;\
+		if(weapon.sticky) {\
+			eval(tags.sticky.ready);\
+		}\
+		stack.push(t);\
+	}\
 });',
 		"name": "ready"
 	},
@@ -91,11 +101,14 @@ t.hitSuccess = hitRoll < hitThreshold ? true : false;\
 var msg = unit.unit.name + " is firing at " + t.target.unit.name + " (" + hitRoll + "/" + hitThreshold + ")";\
 if(t.hitSuccess) {\
 	msg += " and hits";\
-	var damagePercent = _.random(1,100) + (t.weapon.yield ? t.weapon.yeild : 0) + combat.functions.unitYieldBonus(unit) - combat.functions.unitResistBonus(t.target);\
+	var damagePercent = _.random(1,100) + (t.weapon.yield ? t.weapon.yield : 0) + combat.functions.unitYieldBonus(unit) - combat.functions.unitResistBonus(t.target);\
 	damagePercent = damagePercent > 100 ? 100 : damagePercent;\
 	damagePercent = damagePercent < 0 ? 0 : damagePercent;\
 	var damage = 0;\
-	if(_.isNumber(t.weapon.volley)) { damage = Math.round(t.weapon.volley * damagePercent / 100); }\
+	if(_.isNumber(t.weapon.volley)) {\
+		damage = Math.round(t.weapon.volley * damagePercent / 100);\
+		console.log(damagePercent);\
+	}\
 	else {\
 		if(t.weapon.sticky) { eval(tags.sticky.damage); }\
 		else { console.error("Unknown weapon volley type."); }\
@@ -144,7 +157,13 @@ else if(weapon.sticky) {\
 		"resolve": ''
 	},
 	"short": {},
-	"long": {}
+	"long": {},
+	"ammo": {
+		"ready": 'if(weapon.ammo < 0) {}',
+		"target": '',
+		"damage": '',
+		"resolve": 'weapon.ammo--;'
+	}
 };
 
 var token = function(unit,act) {
@@ -198,10 +217,10 @@ function doCombatSimulation() {
 	while(combat.status !== combat.statuses.done) {
 		combat.turn = combat.turn + 1;
 		console.log("Begin Round: " + combat.turn);
-		if(combat.turn > combat.maxTurn) {
+		/*if(combat.turn > combat.maxTurn) {
 			combat.status = combat.statuses.done
 			continue;
-		}
+		}//*/
 
 		var stack = [];
 		var logs = [];
