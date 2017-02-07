@@ -31,3 +31,8 @@ textarea.fleet-import {
 	overflow: scroll;
 	white-space: nowrap;
 }
+
+.text-dark {
+	color: #131313 !important;
+	text-shadow: none;
+}
