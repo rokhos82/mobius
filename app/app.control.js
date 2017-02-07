@@ -120,6 +120,7 @@ mobiusEngine.controller = mobiusEngine.app.controller("mobiusCtl",["$scope","$lo
 	};
 
 	this.alerts = [
+		{type:"warning",msg:"Only the following tags currently work: short, sticky"}
 	];
 
 	this.closeAlert = function(index) {
