@@ -41,6 +41,16 @@ combat.functions = {
 	}
 };
 
+var critTable = {
+	"default": [
+		{
+			"weight": 10,
+			"msg": "Thar she blows! (+2 damage)",
+			"effect": 't.damage += 2;'
+		}
+	]
+};
+
 var actions = {
 	// target
 	"target": {
@@ -58,12 +68,14 @@ stack.push(t);',
 '_.each(unit["direct-fire"],function(weapon) {\
 	if(_.isNumber(weapon.short)) { eval(tags.short.ready); }\
 	if(!weapon.skip) {\
-		var t = new token(unit,actions["target"]);\
-		t.weapon = weapon;\
-		if (weapon.sticky) {\
-			eval(tags.sticky.ready);\
+		for(var i = 0;i < weapon.batteries;i++) {\
+			var t = new token(unit,actions["target"]);\
+			t.weapon = weapon;\
+			if (weapon.sticky) {\
+				eval(tags.sticky.ready);\
+			}\
+			stack.push(t);\
 		}\
-		stack.push(t);\
 	}\
 });\
 _.each(unit["packet-fire"],function(weapon) {\
@@ -165,7 +177,6 @@ else if(weapon.sticky) {\
 	"short": {
 		"ready":
 'if(weapon.short > 0) {\
-	console.log("Short range weapon found");\
 	weapon.short--;\
 	weapon.skip = true;\
 } else {\
