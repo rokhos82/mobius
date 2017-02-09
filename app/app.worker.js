@@ -6,8 +6,12 @@ combat.statuses = {
 };
 combat.status = combat.statuses.starting;
 combat.turn = 0;
-combat.maxTurn = 20;
+combat.maxTurn = 1;
 combat.fleets = undefined;
+
+combat.setup = {
+	baseToHit: 50
+};
 
 combat.functions = {
 	getTarget: function(unit) {
@@ -38,9 +42,239 @@ combat.functions = {
 	},
 	unitResistBonus: function(unit) {
 		return combat.functions.getNumericTag(unit,"resist");
+	},
+	unitApplyDamage: function(unit,damage) {
+		if(unit.shield && unit.shield.current > 0) {
+			unit.shield.current -= t.damage;
+			unit.shield.current = unit.shield.current < 0 ? 0 : unit.shield.current;
+		}
+		else {
+			unit.hull.current -= t.damage;
+			unit.combat.destroyed = unit.hull.current <= 0 ? true : false;
+		}
+	},
+	processUnitTags: function(unit,stage,pre) {
+		if(pre) {
+			// Do preprocess unit tags for 'stage'
+		}
+		else {
+			// Do postprocess unit tags for 'stage'
+		}
+	},
+	processCombatTags: function(unit,stage,pre) {
+		if(pre) {
+			// Do preprocess combat tags for 'stage'
+		}
+		else {
+			// Do postprocess combat tags for 'stage'
+		}
+	},
+	processWeaponTags: function(unit,weapon,stage,pre) {
+		if(pre) {
+			// Do preprocess weapon tags for 'stage'
+		}
+		else {
+			// Do postprocess weapon tags for 'stage'
+		}
 	}
 };
 
+// Combat Turn Token Object ------------------------------------------------------------------------
+combat.token = function(unit,act) {
+	this.action = _.bind(act,this);
+	this.unit = unit;
+	this.priority = 0;
+};
+
+// Ready a unit for the combat turn ----------------------------------------------------------------
+combat.functions.ready = function(stack) {
+	console.groupCollapsed("Ready - " + this.unit.unit.name);
+	var unit = this.unit;
+
+	// Run preprocess 'ready' scripts for unit and combat tags
+	console.info("Begin unit preprocess scripts.");
+	combat.functions.processUnitTags(unit,'ready',true);
+	combat.functions.processCombatTags(unit,'ready',true);
+
+	// Should we skip this unit this turn?
+	if(unit.combat.skip) {
+		console.warn("Unit is skipping combat this turn.");
+		return;
+	}
+
+	// Build a token for each direct fire weapon group definition
+	console.groupCollapsed("Direct fire weapon groups.");
+	_.each(unit["direct-fire"],function(weapon) {
+		// Run preprocess 'ready' scripts for weapon tags
+		console.info("Begin weapon preprocess scripts.");
+		combat.functions.processWeaponTags(unit,weapon,'ready',true);
+
+		// Should we skip this set of batteries?
+		if(!weapon.skip) {
+			// Build a token for each battery in this weapon definition
+			for(var i = 0;i < weapon.batteries;i++) {
+				var token = new combat.token(unit,combat.functions.aim);
+				token.weapon = weapon;
+				stack.push(token);
+			}
+		}
+
+		// Run postprocess 'ready' scripts for weapon tags
+		console.info("Begin weapon postprocess scripts.");
+		combat.functions.processWeaponTags(unit,weapon,'ready',false);
+	});
+	console.groupEnd();
+
+	// Build a token for each packet fire weapon group definition
+	console.groupCollapsed("Packet fire weapon groups.");
+	_.each(unit["packet-fire"],function(weapon) {
+		// Run preprocess 'ready' scripts for weapon tags
+		console.info("Begin weapon preprocess scripts.");
+		combat.functions.processWeaponTags(unit,weapon,'ready',true);
+
+		// Should we skip this set of packets?
+		if(!weapon.skip) {
+			// Build a token for each packet in this weapon definition
+			for(var i = 0;i < weapon.packets;i++) {
+				var token = new combat.token(unit,combat.functions.aim);
+				token.weapon = weapon;
+				stack.push(token);
+			}
+		}
+
+		// Run postprocess 'ready' scripts for weapon tags
+		console.info("Begin weapon postprocess scripts.");
+		combat.functions.processWeaponTags(unit,weapon,'ready',false);
+	});
+	console.groupEnd();
+
+	// Run postprocess 'ready' scripts for unit and combat tags
+	console.info("Begin unit postprocess scripts.");
+	combat.functions.processUnitTags(unit,'ready',false);
+	combat.functions.processCombatTags(unit,'ready',false);
+
+	// End console message grouping
+	console.groupEnd();
+};
+// Select a target for the weapon ------------------------------------------------------------------
+combat.functions.aim = function(stack) {
+	console.groupCollapsed("Aim - " + this.unit.unit.name);
+	var unit = this.unit;
+	var weapon = this.weapon;
+	var target = undefined;
+
+	// Run preprocess 'aim' scripts for unit and combat tags
+	console.info("Begin unit preprocess scripts.");
+	combat.functions.processUnitTags(unit,'aim',true);
+	combat.functions.processCombatTags(unit,'aim',true);
+
+	// Run preprocess 'aim' scripts for weapon tags
+	console.info("Begin weapon preprocess scripts.");
+	combat.functions.processWeaponTags(unit,weapon,'aim',true);
+
+	// Select a target for the weapon
+	target = combat.functions.getTarget(unit);
+
+	// Run postprocess 'aim' scripts for weapon tags
+	console.info("Begin weapon postprocess scripts.");
+	combat.functions.processWeaponTags(unit,weapon,'aim',false);
+
+	// Run postprocess 'aim' scripts for unit and combat tags
+	console.info("Begin unit postprocess scripts.");
+	combat.functions.processUnitTags(unit,'aim',false);
+	combat.functions.processCombatTags(unit,'aim',false);
+
+	// Add the target to the token, set the next action, and push the token on to the stack.
+	this.target = target;
+	this.action = combat.functions.fire;
+	stack.push(this);
+
+	console.groupEnd();
+};
+// Fire the weapon at the target -------------------------------------------------------------------
+combat.functions.fire = function(stack,logs) {
+	console.groupCollapsed("Fire - " + this.unit.unit.name);
+	var unit = this.unit;
+	var weapon = this.weapon;
+	var target = this.target;
+	var volley = undefined;
+	var damagePercent = undefined;
+	var damage = undefined;
+	var message = unit.unit.name + " fires at " + target.unit.name + " and ";
+
+	// Run preprocess 'fire' scripts for unit and combat tags
+	console.info("Begin unit preprocess scripts.");
+	combat.functions.processUnitTags(unit,'fire',true);
+	combat.functions.processCombatTags(unit,'fire',true);
+
+	// Run preprocess 'fire' scripts for weapon tags
+	console.info("Begin weapon preprocess scripts.");
+	combat.functions.processWeaponTags(unit,weapon,'fire',true);
+
+	// Fire the weapon at the target
+	var hitRoll = _.random(1,100);
+	var hitTarget = combat.setup.baseToHit + (weapon.target || 0) + combat.functions.unitTargetBonus(unit) - combat.functions.unitDefenseBonus(target);
+	hitTarget = (hitTarget >= 90) ? 90 : hitTarget; // Max hit chance is 90%
+	hitTarget = (hitTarget <= 10) ? 10 : hitTarget; // Min hit chance is 10%
+
+	// Was the target hit?
+	var hitSuccess = (hitRoll < hitTarget);
+	if(hitSuccess) {
+		// We scored a hit!  How much damage do we do?
+		damagePercent = _.random(1,100) + (weapon.yield || 0) + combat.functions.unitYieldBonus(unit) - combat.functions.unitResistBonus(target);
+		damagePercent = damagePercent > 100 ? 100 : damagePercent;
+		damagePercent = damagePercent < 0 ? 0 : damagePercent;
+		
+		damage = (volley || weapon.volley) * damagePercent / 100;
+		message += "hits (" + hitRoll + "/" + hitTarget + ") for " + damage + "(" + damagePercent + "%)";
+	}
+	else {
+		message += "missies.";
+	}
+
+	// Run postprocess 'fire' scripts for weapon tags
+	console.info("Begin weapon postprocess scripts.");
+	combat.functions.processWeaponTags(unit,weapon,'fire',false);
+
+	// Run postprocess 'fire' scripts for unit and combat tags
+	console.info("Begin unit postprocess scripts.");
+	combat.functions.processUnitTags(unit,'fire',false);
+	combat.functions.processCombatTags(unit,'fire',false);
+
+	this.damage = damage;
+	this.action = combat.functions.resolve;
+	stack.push(this);
+	logs.push(message);
+
+	console.groupEnd();
+};
+// Resolve the damage incoming to the target -------------------------------------------------------
+combat.functions.resolve = function(stack) {
+	var unit = this.unit;
+	var weapon = this.weapon;
+	var target = this.target;
+	var damage = this.damage;
+};
+// Determine if a critical hit happened and what critical hit it is --------------------------------
+combat.functions.crit = function() {};
+// Display a message to the log --------------------------------------------------------------------
+combat.functions.tap = function() {
+	// Pose the message to the console log
+	console.log(this.msg);
+};
+
+/*
+weight	crit
+		+2 damage
+		+3 damage
+		reactor breach (insta-kill,unit cannot be salvaged)
+		fire control disrupt (1 turn)
+		fire control disabled (no weapons until repaired)
+		life support (insta-kill, unit can be salvaged)
+		crew casualties (-5% per hit)
+		engine disrupt (1 turn, no mobility related bonuses)
+		engine disable (no engines until repaired, no movement/mobility related bonuses)
+*/
 var critTable = {
 	"default": [
 		{
@@ -104,8 +338,8 @@ if(target.shield && target.shield.current > 0) {\
 else {\
 	target.hull.current -= t.damage;\
 	target.combat.destroyed = target.hull.current <= 0 ? true : false;\
-	if(unit.combat.sticky) { eval(tags.sticky.resolve); }\
-}',
+}\
+if(unit.combat.sticky) { eval(tags.sticky.resolve); }',
 		"name": "resolve_damage"
 	},
 	// fire_weapons
@@ -140,6 +374,11 @@ if(t.hitSuccess) {\
 }\
 logs.push(msg);',
 		"name": "fire_weapons"
+	},
+	// crit
+	"crit": {
+		"script": 'console.log("So, a crit happened.  You should probably look into that.");',
+		"name": "crit"
 	},
 	// test
 	"test": {
@@ -185,18 +424,16 @@ else if(weapon.sticky) {\
 	},
 	"long": {},
 	"ammo": {
-		"ready": 'if(weapon.ammo < 0) {}',
+		"ready": 'if(weapon.ammo < 0) { weapon.skip = true; }',
 		"target": '',
 		"damage": '',
 		"resolve": 'weapon.ammo--;'
 	}
 };
 
-var token = function(unit,act) {
-	this.action = act;
-	this.unit = unit;
-	this.priority = 0;
-};
+var lists = {};
+lists.weaponTags = ["sticky","short","ammo"];
+lists.unitTags = ["reserve"];
 
 var message = function(t) {
 	this.turn = t;
@@ -242,9 +479,10 @@ function doCombatSimulation() {
 	// Run the main combat loop.
 	while(combat.status !== combat.statuses.done) {
 		combat.turn = combat.turn + 1;
-		console.log("Begin Round: " + combat.turn);
-		/*if(combat.turn > combat.maxTurn) {
-			combat.status = combat.statuses.done
+		console.groupCollapsed("Turn: " + combat.turn);
+		if(combat.maxTurn !== 0 && combat.turn > combat.maxTurn) {
+			combat.status = combat.statuses.done;
+			console.groupEnd();
 			continue;
 		}//*/
 
@@ -263,12 +501,12 @@ function doCombatSimulation() {
 
 				// Is the unit still in reserve?
 				if(unit.combat.reserve && unit.combat.reserve > (combat.fleets.attacker.combat.unitCount - combat.fleets.attacker.combat.loseCount - 1)) {
-					var s = new token(unit,actions["ready"]);
+					var s = new combat.token(unit,combat.functions.ready);
 					unit.fleet = "attacker";
 					stack.push(s);
 				}
 				else if(!unit.combat.reserve) {
-					var s = new token(unit,actions["ready"]);
+					var s = new combat.token(unit,combat.functions.ready);
 					unit.fleet = "attacker";
 					stack.push(s);
 					delete unit.combat.reserve;				
@@ -289,14 +527,14 @@ function doCombatSimulation() {
 
 				// Is the unit still in reserve?
 				if(unit.combat.reserve && unit.combat.reserve > (combat.fleets.defender.combat.unitCount - combat.fleets.defender.combat.loseCount - 1)) {
-					var s = new token(unit,actions["ready"]);
+					var s = new combat.token(unit,combat.functions.ready);
 					unit.fleet = "defender";
 					stack.push(s);
 					delete unit.combat.reserve;
 					combat.targets.attacker.push(unit.unit.name);
 				}
 				else if(!unit.combat.reserve) {
-					var s = new token(unit,actions["ready"]);
+					var s = new combat.token(unit,combat.functions.ready);
 					unit.fleet = "defender";
 					stack.push(s);
 				}
@@ -304,10 +542,9 @@ function doCombatSimulation() {
 		});
 
 		while(stack.length > 0) {
-			var t = stack.shift();
-			var unit = t.unit;
-			var action = t.action;
-			eval(action.script);
+			var token = stack.shift();
+			var unit = token.unit;
+			token.action(stack,logs);
 		}
 
 		// Check for destroyed units
@@ -334,7 +571,11 @@ function doCombatSimulation() {
 		var m = new message(combat.turn);
 		m.logs = logs;
 		self.postMessage(m);
+
+		console.groupEnd();
 	}
+
+	close();
 }
 
 self.onmessage = function(event) {
