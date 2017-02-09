@@ -1,6 +1,21 @@
 self.importScripts("../js/underscore.js");
 
-_.mixin({"deep":function(object){ return JSON.parse(JSON.stringify(object)); }})
+_.mixin({
+	"deep":function(object){
+		return JSON.parse(JSON.stringify(object));
+	},
+	"table":function(table){
+		var roll = _.random(1,_.max(table,function(crit){ return crit.threshold; }).threshold);
+		console.log(roll);
+		var entry = undefined;
+		_.each(table,function(crit) {
+			if(roll <= crit.threshold) {
+				if(!entry) { entry = crit; }
+			}
+		});
+		return entry;
+	}
+});
 
 var combat = {};
 combat.statuses = {
@@ -24,6 +39,7 @@ combat.filters = {
 	"untargetable": function(unit) { return (!unit.combat.destroyed && !unit.combat.reserve); }
 };
 
+// Utility Functions -------------------------------------------------------------------------------
 combat.functions = {
 	getTarget: function(unit) {
 		var fleet = unit.fleet;
@@ -64,29 +80,33 @@ combat.functions = {
 			unit.combat.destroyed = unit.hull.current <= 0 ? true : false;
 		}
 	},
-	processUnitTags: function(token,stage,pre) {
-		if(pre) {
-			// Do preprocess unit tags for 'stage'
+	determineCrits: function(unit,table) {
+		crits = [];
+		if(unit.hull.current <= Math.round(unit.hull.max*.75) && !unit.combat.crit.first && unit.unit.type !== "Fighter") {
+			var crit = _.table(combat.crits.default);
+			crits.push(crit);
+			console.log("First Crit - " + crit);
+			unit.combat.crit.first = crit;
 		}
-		else {
-			// Do postprocess unit tags for 'stage'
+		if(unit.hull.current <= Math.round(unit.hull.max*.5) && !unit.combat.crit.second && unit.unit.type !== "Fighter") {
+			var crit = _.table(combat.crits.default);
+			crits.push(crit);
+			console.log("Second Crit - " + crit);
+			unit.combat.crit.second = crit;
 		}
-	},
-	processCombatTags: function(token,stage,pre) {
-		if(pre) {
-			// Do preprocess combat tags for 'stage'
+		if(unit.hull.current <= Math.round(unit.hull.max*.25) && !unit.combat.crit.third && unit.unit.type !== "Fighter") {
+			var crit = _.table(combat.crits.default);
+			crits.push(crit);
+			console.log("Third Crit - " + crit);
+			unit.combat.crit.third = crit;
 		}
-		else {
-			// Do postprocess combat tags for 'stage'
+		if(unit.hull.current <= 0 && !unit.combat.crit.fourth && unit.unit.type !== "Fighter") {
+			var crit = _.table(combat.crits.default);
+			crits.push(crit);
+			console.log("Fourth Crit - " + crit);
+			unit.combat.crit.fourth = crit;
 		}
-	},
-	processWeaponTags: function(token,stage,pre) {
-		if(pre) {
-			// Do preprocess weapon tags for 'stage'
-		}
-		else {
-			// Do postprocess weapon tags for 'stage'
-		}
+		return crits;
 	}
 };
 
@@ -167,6 +187,22 @@ combat.tags = {
 	}
 };
 
+// Crit Tables -------------------------------------------------------------------------------------
+combat.crits = {
+	"default": [
+		{weight:15,threshold:15,msg:"+2 damage",script:''},
+		{weight:5,threshold:20,msg:"+3 damage",script:''},
+		{weight:1,threshold:21,msg:"reactor breach (insta-kill,unit cannot be salvaged)",script:''},
+		{weight:20,threshold:41,msg:"fire control disrupt (1 turn)",script:''},
+		{weight:5,threshold:46,msg:"fire control disabled (no weapons until repaired)",script:''},
+		{weight:1,threshold:47,msg:"life support (insta-kill, unit can be salvaged)",script:''},
+		{weight:20,threshold:67,msg:"crew casualties (-5% per hit)",script:''},
+		{weight:15,threshold:82,msg:"engine disrupt (1 turn, no mobility related bonuses)",script:''},
+		{weight:5,threshold:87,msg:"engine disable (no engines until repaired, no movement/mobility related bonuses)",script:''},
+		{weight:2,threshold:89,msg:"bridge hit (CIC destroyed, captain killed)",script:''}
+	]
+};
+
 // Ready a unit for the combat turn ----------------------------------------------------------------
 combat.functions.ready = function(stack) {
 	console.groupCollapsed("Ready - " + this.unit.unit.name);
@@ -180,6 +216,7 @@ combat.functions.ready = function(stack) {
 	// Should we skip this unit this turn?
 	if(unit.combat.skip) {
 		console.warn("Unit is skipping combat this turn.");
+		console.groupEnd();
 		return;
 	}
 
@@ -362,6 +399,13 @@ combat.functions.resolve = function(stack,logs) {
 	// Apply damage to the defense system
 	target[defense].current -= damage;
 
+	// Shoud there be a crit?
+	var crits = combat.functions.determineCrits(target);
+	_.each(crits,function(crit) {
+		eval(crit.script);
+		logs.push(target.unit.name + " was crit -- " + crit.msg);
+	});
+
 	// Is the unit destroyed?
 	if(target.hull.current <= 0) {
 		target.combat.destroyed = true;
@@ -400,8 +444,6 @@ combat.functions.crit = function(stack,logs) {
 	console.info("Begin weapon preprocess scripts.");
 	_.each(weapon,function(obj,tag) { if(combat.tags[tag]) { eval(combat.tags[tag].crit.pre); } });
 
-	// Did the target get crit?
-
 	// Run postprocess 'crit' scripts for weapon tags
 	console.info("Begin weapon postprocess scripts.");
 	_.each(weapon,function(obj,tag) { if(combat.tags[tag]) { eval(combat.tags[tag].crit.post); } });
@@ -418,178 +460,6 @@ combat.functions.tap = function() {
 	// Pose the message to the console log
 	console.log(this.msg);
 };
-
-/*
-weight	crit
-		+2 damage
-		+3 damage
-		reactor breach (insta-kill,unit cannot be salvaged)
-		fire control disrupt (1 turn)
-		fire control disabled (no weapons until repaired)
-		life support (insta-kill, unit can be salvaged)
-		crew casualties (-5% per hit)
-		engine disrupt (1 turn, no mobility related bonuses)
-		engine disable (no engines until repaired, no movement/mobility related bonuses)
-*/
-var critTable = {
-	"default": [
-		{
-			"weight": 10,
-			"msg": "Thar she blows! (+2 damage)",
-			"effect": 't.damage += 2;'
-		}
-	]
-};
-
-var actions = {
-	// target
-	"target": {
-		"script":
-'t.target = combat.functions.getTarget(unit);\
-var weapon = t.weapon;\
-if(weapon.sticky) { eval(tags.sticky.target); }\
-t.action = actions["fire_weapons"];\
-stack.push(t);',
-		"name": "target"
-	},
-	// ready
-	"ready": {
-		"script":
-'_.each(unit["direct-fire"],function(weapon) {\
-	if(_.isNumber(weapon.short)) { eval(tags.short.ready); }\
-	if(!weapon.skip) {\
-		for(var i = 0;i < weapon.batteries;i++) {\
-			var t = new token(unit,actions["target"]);\
-			t.weapon = weapon;\
-			if (weapon.sticky) {\
-				eval(tags.sticky.ready);\
-			}\
-			stack.push(t);\
-		}\
-	}\
-});\
-_.each(unit["packet-fire"],function(weapon) {\
-	if(_.isNumber(weapon.short)) { eval(tags.short.ready); }\
-	if(!weapon.skip) {\
-		for(var i = 0;i < weapon.packets;i++) {\
-			var t = new token(unit,actions["target"]);\
-			t.weapon = weapon;\
-			if(weapon.sticky) {\
-				eval(tags.sticky.ready);\
-			}\
-			stack.push(t);\
-		}\
-	}\
-});',
-		"name": "ready"
-	},
-	// resolve_damage
-	"resolve_damage": {
-		"script":
-'var target = t.target;\
-if(target.shield && target.shield.current > 0) {\
-	target.shield.current -= t.damage;\
-	target.shield.current = target.shield.current < 0 ? 0 : target.shield.current;\
-}\
-else {\
-	target.hull.current -= t.damage;\
-	target.combat.destroyed = target.hull.current <= 0 ? true : false;\
-}\
-if(unit.combat.sticky) { eval(tags.sticky.resolve); }',
-		"name": "resolve_damage"
-	},
-	// fire_weapons
-	"fire_weapons": {
-		"script":
-'var hitThreshold = t.weapon.target + combat.functions.unitTargetBonus(unit) - combat.functions.unitDefenseBonus(t.target);\
-hitThreshold = hitThreshold > 90 ? 90 : hitThreshold;\
-hitThreshold = hitThreshold < 10 ? 10 : hitThreshold;\
-var hitRoll = _.random(1,100);\
-t.hitSuccess = hitRoll < hitThreshold ? true : false;\
-var msg = unit.unit.name + " is firing at " + t.target.unit.name + " (" + hitRoll + "/" + hitThreshold + ")";\
-if(t.hitSuccess) {\
-	msg += " and hits";\
-	var damagePercent = _.random(1,100) + (t.weapon.yield ? t.weapon.yield : 0) + combat.functions.unitYieldBonus(unit) - combat.functions.unitResistBonus(t.target);\
-	damagePercent = damagePercent > 100 ? 100 : damagePercent;\
-	damagePercent = damagePercent < 0 ? 0 : damagePercent;\
-	var damage = 0;\
-	if(_.isNumber(t.weapon.volley)) {\
-		damage = Math.round(t.weapon.volley * damagePercent / 100);\
-		console.log(damagePercent);\
-	}\
-	else {\
-		if(t.weapon.sticky) { eval(tags.sticky.damage); }\
-		else { console.error("Unknown weapon volley type."); }\
-	}\
-	msg += " for " + damage + " damage (" + damagePercent + "%)";\
-	t.damage = damage;\
-	t.action = actions["resolve_damage"];\
-	stack.push(t);\
-} else {\
-	msg += " and misses";\
-}\
-logs.push(msg);',
-		"name": "fire_weapons"
-	},
-	// crit
-	"crit": {
-		"script": 'console.log("So, a crit happened.  You should probably look into that.");',
-		"name": "crit"
-	},
-	// test
-	"test": {
-		"script": "console.log(t.msg);",
-		"name": "test"
-	}
-};
-
-var tags = {
-	"sticky": {
-		// Damage
-		"damage":
-'damage = Math.round(t.weapon.volley[t.weapon.sticky.index] * damagePercent / 100);\
-t.weapon.sticky.index++;',
-		// Target
-		"target":
-'if(weapon.sticky.target && weapon.sticky.index > 0) { t.target = weapon.sticky.target; }\
-else { weapon.sticky.target = t.target; }',
-		// Ready
-		"ready":
-'if(_.isObject(weapon.sticky)) {\
-	if(weapon.sticky.target && weapon.sticky.target.combat.destroyed) { weapon.sticky.target = undefined; }\
-	if(weapon.sticky.index > weapon.sticky.max) { weapon.sticky.index = 0; }\
-}\
-else if(weapon.sticky) {\
-	weapon.sticky = {\
-		index: 0,\
-		target: undefined,\
-		max: weapon.volley.length - 1\
-	};\
-}',
-		// Resolve
-		"resolve": ''
-	},
-	"short": {
-		"ready":
-'if(weapon.short > 0) {\
-	weapon.short--;\
-	weapon.skip = true;\
-} else {\
-	weapon.skip = false;\
-}'
-	},
-	"long": {},
-	"ammo": {
-		"ready": 'if(weapon.ammo < 0) { weapon.skip = true; }',
-		"target": '',
-		"damage": '',
-		"resolve": 'weapon.ammo--;'
-	}
-};
-
-var lists = {};
-lists.weaponTags = ["sticky","short","ammo"];
-lists.unitTags = ["reserve"];
 
 var message = function(t) {
 	this.turn = t;
@@ -642,9 +512,11 @@ function doCombatSimulation() {
 		var stack = [];
 		var logs = [];
 		_.each(combat.fleets.attacker.units,function(unit) {
-			if(!_.isObject(unit.combat)) {
-				unit.combat = {};
-			}
+			if(!_.isObject(unit.combat)) { unit.combat = {}; }
+
+			unit.combat.crit = {};
+			_.defaults(unit.combat.crit,{first:false,second:false,third:false,fourth:false});
+			
 			if(!unit.combat.destroyed) {
 				// Setup reserve units
 				if(unit.unit.reserve && !unit.combat.reserve) {
@@ -671,6 +543,11 @@ function doCombatSimulation() {
 			if(!_.isObject(unit.combat)) {
 				unit.combat = {};
 			}
+
+			unit.combat.crit = {};
+			_.defaults(unit.combat.crit,{first:false,second:false,third:false,fourth:false});
+
+
 			if(!unit.combat.destroyed) {
 				// Setup reserve units
 				if(unit.unit.reserve && !unit.combat.reserve) {
@@ -706,7 +583,6 @@ function doCombatSimulation() {
 			_.each(fleet.units,function(unit) {
 				if(unit.combat.destroyed) {
 					count++;
-					console.log(unit.unit.name + " is destroyed");
 				}
 			});
 			fleet.combat.loseCount = count;
@@ -721,8 +597,6 @@ function doCombatSimulation() {
 				m.done = true;
 			}
 		});
-
-		console.log(combat.fleets.attacker.units);
 		
 		m.logs = logs;
 		self.postMessage(m);
