@@ -117,6 +117,19 @@ combat.token = function(unit,act) {
 	this.priority = 0;
 };
 
+// Combat Log Entry Objects ------------------------------------------------------------------------
+combat.logs = {};
+
+// Main Log Object
+combat.logs.log = function(turn) {
+	this.turn = turn;
+	this.fleets = {};
+};
+
+// Log Entry Object
+combat.logs.entry = function(unit,msg) {
+};
+
 // Unit/Weapon Tags --------------------------------------------------------------------------------
 combat.tags = {
 	"sticky": {
@@ -485,15 +498,9 @@ var maps = {
 };
 
 function doCombatSimulation() {
-	// Setup combat objects.
-	// Do target lists first.
-	combat.targets = {};
-	combat.targets.attacker = _.chain(combat.fleets.defender.units).filter(filters.reserveUnit).map(maps.unitName).value();
-	combat.targets.defender = _.chain(combat.fleets.attacker.units).filter(filters.reserveUnit).map(maps.unitName).value();
+	// Fleet initialization
 	combat.fleets.attacker.enemy = "defender";
 	combat.fleets.defender.enemy = "attacker";
-
-	// Fleet initialization
 	_.each(combat.fleets,function(fleet) {
 		fleet.combat.loseCount = 0;
 	});
@@ -502,28 +509,42 @@ function doCombatSimulation() {
 
 	// Run the main combat loop.
 	while(combat.status !== combat.statuses.done) {
-		combat.turn = combat.turn + 1;
+		// Update the combat turn.
+		combat.turn++;
+
+		// Have we exceeded the maximum number of turns?
 		if(combat.maxTurn !== 0 && combat.turn > combat.maxTurn) {
 			combat.status = combat.statuses.done;
 			continue;
 		}//*/
+
+		// Begin the logging group for the turn.
 		console.groupCollapsed("Turn: " + combat.turn);
 
+		// Combat Action Stack
 		var stack = [];
-		var logs = [];
+
+		// Log Entry array
+		var logs = new combat.logs.log(turn);
+
+		// Setup the initial ready action tokens for the attacking fleet.
 		_.each(combat.fleets.attacker.units,function(unit) {
-			if(!_.isObject(unit.combat)) { unit.combat = {}; }
+			// Initailize the unit's combat object if needed.
+			unit.combat = (unit.combat || {});
 
-			unit.combat.crit = {};
+			// Setup the crit flags for the unit
+			unit.combat.crit = (unit.combat.crit || {});
 			_.defaults(unit.combat.crit,{first:false,second:false,third:false,fourth:false});
-			
-			if(!unit.combat.destroyed) {
-				// Setup reserve units
-				if(unit.unit.reserve && !unit.combat.reserve) {
-					var reserveLevel = Math.ceil(unit.unit.reserve / 100 * (combat.fleets.attacker.combat.unitCount - 1));
-					unit.combat.reserve = reserveLevel;
-				}
 
+			// Is the unit a reserve unit?
+			if(unit.unit.reserve && !unit.combat.reserve) {
+				// Initialize the number of units in the fleet for the unit to be in reserve.
+				unit.combat.reserve = Math.ceil(unit.unit.reserve / 100 * (combat.fleets.attacker.combat.unitCount - 1));
+			}
+			
+			// Is the unit destroyed?
+			if(!unit.combat.destroyed) {
+				// The unit is still operational.  Assume it needs to be readied.
 				// Is the unit still in reserve?
 				if(unit.combat.reserve && unit.combat.reserve > (combat.fleets.attacker.combat.unitCount - combat.fleets.attacker.combat.loseCount - 1)) {
 					var s = new combat.token(unit,combat.functions.ready);
@@ -539,6 +560,7 @@ function doCombatSimulation() {
 				}
 			}
 		});
+		// Setup the initial ready action tokens for the defending fleet.
 		_.each(combat.fleets.defender.units,function(unit) {
 			if(!_.isObject(unit.combat)) {
 				unit.combat = {};
