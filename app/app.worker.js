@@ -525,7 +525,7 @@ function doCombatSimulation() {
 		var stack = [];
 
 		// Log Entry array
-		var logs = new combat.logs.log(turn);
+		var logs = new combat.logs.log(combat.turn);
 
 		// Setup the initial ready action tokens for the attacking fleet.
 		_.each(combat.fleets.attacker.units,function(unit) {
@@ -555,8 +555,7 @@ function doCombatSimulation() {
 					var s = new combat.token(unit,combat.functions.ready);
 					unit.fleet = "attacker";
 					stack.push(s);
-					delete unit.combat.reserve;				
-					combat.targets.defender.push(unit.unit.name);
+					delete unit.combat.reserve;
 				}
 			}
 		});
@@ -583,7 +582,6 @@ function doCombatSimulation() {
 					unit.fleet = "defender";
 					stack.push(s);
 					delete unit.combat.reserve;
-					combat.targets.attacker.push(unit.unit.name);
 				}
 				else if(!unit.combat.reserve) {
 					var s = new combat.token(unit,combat.functions.ready);
