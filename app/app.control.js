@@ -122,6 +122,7 @@ mobiusEngine.controller = mobiusEngine.app.controller("mobiusCtl",["$scope","$lo
 	};
 
 	this.alerts = [
+		{type:"danger",msg:"Reserved keywords: skip"},
 		{type:"warning",msg:"Only the following tags currently work: short, sticky, reserve"},
 		{type:"info",msg:"short: expects a number of turns that the weapon cannot fire after the unit has entered combat."},
 		{type:"info",msg:"sticky: used to designated weapons that provide continuous damage over multiple turns against the same target."},
