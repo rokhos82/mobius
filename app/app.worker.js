@@ -53,7 +53,7 @@ combat.functions = {
 			unit.combat.destroyed = unit.hull.current <= 0 ? true : false;
 		}
 	},
-	processUnitTags: function(unit,stage,pre) {
+	processUnitTags: function(token,stage,pre) {
 		if(pre) {
 			// Do preprocess unit tags for 'stage'
 		}
@@ -61,7 +61,7 @@ combat.functions = {
 			// Do postprocess unit tags for 'stage'
 		}
 	},
-	processCombatTags: function(unit,stage,pre) {
+	processCombatTags: function(token,stage,pre) {
 		if(pre) {
 			// Do preprocess combat tags for 'stage'
 		}
@@ -69,7 +69,7 @@ combat.functions = {
 			// Do postprocess combat tags for 'stage'
 		}
 	},
-	processWeaponTags: function(unit,weapon,stage,pre) {
+	processWeaponTags: function(token,stage,pre) {
 		if(pre) {
 			// Do preprocess weapon tags for 'stage'
 		}
@@ -86,6 +86,24 @@ combat.token = function(unit,act) {
 	this.priority = 0;
 };
 
+// Unit/Weapon Tags --------------------------------------------------------------------------------
+combat.tags = {
+	"sticky": {
+		"ready": {
+			"pre": 'if(!_.isObject(weapon.sticky) { weapon.sticky = {index:0,max:(weapon.volley.length-1)}; }',
+			"post": ""
+		},
+		"aim": {
+			"pre": '',
+			"post": ''
+		},
+		"fire": {
+			"pre": 'volley = weapon.volley[weapon.sticky.index];',
+			"post": ''
+		}
+	}
+};
+
 // Ready a unit for the combat turn ----------------------------------------------------------------
 combat.functions.ready = function(stack) {
 	console.groupCollapsed("Ready - " + this.unit.unit.name);
@@ -93,8 +111,8 @@ combat.functions.ready = function(stack) {
 
 	// Run preprocess 'ready' scripts for unit and combat tags
 	console.info("Begin unit preprocess scripts.");
-	combat.functions.processUnitTags(unit,'ready',true);
-	combat.functions.processCombatTags(unit,'ready',true);
+	_.each(unit,function(tag) { if(combat.tags[tag]) { eval(combat.tags[tag].ready.pre) } });
+	_.each(unit.combat,function(tag) { if(combat.tags[tag]) { eval(combat.tags[tag].ready.pre) } });
 
 	// Should we skip this unit this turn?
 	if(unit.combat.skip) {
@@ -250,7 +268,7 @@ combat.functions.fire = function(stack,logs) {
 };
 // Resolve the damage incoming to the target -------------------------------------------------------
 combat.functions.resolve = function(stack) {
-	console.groupCollapsed("Resolve - " this.unit.unit.name);
+	console.groupCollapsed("Resolve - " + this.unit.unit.name);
 	var unit = this.unit;
 	var weapon = this.weapon;
 	var target = this.target;
