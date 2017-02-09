@@ -250,10 +250,40 @@ combat.functions.fire = function(stack,logs) {
 };
 // Resolve the damage incoming to the target -------------------------------------------------------
 combat.functions.resolve = function(stack) {
+	console.groupCollapsed("Resolve - " this.unit.unit.name);
 	var unit = this.unit;
 	var weapon = this.weapon;
 	var target = this.target;
 	var damage = this.damage;
+	var hasCrit = false;
+	var defense = undefined;
+
+	// Run preprocess 'resolve' scripts for unit and combat tags
+	console.info("Begin unit preprocess scripts.");
+	combat.functions.processUnitTags(unit,'resolve',true);
+	combat.functions.processCombatTags(unit,'resolve',true);
+
+	// Run preprocess 'resolve' scripts for weapon tags
+	console.info("Begin weapon preprocess scripts.");
+	combat.functions.processWeaponTags(unit,weapon,'resolve',true);
+
+	// Which defense system are we using?
+	var defense = (!defense && target.shield.current > 0) ? "shield" : "hull";
+	console.log(target.unit.name + " was hit on the " + defense + ".");
+
+	// Apply damage to the defense system
+	target[defense].current -= damage;
+
+	// Run postprocess 'resolve' scripts for weapon tags
+	console.info("Begin weapon postprocess scripts.");
+	combat.functions.processWeaponTags(unit,weapon,'resolve',false);
+
+	// Run postprocess 'resolve' scripts for unit and combat tags
+	console.info("Begin unit postprocess scripts.");
+	combat.functions.processUnitTags(unit,'resolve',false);
+	combat.functions.processCombatTags(unit,'resolve',false);
+
+	console.groupEnd();
 };
 // Determine if a critical hit happened and what critical hit it is --------------------------------
 combat.functions.crit = function() {};
@@ -479,12 +509,11 @@ function doCombatSimulation() {
 	// Run the main combat loop.
 	while(combat.status !== combat.statuses.done) {
 		combat.turn = combat.turn + 1;
-		console.groupCollapsed("Turn: " + combat.turn);
 		if(combat.maxTurn !== 0 && combat.turn > combat.maxTurn) {
 			combat.status = combat.statuses.done;
-			console.groupEnd();
 			continue;
 		}//*/
+		console.groupCollapsed("Turn: " + combat.turn);
 
 		var stack = [];
 		var logs = [];
