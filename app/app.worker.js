@@ -125,6 +125,11 @@ combat.logs.log = function(turn) {
 	this.turn = turn;
 	this.fleets = {};
 };
+combat.logs.log.prototype.push = function(unit,msg) {
+	var fleet = unit.fleet;
+	var key = unit.unit.name;
+	this.fleet[fleet].units[key] = (this.fleet[fleet].units[key] || []);
+};
 
 // Log Entry Object
 combat.logs.entry = function(unit,msg) {
