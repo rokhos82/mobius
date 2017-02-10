@@ -22,7 +22,8 @@ mobiusEngine.controller = mobiusEngine.app.controller("mobiusCtl",["$scope","$lo
 		unitTables: {
 			attacker: false,
 			defender: false
-		}
+		},
+		logs: []
 	};
 
 	this.fleets = {
@@ -199,5 +200,30 @@ mobiusEngine.controller = mobiusEngine.app.controller("mobiusCtl",["$scope","$lo
 		$log.log("Clearing defending fleet!");
 		delete this.fleets.defender;
 		this.fleets.defender = {};
+	};
+
+	this.initTurnState = function(turn) {
+		this.states.logs[turn] = {
+			fleets: {
+				attacker: {
+					units: []
+				},
+				defender: {
+					units: []
+				}
+			}
+		};
+	};
+
+	this.initLogTableState = function(turn,fleet,unit) {
+		this.states.logs[turn].fleets[fleet].units[unit] = false;
+	};
+
+	this.toggleLogTableState = function(turn,fleet,unit) {
+		this.states.logs[turn].fleets[fleet].units[unit] = !this.states.logs[turn].fleets[fleet].units[unit];
+	};
+
+	this.getLogTableState = function(turn,fleet,unit) {
+		return this.states.logs[turn].fleets[fleet].units[unit];
 	};
 }]);

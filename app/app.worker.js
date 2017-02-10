@@ -123,12 +123,17 @@ combat.logs = {};
 // Main Log Object
 combat.logs.log = function(turn) {
 	this.turn = turn;
-	this.fleets = {};
+	this.fleetInfo = {};
 };
 combat.logs.log.prototype.push = function(unit,msg) {
 	var fleet = unit.fleet;
 	var key = unit.unit.name;
-	this.fleet[fleet].units[key] = (this.fleet[fleet].units[key] || []);
+	this.init(fleet,key);
+	this.fleetInfo[fleet].unitInfo[key].push(msg);
+};
+combat.logs.log.prototype.init = function(fleet,unit) {
+	this.fleetInfo[fleet] = (this.fleetInfo[fleet] || {unitInfo:{}});
+	this.fleetInfo[fleet].unitInfo[unit] = (this.fleetInfo[fleet].unitInfo[unit] || []);
 };
 
 // Log Entry Object
@@ -388,7 +393,7 @@ combat.functions.fire = function(stack,logs) {
 	_.each(unit.unit,function(obj,tag) { if(combat.tags[tag]) { eval(combat.tags[tag].fire.post); } });
 	_.each(unit.combat,function(obj,tag) { if(combat.tags[tag]) { eval(combat.tags[tag].fire.post); } });
 
-	logs.push(message);
+	logs.push(unit,message);
 
 	console.groupEnd();
 };
@@ -421,13 +426,13 @@ combat.functions.resolve = function(stack,logs) {
 	var crits = combat.functions.determineCrits(target);
 	_.each(crits,function(crit) {
 		eval(crit.script);
-		logs.push(target.unit.name + " was crit -- " + crit.msg);
+		logs.push(target,target.unit.name + " was crit -- " + crit.msg);
 	});
 
 	// Is the unit destroyed?
 	if(target.hull.current <= 0) {
 		target.combat.destroyed = true;
-		logs.push(target.unit.name + " has been destroyed!");
+		logs.push(target,target.unit.name + " has been destroyed!");
 	}
 
 	// Run postprocess 'resolve' scripts for weapon tags
