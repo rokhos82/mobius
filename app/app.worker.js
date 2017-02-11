@@ -129,11 +129,23 @@ combat.logs.log.prototype.push = function(unit,msg) {
 	var fleet = unit.fleet;
 	var key = unit.unit.name;
 	this.init(fleet,key);
-	this.fleetInfo[fleet].unitInfo[key].push(msg);
+	this.fleetInfo[fleet].unitInfo[key].log.push(msg);
 };
 combat.logs.log.prototype.init = function(fleet,unit) {
 	this.fleetInfo[fleet] = (this.fleetInfo[fleet] || {unitInfo:{}});
-	this.fleetInfo[fleet].unitInfo[unit] = (this.fleetInfo[fleet].unitInfo[unit] || []);
+	this.fleetInfo[fleet].unitInfo[unit] = (this.fleetInfo[fleet].unitInfo[unit] || {log:[],hit:0,shot:0});
+};
+combat.logs.log.prototype.addHit = function(unit) {
+	var fleet = unit.fleet;
+	var key = unit.unit.name;
+	this.init(fleet,key);
+	this.fleetInfo[fleet].unitInfo[key].hit++;
+};
+combat.logs.log.prototype.addShot = function(unit) {
+	var fleet = unit.fleet;
+	var key = unit.unit.name;
+	this.init(fleet,key);
+	this.fleetInfo[fleet].unitInfo[key].shot++;
 };
 
 // Log Entry Object
@@ -227,7 +239,7 @@ combat.crits = {
 };
 
 // Ready a unit for the combat turn ----------------------------------------------------------------
-combat.functions.ready = function(stack) {
+combat.functions.ready = function(stack,logs) {
 	console.groupCollapsed("Ready - " + this.unit.unit.name);
 	var unit = this.unit;
 
@@ -258,6 +270,7 @@ combat.functions.ready = function(stack) {
 			for(var i = 0;i < weapon.batteries;i++) {
 				var token = new combat.token(unit,combat.functions.aim);
 				token.weapon = _.deep(weapon);
+				logs.addShot(unit);
 				stack.push(token);
 			}
 		}
@@ -301,7 +314,7 @@ combat.functions.ready = function(stack) {
 };
 
 // Select a target for the weapon ------------------------------------------------------------------
-combat.functions.aim = function(stack) {
+combat.functions.aim = function(stack,logs) {
 	console.groupCollapsed("Aim - " + this.unit.unit.name);
 	var unit = this.unit;
 	var weapon = this.weapon;
@@ -379,6 +392,7 @@ combat.functions.fire = function(stack,logs) {
 		this.damage = damage;
 		this.action = combat.functions.resolve;
 		stack.push(this);
+		logs.addHit(unit);
 	}
 	else {
 		message += "missies (" + hitRoll + "/" + hitTarget + ")";
