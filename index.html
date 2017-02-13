@@ -10,6 +10,14 @@
 		<link rel="stylesheet" type="text/css" href="css\mobius.css" />
 	</head>
 	<body ng-controller="mobiusCtl as ctl">
+		<div class="mobius-sidenav">
+			<a href="#">Top</a>
+			<span>Fleets</span>
+			<a href="#attacker">Attackers</a>
+			<a href="#defender">Defenders</a>
+			<span>Results</span>
+			<a href="#results">Results</a>
+		</div>
 		<nav class="navbar navbar-inverse navbar-fixed-top">
 			<div class="container">
 				<div class="navbar-header">
@@ -59,7 +67,7 @@
 			</div>
 			<div class="row">
 				<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-					<div class="panel panel-default">
+					<div class="panel panel-default" id="attacker">
 						<div class="panel-heading"><h4 class="text-info mobius-title">Attacking Fleet</h4></div>
 						<div class="panel-body" ng-show="!ctl.fleets.attacker.name">
 							<button class="btn btn-primary btn-lg" ng-click="ctl.importAttacker()">Import</button>
@@ -102,7 +110,7 @@
 					</div>
 				</div>
 				<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-					<div class="panel panel-default">
+					<div class="panel panel-default" id="defender">
 						<div class="panel-heading"><h4 class="text-info mobius-title">Defending Fleet</h4></div>
 						<div class="panel-body" ng-show="!ctl.fleets.defender.name">
 							<button class="btn btn-primary btn-lg" ng-click="ctl.importDefender()">Import</button>
@@ -163,7 +171,7 @@
 			<div class="row">
 				<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 					<div class="panel panel-default">
-						<div class="panel-heading"><h4 class="text-info mobius-title">Combat Results</h4></div>
+						<div class="panel-heading"><h4 class="text-info mobius-title" id="results">Combat Results</h4></div>
 						<div class="panel-body">
 							<div class="panel panel-default" ng-repeat="entry in ctl.combat.logs" ng-init="ctl.initTurnState(entry.turn)">
 								<div class="panel-heading"><h4 class="text-info mobius-title">Turn: {{entry.turn}}</h4></div>

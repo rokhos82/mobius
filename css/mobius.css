@@ -36,3 +36,19 @@ textarea.fleet-import {
 	color: #131313 !important;
 	text-shadow: none;
 }
+
+.mobius-sidenav {
+	position: fixed;
+	z-index: 100;
+	top: 100px;
+	left: 10px;
+	background-color: rgba(0,0,0,0.4);
+	overflox-x: hidden;
+	padding: 10px;
+	border: 2px solid #767676;
+	border-radius: 5px;
+}
+
+.mobius-sidenav a {
+	display: block;
+}
