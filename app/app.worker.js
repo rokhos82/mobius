@@ -142,8 +142,8 @@ combat.logs.log.prototype.push = function(unit,msg) {
 	this.fleetInfo[fleet].unitInfo[key].log.push(msg);
 };
 combat.logs.log.prototype.init = function(fleet,unit) {
-	this.fleetInfo[fleet] = (this.fleetInfo[fleet] || {unitInfo:{}});
-	this.fleetInfo[fleet].unitInfo[unit] = (this.fleetInfo[fleet].unitInfo[unit] || {log:[],hit:0,shot:0});
+	this.fleetInfo[fleet] = (this.fleetInfo[fleet] || {unitInfo:{},fleet:combat.fleets[fleet]});
+	this.fleetInfo[fleet].unitInfo[unit] = (this.fleetInfo[fleet].unitInfo[unit] || {log:[],hit:0,shot:0,unit:combat.fleets[fleet].units[unit]});
 };
 combat.logs.log.prototype.addHit = function(unit) {
 	var fleet = unit.fleet;
@@ -448,6 +448,7 @@ combat.functions.fire = function(stack,logs) {
 
 	// Was the target hit?
 	var hitSuccess = (hitRoll < hitTarget);
+	logs.addShot(unit);
 	if(hitSuccess) {
 		// We scored a hit!  How much damage do we do?
 		damagePercent = _.random(1,100) + (weapon.yield || 0) + combat.functions.unitYieldBonus(unit) - combat.functions.unitResistBonus(target);
@@ -570,7 +571,6 @@ combat.functions.tap = function() {
 
 var message = function(t) {
 	this.turn = t;
-	this.fleets = combat.fleets;
 	this.done = false;
 };
 
@@ -693,13 +693,11 @@ function doCombatSimulation() {
 		});
 		// Setup the initial ready action tokens for the defending fleet.
 		_.each(combat.fleets.defender.units,function(unit) {
-			if(!_.isObject(unit.combat)) {
-				unit.combat = {};
+			// Is the unit a reserve unit?
+			if(unit.unit.reserve && !unit.combat.reserve) {
+				// Initialize the number of units in the fleet for the unit to be in reserve.
+				unit.combat.reserve = Math.ceil(unit.unit.reserve / 100 * (combat.fleets.attacker.combat.unitCount - 1));
 			}
-
-			unit.combat.crit = {};
-			_.defaults(unit.combat.crit,{first:false,second:false,third:false,fourth:false});
-
 
 			if(!unit.combat.destroyed) {
 				// Setup reserve units

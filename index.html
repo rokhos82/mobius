@@ -179,14 +179,14 @@
 							<div class="panel panel-default" ng-repeat="entry in ctl.combat.logs" ng-init="ctl.initTurnState(entry.turn)">
 								<div class="panel-heading"><h4 class="text-info mobius-title">Turn: {{entry.turn}}</h4></div>
 								<div class="panel-body">
-									<div class="well well-sm" ng-repeat="fleet in entry.fleets">
-										<h4 class="text-info mobius-title">Turn Results: {{fleet.name}} - {{fleet.faction}}</h4>
+									<div class="well well-sm" ng-repeat="fentry in entry.logs.fleetInfo">
+										<h4 class="text-info mobius-title">Turn Results: {{fentry.fleet.name}} - {{fentry.fleet.faction}}</h4>
 										<table class="table table-striped table-hover">
 											<thead>
 												<tr><th class="col-md-4">Unit</th><th>Hits/Shots</th><th class="col-md-1">Type</th><th class="col-md-2">Shield (cur/max)</th><th class="col-md-2">Hull (cur/max)</th class="col-md-1"><th>Reserve (%)</th></tr>
 											</thead>
 											<tbody>
-												<tr ng-repeat="unit in fleet.units track by $index" ng-class="{'danger':unit.combat.destroyed}"><td>{{unit.unit.name}}</td><td>/</td><td>{{unit.unit.type}}</td><td ng-class="{'text-warning':((unit.shield.current < unit.shield.max) && !unit.combat.destroyed)}">{{unit.shield.current}}/{{unit.shield.max}}</td><td ng-class="{'text-warning':((unit.hull.current < unit.hull.max) && !unit.combat.destroyed)}">{{unit.hull.current}}/{{unit.hull.max}}</td><td>{{unit.unit.reserve}}</td></tr>
+												<tr ng-repeat="uentry in fentry.unitInfo track by $index" ng-class="{'danger':uentry.unit.combat.destroyed}"><td>{{uentry.unit.unit.name}}</td><td>{{uentry.hit}}/{{uentry.shot}}</td><td>{{uentry.unit.unit.type}}</td><td ng-class="{'text-warning':((uentry.unit.shield.current < uentry.unit.shield.max) && !uentry.unit.combat.destroyed)}">{{uentry.unit.shield.current}}/{{uentry.unit.shield.max}}</td><td ng-class="{'text-warning':((uentry.unit.hull.current < uentry.unit.hull.max) && !uentry.unit.combat.destroyed)}">{{uentry.unit.hull.current}}/{{uentry.unit.hull.max}}</td><td>{{uentry.unit.unit.reserve}}</td></tr>
 											</tbody>
 										</table>
 									</div>
