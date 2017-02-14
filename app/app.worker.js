@@ -364,6 +364,7 @@ combat.functions.ready = function(stack,logs) {
 			for(var i = 0;i < weapon.packets;i++) {
 				var token = new combat.token(unit,combat.functions.aim);
 				token.weapon = _.deep(weapon);
+				logs.addShot(unit);
 				stack.push(token);
 			}
 		}
@@ -448,7 +449,6 @@ combat.functions.fire = function(stack,logs) {
 
 	// Was the target hit?
 	var hitSuccess = (hitRoll < hitTarget);
-	logs.addShot(unit);
 	if(hitSuccess) {
 		// We scored a hit!  How much damage do we do?
 		damagePercent = _.random(1,100) + (weapon.yield || 0) + combat.functions.unitYieldBonus(unit) - combat.functions.unitResistBonus(target);
