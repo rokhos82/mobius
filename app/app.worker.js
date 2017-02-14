@@ -108,7 +108,16 @@ combat.functions = {
 			unit.combat.crit.fourth = crit;
 		}
 		return crits;
+	},
+	unitDefaults: function(unit) {
+		var def = {
+			combat: {
+				crit: {first:false,second:false,third:false,fourth:false}
+			}
+		};
+		_.defaults(unit,def);
 	}
+
 };
 
 // Combat Turn Token Object ------------------------------------------------------------------------
@@ -536,15 +545,24 @@ function doCombatSimulation() {
 	// Fleet initialization
 	combat.fleets.attacker.enemy = "defender";
 	combat.fleets.defender.enemy = "attacker";
-	_.each(combat.fleets,function(fleet) {
+	_.each(combat.fleets,function(fleet,key) {
 		fleet.combat.loseCount = 0;
+		_.each(fleet.units,function(unit){
+			unit.fleet = key;
+			combat.functions.unitDefaults(unit);
+		});
 	});
 
 	// Check for long range weapons
 	console.groupCollapsed("Precombat Actions");
+	
+	// Log Entry array for precombat turn
+	var prelogs = new combat.logs.log(combat.turn);
+	
 	var longStack = [];
 	_.each(combat.fleets,function(fleet,key){
 		_.each(fleet.units,function(unit){
+			combat.functions.unitDefaults(unit);
 			_.each(unit["direct-fire"],function(weapon) {
 				if(_.has(weapon,"long")) {
 					var token = new combat.token(unit,combat.functions.ready);
@@ -561,7 +579,11 @@ function doCombatSimulation() {
 			});
 		});
 	});
-	processStack(longStack,logs);
+	processStack(longStack,prelogs);
+	var m = new message(combat.turn);
+	m.logs = prelogs;
+	self.postMessage(m);
+
 	console.groupEnd();
 
 	// Run the main combat loop.
@@ -586,13 +608,6 @@ function doCombatSimulation() {
 
 		// Setup the initial ready action tokens for the attacking fleet.
 		_.each(combat.fleets.attacker.units,function(unit) {
-			// Initailize the unit's combat object if needed.
-			unit.combat = (unit.combat || {});
-
-			// Setup the crit flags for the unit
-			unit.combat.crit = (unit.combat.crit || {});
-			_.defaults(unit.combat.crit,{first:false,second:false,third:false,fourth:false});
-
 			// Is the unit a reserve unit?
 			if(unit.unit.reserve && !unit.combat.reserve) {
 				// Initialize the number of units in the fleet for the unit to be in reserve.
