@@ -36,7 +36,8 @@ combat.setup = {
 combat.filters = {
 	"destroyed": function(unit) { return unit.combat.destroyed; },
 	"reserve": function(unit) { return unit.combat.reserve; },
-	"untargetable": function(unit) { return (!unit.combat.destroyed && !unit.combat.reserve); }
+	"untargetable": function(unit) { return (!unit.combat.destroyed && !unit.combat.reserve); },
+	"long": function(unit) { var l = false; _.each(unit["direct-fire"],function(weapon){ if(weapon.long) { l=true; } }); _.each(unit["packet-fire"],function(weapon){ if(weapon.log) { l=true; } }); return l; }
 };
 
 // Utility Functions -------------------------------------------------------------------------------
@@ -521,6 +522,16 @@ var maps = {
 	unitName: function(unit) { return unit.unit.name; }
 };
 
+// Process a combat stack --------------------------------------------------------------------------
+function processStack(stack,logs) {
+	while(stack.length > 0) {
+		var token = stack.shift();
+		var unit = token.unit;
+		token.action(stack,logs);
+	}
+}
+
+// Main Combat Simulation Loop ---------------------------------------------------------------------
 function doCombatSimulation() {
 	// Fleet initialization
 	combat.fleets.attacker.enemy = "defender";
@@ -530,6 +541,28 @@ function doCombatSimulation() {
 	});
 
 	// Check for long range weapons
+	console.groupCollapsed("Precombat Actions");
+	var longStack = [];
+	_.each(combat.fleets,function(fleet,key){
+		_.each(fleet.units,function(unit){
+			_.each(unit["direct-fire"],function(weapon) {
+				if(_.has(weapon,"long")) {
+					var token = new combat.token(unit,combat.functions.ready);
+					unit.fleet = key;
+					longStack.push(token);
+				}
+			});
+			_.each(unit["packet-fire"],function(weapon) {
+				if(_.has(weapon,"long")) {
+					var token = new combat.token(unit,combat.functions.ready);
+					unit.fleet = key;
+					longStack.push(token);
+				}
+			});
+		});
+	});
+	processStack(longStack,logs);
+	console.groupEnd();
 
 	// Run the main combat loop.
 	while(combat.status !== combat.statuses.done) {
@@ -615,11 +648,7 @@ function doCombatSimulation() {
 			}
 		});
 
-		while(stack.length > 0) {
-			var token = stack.shift();
-			var unit = token.unit;
-			token.action(stack,logs);
-		}
+		processStack(stack,logs);
 
 		// Check for destroyed units
 		_.each(combat.fleets,function(fleet) {
