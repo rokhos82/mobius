@@ -124,10 +124,11 @@ mobiusEngine.controller = mobiusEngine.app.controller("mobiusCtl",["$scope","$lo
 
 	this.alerts = [
 		{type:"danger",msg:"Reserved keywords: skip"},
-		{type:"warning",msg:"Only the following tags currently work: short, sticky, reserve, ammo"},
+		{type:"warning",msg:"Only the following tags currently work: short, sticky, reserve, ammo, long"},
 		{type:"info",msg:"short: expects a number of turns that the weapon cannot fire after the unit has entered combat."},
 		{type:"info",msg:"sticky: used to designated weapons that provide continuous damage over multiple turns against the same target."},
-		{type:"info",msg:"reserve: expects a number that is the percentage of units in the fleet needed to provide cover."}
+		{type:"info",msg:"reserve: expects a number that is the percentage of units in the fleet needed to provide cover."},
+		{type:"info",msg:"long: expects a number that represents the number of precombat rounds of long range fire with a weapon system."}
 	];
 
 	this.closeAlert = function(index) {
@@ -226,4 +227,8 @@ mobiusEngine.controller = mobiusEngine.app.controller("mobiusCtl",["$scope","$lo
 	this.getLogTableState = function(turn,fleet,unit) {
 		return this.states.logs[turn].fleets[fleet].units[unit];
 	};
+
+	this.dumpLogs = function() {
+		console.log(this.combat.logs);
+	}
 }]);

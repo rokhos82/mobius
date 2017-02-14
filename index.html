@@ -164,6 +164,7 @@
 								<label class="btn btn-info disabled btn-lg">1 Turn</label>
 								<label class="btn btn-danger btn-lg" ng-click="ctl.stopCombat()">Stop</label>
 								<label class="btn btn-warning btn-lg" ng-click="ctl.clearCombat()">Clear</label>
+								<label class="btn btn-success btn-lg" ng-click="ctl.dumpLogs()">Dump Logs</label>
 							</div>
 							<h4 class="text-warning mobius-title">Combat Status: {{ctl.combat.state}}</h4>
 						</div>
@@ -192,8 +193,8 @@
 									<div class="well well-sm">
 										<h4 class="text-info mobius-title">Combat Log</h4>
 										<div class="panel panel-default" ng-repeat="(key,unitInfo) in entry.logs.fleetInfo.attacker.unitInfo" ng-init="ctl.initLogTableState(entry.turn,'attacker',key);">
-											<div class="panel-heading">
-												<h5 class="text-info mobius-title" ng-click="ctl.toggleLogTableState(entry.turn,'attacker',key)">{{key}}</h5>
+											<div class="panel-heading" ng-click="ctl.toggleLogTableState(entry.turn,'attacker',key)">
+												<h5 class="text-info mobius-title-sm">{{key}}</h5>
 											</div>
 											<table class="table table-striped table-hover" ng-show="ctl.getLogTableState(entry.turn,'attacker',key)">
 												<tbody>
@@ -202,10 +203,10 @@
 											</table>
 										</div>
 										<div class="panel panel-default" ng-repeat="(key,unitInfo) in entry.logs.fleetInfo.defender.unitInfo" ng-init="ctl.initLogTableState(entry.turn,'defender',key);">
-											<div class="panel-heading">
-												<h5 class="text-info mobius-title" ng-click="ctl.toggleLogTableState(entry.turn,'defender',key)">{{key}}</h5>
+											<div class="panel-heading" ng-click="ctl.toggleLogTableState(entry.turn,'defender',key)">
+												<h5 class="text-info mobius-title-sm">{{key}}</h5>
 											</div>
-											<table class="table table-striped table-hover" ng-show="ctl.getLogTableState(entry.turn,'defender',kye)">
+											<table class="table table-striped table-hover" ng-show="ctl.getLogTableState(entry.turn,'defender',key)">
 												<tbody>
 													<tr ng-repeat="line in unitInfo.log track by $index"><td>{{line}}</td></tr>
 												</tboday>

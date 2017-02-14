@@ -257,16 +257,53 @@ combat.tags = {
 // Crit Tables -------------------------------------------------------------------------------------
 combat.crits = {
 	"default": [
-		{weight:15,threshold:15,msg:"+2 damage",script:''},
-		{weight:5,threshold:20,msg:"+3 damage",script:''},
-		{weight:1,threshold:21,msg:"reactor breach (insta-kill,unit cannot be salvaged)",script:''},
-		{weight:20,threshold:41,msg:"fire control disrupt (1 turn)",script:''},
-		{weight:5,threshold:46,msg:"fire control disabled (no weapons until repaired)",script:''},
-		{weight:1,threshold:47,msg:"life support (insta-kill, unit can be salvaged)",script:''},
-		{weight:20,threshold:67,msg:"crew casualties (-5% per hit)",script:''},
-		{weight:15,threshold:82,msg:"engine disrupt (1 turn, no mobility related bonuses)",script:''},
-		{weight:5,threshold:87,msg:"engine disable (no engines until repaired, no movement/mobility related bonuses)",script:''},
-		{weight:2,threshold:89,msg:"bridge hit (CIC destroyed, captain killed)",script:''}
+		{weight:1,threshold:1,msg:"Reactor Core Breach (Ship explodes)",script:'unit.combat.destroyed = true;'},
+		{weight:2,threshold:3,msg:"Structural Collapse (+3 damage)",script:'damage += 3;'},
+		{weight:2,threshold:5,msg:"Explosion Amidships (+2 damage)",script:'damage += 2;'},
+		{weight:2,threshold:7,msg:"Superstructure Hit (+1 damage)",script:'damage += 1;'},
+		{weight:2,threshold:9,msg:"Inertial Dampeners Down (+1 damage)",script:'damage += 1;'},
+		{weight:4,threshold:13,msg:"Weapons Damaged (Offline until repaired)",script:''},
+		{weight:2,threshold:15,msg:"Radiation Leak (+5% crew casualties)",script:''},
+		{weight:2,threshold:17,msg:"Coolant Leak (+5% crew casualties)",script:''},
+		{weight:2,threshold:19,msg:"Hull Breach (+5% crew casualties)",script:''},
+		{weight:2,threshold:21,msg:"Main Fusion Reactors Down (+1 damage)",script:'damage += 1;'},
+		{weight:2,threshold:23,msg:"Auxiliary Fusion Reactors Down (+1 damage)",script:'damage += 1;'},
+		{weight:4,threshold:27,msg:"Weapon Power Short (Some offline until repaired)",script:''},
+		{weight:4,threshold:31,msg:"Engine Power Short (Drifting for 1 turn)",script:''},
+		{weight:2,threshold:33,msg:"Shuttle/Fighter Bay Hit",script:''},
+		{weight:2,threshold:35,msg:"Main Fire Control Out (Offline for 1 turn)",script:''},
+		{weight:2,threshold:37,msg:"Main Scanners Out (Offline for 1 turn)",script:''},
+		{weight:2,threshold:39,msg:"Maglock/Tractor Beams Down",script:''},
+		{weight:2,threshold:41,msg:"Main Bridge Hit (Bridge crew killed, Offline for 1 turn)",script:''},
+		{weight:2,threshold:43,msg:"Main Engineering Hit (Drifting for 1 turn)",script:''},
+		{weight:4,threshold:47,msg:"Warp Engine Hit (No warp movement until repaired)",script:''},
+		{weight:2,threshold:49,msg:"Barracks/Cargo Holds Breached (+5% crew casualties)",script:''},
+		{weight:2,threshold:51,msg:"Warp Drive Down (No warp movement until repaired)",script:''},
+		{weight:2,threshold:53,msg:"Crew Quarters Breached (+5% crew casualties)",script:''},
+		{weight:2,threshold:55,msg:"Impulse Engines Down (Drifting for 1 turn)",script:''},
+		{weight:2,threshold:57,msg:"Auxiliary Scanners Out",script:''},
+		{weight:2,threshold:59,msg:"Weapon Power Couplings Down (Offline until repaired)",script:''},
+		{weight:2,threshold:61,msg:"Emergency Power Out",script:''},
+		{weight:2,threshold:63,msg:"Primary Life Support Out (+10% crew casualties)",script:''},
+		{weight:2,threshold:65,msg:"Navigational Deflectors Out (No warp movement until repaired)",script:''},
+		{weight:2,threshold:67,msg:"Internal Damage (+10% crew casualties)",script:''},
+		{weight:2,threshold:69,msg:"Main Computer Down (Offline for 1 turn)",script:''},
+		{weight:2,threshold:71,msg:"Internal Damage (+5% crew casualties)",script:''},
+		{weight:2,threshold:73,msg:"Emergency Life Support Out (+5% crew casualties)",script:''},
+		{weight:2,threshold:75,msg:"Auxiliary Computer Down",script:''},
+		{weight:2,threshold:77,msg:"Auxiliary Fire Control Out",script:''},
+		{weight:2,threshold:79,msg:"Fire: Level 1 (+1 damage)",script:'damage += 1;'},
+		{weight:2,threshold:81,msg:"Explosion Amidships (+1 damage)",script:'damage += 1;'},
+		{weight:2,threshold:83,msg:"ECM/Cloaking Systems Out",script:''},
+		{weight:2,threshold:85,msg:"Fire: Level 2 (+2 damage)",script:'damage += 2;'},
+		{weight:2,threshold:87,msg:"Explosion Amidships (+2 damage)",script:'damage += 2;'},
+		{weight:2,threshold:89,msg:"Ammunition Bay/Magazine Explosion (+Tp damage)",script:''},
+		{weight:2,threshold:91,msg:"Fire: Level 3 (+3 damage)",script:'damage += 3;'},
+		{weight:2,threshold:93,msg:"Auxiliary Bridge Hit",script:''},
+		{weight:2,threshold:95,msg:"Explosive Chain Reaction (+4 damage)",script:'damage += 4;'},
+		{weight:2,threshold:97,msg:"All Sensors Out (Offline and no movement until repaired)",script:''},
+		{weight:2,threshold:99,msg:"Shield Power Couplings Down (Sh=0 until repaired)",script:'unit.shield.current = 0;'},
+		{weight:1,threshold:100,msg:"Reactor Containment Failure (Ship explodes)",script:'unit.combat.destroyed = true;'}
 	]
 };
 
@@ -440,6 +477,7 @@ combat.functions.fire = function(stack,logs) {
 	_.each(unit.combat,function(obj,tag) { if(combat.tags[tag]) { eval(combat.tags[tag].fire.post); } });
 
 	logs.push(unit,message);
+	logs.push(target,message);
 
 	console.groupEnd();
 };
