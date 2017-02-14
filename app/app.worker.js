@@ -229,6 +229,28 @@ combat.tags = {
 			"pre": '',
 			"post": ''
 		}
+	},
+	"long": {
+		"ready": {
+			"pre": 'weapon.long--;',
+			"post": ''
+		},
+		"aim": {
+			"pre": '',
+			"post": ''
+		},
+		"fire": {
+			"pre": '',
+			"post": ''
+		},
+		"resolve": {
+			"pre": '',
+			"post": ''
+		},
+		"crit": {
+			"pre": '',
+			"post": 'if(weapon.long > 0) { stack.push(new combat.token(unit,combat.functions.ready)); }'
+		}
 	}
 };
 
