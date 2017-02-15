@@ -246,9 +246,9 @@ combat.tags = {
 	"deflect": {
 		"ready": {"pre":'',"post":''},
 		"aim": {"pre":'',"post":''},
-		"fire": {"pre":'',"post":'message += ""'},
+		"fire": {"pre":'',"post":'message += " " + ((target[defense].deflect || 0) * (weapon.guns || 1)) + " damage deflected"'},
 		"resolve": {
-			"pre":'damage -= (target[defense].deflect || 0) * (weapon.guns || 1); logs.push(target,target.unit.name + " deflected " + (target[defense].defelct * (weapon.guns || 1)) + " damage"); logs.push(unit,target.unit.name + " deflected " + (target[defense].defelct * (weapon.guns || 1)) + " damage");',
+			"pre":'damage -= (target[defense].deflect || 0) * (weapon.guns || 1);',
 			"post":''},
 		"crit": {"pre":'',"post":''}
 	}
@@ -436,6 +436,8 @@ combat.functions.fire = function(stack,logs) {
 	console.info("Begin unit preprocess scripts.");
 	_.each(unit.unit,function(obj,tag) { if(combat.tags[tag]) { eval(combat.tags[tag].fire.pre); } });
 	_.each(unit.combat,function(obj,tag) { if(combat.tags[tag]) { eval(combat.tags[tag].fire.pre); } });
+	_.each(target.unit,function(obj,tag) { if(combat.tags[tag]) { eval(combat.tags[tag].fire.post); } });
+	_.each(target.combat,function(obj,tag) { if(combat.tags[tag]) { eval(combat.tags[tag].fire.post); } });
 
 	// Run preprocess 'fire' scripts for weapon tags
 	console.info("Begin weapon preprocess scripts.");
@@ -460,6 +462,10 @@ combat.functions.fire = function(stack,logs) {
 		damage = Math.round(volley * guns * damagePercent / 100);
 		message += "hits (" + hitRoll + "/" + hitTarget + ") for " + damage + "(" + damagePercent + "%)";
 
+		// Which defense system are we using?
+		var defense = (target.shield.current > 0) ? "shield" : "hull";
+		this.defense = defense;
+
 		this.damage = damage;
 		this.action = combat.functions.resolve;
 		stack.push(this);
@@ -477,6 +483,8 @@ combat.functions.fire = function(stack,logs) {
 	console.info("Begin unit postprocess scripts.");
 	_.each(unit.unit,function(obj,tag) { if(combat.tags[tag]) { eval(combat.tags[tag].fire.post); } });
 	_.each(unit.combat,function(obj,tag) { if(combat.tags[tag]) { eval(combat.tags[tag].fire.post); } });
+	_.each(target.unit,function(obj,tag) { if(combat.tags[tag]) { eval(combat.tags[tag].fire.post); } });
+	_.each(target.combat,function(obj,tag) { if(combat.tags[tag]) { eval(combat.tags[tag].fire.post); } });
 
 	logs.push(unit,message);
 	logs.push(target,message);
@@ -490,15 +498,14 @@ combat.functions.resolve = function(stack,logs) {
 	var weapon = this.weapon;
 	var target = this.target;
 	var damage = this.damage;
+	var defense = this.defense;
 	
-	// Which defense system are we using?
-	var defense = (!defense && target.shield.current > 0) ? "shield" : "hull";
-	this.defense = defense;
-
 	// Run preprocess 'resolve' scripts for unit and combat tags
 	console.info("Begin unit preprocess scripts.");
 	_.each(unit.unit,function(obj,tag) { if(combat.tags[tag]) { eval(combat.tags[tag].resolve.pre); } });
 	_.each(unit.combat,function(obj,tag) { if(combat.tags[tag]) { eval(combat.tags[tag].resolve.pre); } });
+	_.each(target.unit,function(obj,tag) { if(combat.tags[tag]) { eval(combat.tags[tag].resolve.pre); } });
+	_.each(target.combat,function(obj,tag) { if(combat.tags[tag]) { eval(combat.tags[tag].resolve.pre); } });
 
 	// Run preprocess 'resolve' scripts for weapon tags
 	console.info("Begin weapon preprocess scripts.");
@@ -528,6 +535,8 @@ combat.functions.resolve = function(stack,logs) {
 	console.info("Begin unit postprocess scripts.");
 	_.each(unit.unit,function(obj,tag) { if(combat.tags[tag]) { eval(combat.tags[tag].resolve.post); } });
 	_.each(unit.combat,function(obj,tag) { if(combat.tags[tag]) { eval(combat.tags[tag].resolve.post); } });
+	_.each(target.unit,function(obj,tag) { if(combat.tags[tag]) { eval(combat.tags[tag].resolve.post); } });
+	_.each(target.combat,function(obj,tag) { if(combat.tags[tag]) { eval(combat.tags[tag].resolve.post); } });
 
 	this.action = combat.functions.crit;
 	stack.push(this);
