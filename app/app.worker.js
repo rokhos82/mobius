@@ -235,22 +235,22 @@ combat.tags = {
 			"pre": 'weapon.long--;',
 			"post": ''
 		},
-		"aim": {
-			"pre": '',
-			"post": ''
-		},
-		"fire": {
-			"pre": '',
-			"post": ''
-		},
-		"resolve": {
-			"pre": '',
-			"post": ''
-		},
+		"aim": {"pre": '',"post": ''},
+		"fire": {"pre": '',"post": ''},
+		"resolve": {"pre": '',"post": ''},
 		"crit": {
 			"pre": '',
 			"post": 'if(weapon.long > 0) { stack.push(new combat.token(unit,combat.functions.ready)); }'
 		}
+	},
+	"deflect": {
+		"ready": {"pre":'',"post":''},
+		"aim": {"pre":'',"post":''},
+		"fire": {"pre":'',"post":'message += ""'},
+		"resolve": {
+			"pre":'damage -= (target[defense].deflect || 0) * (weapon.guns || 1); logs.push(target,target.unit.name + " deflected " + (target[defense].defelct * (weapon.guns || 1)) + " damage"); logs.push(unit,target.unit.name + " deflected " + (target[defense].defelct * (weapon.guns || 1)) + " damage");',
+			"post":''},
+		"crit": {"pre":'',"post":''}
 	}
 };
 
@@ -456,7 +456,8 @@ combat.functions.fire = function(stack,logs) {
 		damagePercent = damagePercent < 25 ? 25 : damagePercent;
 		
 		volley = _.isUndefined(volley) ? weapon.volley : volley;
-		damage = Math.round(volley * damagePercent / 100);
+		var guns = (weapon.guns || 1);
+		damage = Math.round(volley * guns * damagePercent / 100);
 		message += "hits (" + hitRoll + "/" + hitTarget + ") for " + damage + "(" + damagePercent + "%)";
 
 		this.damage = damage;
@@ -489,7 +490,10 @@ combat.functions.resolve = function(stack,logs) {
 	var weapon = this.weapon;
 	var target = this.target;
 	var damage = this.damage;
-	var defense = undefined;
+	
+	// Which defense system are we using?
+	var defense = (!defense && target.shield.current > 0) ? "shield" : "hull";
+	this.defense = defense;
 
 	// Run preprocess 'resolve' scripts for unit and combat tags
 	console.info("Begin unit preprocess scripts.");
@@ -499,10 +503,6 @@ combat.functions.resolve = function(stack,logs) {
 	// Run preprocess 'resolve' scripts for weapon tags
 	console.info("Begin weapon preprocess scripts.");
 	_.each(weapon,function(obj,tag) { if(combat.tags[tag]) { eval(combat.tags[tag].resolve.pre); } });
-
-	// Which defense system are we using?
-	var defense = (!defense && target.shield.current > 0) ? "shield" : "hull";
-	this.defense = defense;
 
 	// Apply damage to the defense system
 	target[defense].current -= damage;
