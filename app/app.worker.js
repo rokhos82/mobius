@@ -117,7 +117,6 @@ combat.functions = {
 		};
 		_.defaults(unit,def);
 	}
-
 };
 
 // Combat Turn Token Object ------------------------------------------------------------------------
@@ -246,7 +245,7 @@ combat.tags = {
 	"deflect": {
 		"ready": {"pre":'',"post":''},
 		"aim": {"pre":'',"post":''},
-		"fire": {"pre":'',"post":'message += " " + ((target[defense].deflect || 0) * (weapon.guns || 1)) + " damage deflected"'},
+		"fire": {"pre":'',"post":'if(hitSuccess) { message += " " + ((target[defense].deflect || 0) * (weapon.guns || 1)) + " damage deflected"; }'},
 		"resolve": {
 			"pre":'damage -= (target[defense].deflect || 0) * (weapon.guns || 1);',
 			"post":''},
@@ -431,13 +430,14 @@ combat.functions.fire = function(stack,logs) {
 	var damagePercent = undefined;
 	var damage = undefined;
 	var message = unit.unit.name + " fires at " + target.unit.name + " and ";
+	var defense = undefined;
 
 	// Run preprocess 'fire' scripts for unit and combat tags
 	console.info("Begin unit preprocess scripts.");
 	_.each(unit.unit,function(obj,tag) { if(combat.tags[tag]) { eval(combat.tags[tag].fire.pre); } });
 	_.each(unit.combat,function(obj,tag) { if(combat.tags[tag]) { eval(combat.tags[tag].fire.pre); } });
-	_.each(target.unit,function(obj,tag) { if(combat.tags[tag]) { eval(combat.tags[tag].fire.post); } });
-	_.each(target.combat,function(obj,tag) { if(combat.tags[tag]) { eval(combat.tags[tag].fire.post); } });
+	_.each(target.unit,function(obj,tag) { if(combat.tags[tag]) { eval(combat.tags[tag].fire.pre); } });
+	_.each(target.combat,function(obj,tag) { if(combat.tags[tag]) { eval(combat.tags[tag].fire.pre); } });
 
 	// Run preprocess 'fire' scripts for weapon tags
 	console.info("Begin weapon preprocess scripts.");
@@ -463,7 +463,7 @@ combat.functions.fire = function(stack,logs) {
 		message += "hits (" + hitRoll + "/" + hitTarget + ") for " + damage + "(" + damagePercent + "%)";
 
 		// Which defense system are we using?
-		var defense = (target.shield.current > 0) ? "shield" : "hull";
+		defense = (target.shield.current > 0) ? "shield" : "hull";
 		this.defense = defense;
 
 		this.damage = damage;
@@ -481,10 +481,12 @@ combat.functions.fire = function(stack,logs) {
 
 	// Run postprocess 'fire' scripts for unit and combat tags
 	console.info("Begin unit postprocess scripts.");
-	_.each(unit.unit,function(obj,tag) { if(combat.tags[tag]) { eval(combat.tags[tag].fire.post); } });
+	_.each(unit,function(obj){ _.each(obj,function(sub,tag) { if(_.isString(tag) && combat.tags[tag]) { eval(combat.tags[tag].fire.post); }	}); });
+	_.each(target,function(obj){ _.each(obj,function(sub,tag) { if(_.isString(tag) && combat.tags[tag]) { eval(combat.tags[tag].fire.post); } }); });
+	/*_.each(unit.unit,function(obj,tag) { if(combat.tags[tag]) { eval(combat.tags[tag].fire.post); } });
 	_.each(unit.combat,function(obj,tag) { if(combat.tags[tag]) { eval(combat.tags[tag].fire.post); } });
 	_.each(target.unit,function(obj,tag) { if(combat.tags[tag]) { eval(combat.tags[tag].fire.post); } });
-	_.each(target.combat,function(obj,tag) { if(combat.tags[tag]) { eval(combat.tags[tag].fire.post); } });
+	_.each(target.combat,function(obj,tag) { if(combat.tags[tag]) { eval(combat.tags[tag].fire.post); } });*/
 
 	logs.push(unit,message);
 	logs.push(target,message);

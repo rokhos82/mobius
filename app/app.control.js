@@ -124,11 +124,8 @@ mobiusEngine.controller = mobiusEngine.app.controller("mobiusCtl",["$scope","$lo
 
 	this.alerts = [
 		{type:"danger",msg:"Reserved keywords: skip"},
-		{type:"warning",msg:"Only the following tags currently work: short, sticky, reserve, ammo, long"},
-		{type:"info",msg:"short: expects a number of turns that the weapon cannot fire after the unit has entered combat."},
-		{type:"info",msg:"sticky: used to designated weapons that provide continuous damage over multiple turns against the same target."},
-		{type:"info",msg:"reserve: expects a number that is the percentage of units in the fleet needed to provide cover."},
-		{type:"info",msg:"long: expects a number that represents the number of precombat rounds of long range fire with a weapon system."}
+		{type:"warning",msg:"Only the following tags currently work: short, sticky, reserve, ammo, long, deflect"},
+		{type:"info",msg:["short: expects a number of turns that the weapon cannot fire after the unit has entered combat.","sticky: used to designated weapons that provide continuous damage over multiple turns against the same target.","reserve: expects a number that is the percentage of units in the fleet needed to provide cover.","long: expects a number that represents the number of precombat rounds of long range fire with a weapon system.","deflect: expects a number to reduce incoming damage by."]}
 	];
 
 	this.closeAlert = function(index) {
