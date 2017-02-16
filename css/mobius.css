@@ -19,7 +19,7 @@ body {
 	text-shadow: 2px 2px 6px #5bc0de;
 }
 
-label.btn,button.btn,ul.nav > li {
+label.btn,button.btn,ul.nav > li,a.btn {
 	font-family: "VT323";
 }
 

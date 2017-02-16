@@ -15,8 +15,11 @@ mobiusEngine.states = {
 mobiusEngine.controller = mobiusEngine.app.controller("mobiusCtl",["$scope","$log",function($scope,$log){
 	this.combat = {
 		logs: [],
-		state: mobiusEngine.states.reset
+		state: mobiusEngine.states.reset,
+		states: mobiusEngine.states
 	};
+
+	this.download = "";
 
 	this.states = {
 		unitTables: {
@@ -228,4 +231,9 @@ mobiusEngine.controller = mobiusEngine.app.controller("mobiusCtl",["$scope","$lo
 	this.dumpLogs = function() {
 		console.log(this.combat.logs);
 	}
+
+	this.downloadLogs = function() {
+		//this.download = 'data:text/plain;charset=utf-8,' + encodeURIComponent(JSON.stringify(this.combat.logs));
+		this.download = 'data:application/octet-stream;charset=utf-8;base64,' + btoa(JSON.stringify(this.combat.logs));
+	};
 }]);

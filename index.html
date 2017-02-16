@@ -164,7 +164,7 @@
 								<label class="btn btn-info disabled btn-lg">1 Turn</label>
 								<label class="btn btn-danger btn-lg" ng-click="ctl.stopCombat()">Stop</label>
 								<label class="btn btn-warning btn-lg" ng-click="ctl.clearCombat()">Clear</label>
-								<label class="btn btn-success btn-lg" ng-click="ctl.dumpLogs()">Dump Logs</label>
+								<a class="btn btn-success btn-lg" ng-class="['btn','btn-success','btn-lg',{'disabled':(ctl.combat.state != ctl.combat.states.stopped)}]" href="{{ctl.download}}" ng-click="ctl.downloadLogs()" download="report.txt">Download Log</a>
 							</div>
 							<h4 class="text-warning mobius-title">Combat Status: {{ctl.combat.state}}</h4>
 						</div>

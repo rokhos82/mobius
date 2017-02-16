@@ -7,3 +7,8 @@ var mobiusEngine = {};
 // BattleEngine2 angular module
 ////////////////////////////////////////////////////////////////////////////////////////////////
 mobiusEngine.app = angular.module('mobiusEngine',['ui.bootstrap']);
+
+mobiusEngine.app.config(['$compileProvider',
+    function ($compileProvider) {
+        $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|ftp|mailto|tel|file|blob|data):/);
+}]);
