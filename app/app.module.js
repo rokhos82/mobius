@@ -24,6 +24,20 @@ mobiusEngine.app.config(['$compileProvider','$stateProvider',
         	template: '<combat-engine></combat-engine>'
         };
 
+        var fleetState = {
+        	name: 'fleet',
+        	url: '/fleet',
+        	template: '<fleet-main></fleet-main>'
+        };
+
+        var unitState = {
+        	name: 'unit',
+        	url: '/unit',
+        	template: '<unit-main></unit-main>'
+        };
+
         $stateProvider.state(defaultState);
         $stateProvider.state(combatState);
+        $stateProvider.state(fleetState);
+        $stateProvider.state(unitState);
 }]);
