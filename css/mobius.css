@@ -10,11 +10,16 @@ body {
 	font-family: 'Stalinist One';
 }
 
+.mobius-title-sm {
+	font-family: "Iceberg";
+	margin: 0 !important;
+}
+
 .text-shadow-info {
 	text-shadow: 2px 2px 6px #5bc0de;
 }
 
-label.btn,button.btn,ul.nav > li {
+label.btn,button.btn,ul.nav > li,a.btn {
 	font-family: "VT323";
 }
 
@@ -26,8 +31,44 @@ label.btn,button.btn,ul.nav > li {
 	text-shadow: 0 0 0;
 }
 
-textarea.fleet-import {
+textarea.fleet-import,textarea.mobius-import {
 	height: 400px;
 	overflow: scroll;
 	white-space: nowrap;
+}
+
+.text-dark {
+	color: #131313 !important;
+	text-shadow: none;
+}
+
+.mobius-sidenav {
+	position: fixed;
+	z-index: 100;
+	top: 100px;
+	left: 10px;
+	background-color: rgba(0,0,0,0.4);
+	overflox-x: hidden;
+	padding: 10px;
+	border: 2px solid #767676;
+	border-radius: 5px;
+}
+
+.mobius-sidenav a {
+	display: block;
+}
+
+a.mobius-bookmark {
+	display: block;
+	position: relative;
+	visibility: hidden;
+	top: -120px;
+}
+
+.mobius-top-row {
+	margin-top: 60px;
+}
+
+.mobius-top-lg {
+	margin-top: 20px;
 }

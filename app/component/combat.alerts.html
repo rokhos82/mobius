@@ -1,0 +1,5 @@
+<div class="row">
+	<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+		<div uib-alert ng-repeat="alert in ctl.alerts" ng-class="'alert-'+ alert.type" close="ctl.closeAlert($index)"><h4 class="alert-message text-dark">{{alert.msg}}</h4></div>
+	</div>
+</div>

@@ -1,0 +1,43 @@
+<div class="jumbotron">
+	<h3 class="mobius-title text-shadow-info">Unit Manager</h3>
+	<p>Welcome to the unit management feature of Mobius Engine.</p>
+	<p>Here you can create new unit templates, import other unit templates, and export existing unit templates.</p>
+</div>
+<div class="row">
+	<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+		<div class="panel panel-default">
+			<div class="panel-heading" ng-click="$ctrl.toggleState('controls')" tooltip-placement="top" uib-tooltip="Click to show/hide.">
+				<h4 class="text-info mobius-title">Unit Controls</h4>
+			</div>
+			<div class="panel-body" ng-show="$ctrl.states.controls">
+				<uib-tabset active="1" justified="true">
+					<uib-tab index="0" heading="Create">
+						<div class="well well-sm text-danger mobius-top-lg">This feature coming soon(tm)!</div>
+					</uib-tab>
+					<uib-tab index="1" heading="Import">
+						<div class="well well-sm text-info mobius-top-lg">Use the text field below to import a unit JSON string.</div>
+						<textarea class="form-control mobius-import"></textarea>
+						<button class="form-control btn btn-primary mobius-top-lg">Import Unit</button>
+					</uib-tab>
+					<uib-tab index="2" heading="Export">
+						<div class="well well-sm text-info mobius-top-lg">Use the text field below to import a unit JSON string.</div>
+						<textarea class="form-control mobius-import" ng-readonly="true"></textarea>
+					</uib-tab>
+				</uib-tabset>
+			</div>
+			<div class="panel-footer"></div>
+		</div>
+	</div>
+	<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<h4 class="text-info mobius-title">Unit Templates</h4>
+			</div>
+			<div class="panel-body">
+				There will be filter and search options here with a table of available unit templates beneath.
+			</div>
+			<div class="panel-footer">
+			</div>
+		</div>
+	</div>
+</div>
