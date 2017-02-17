@@ -6,9 +6,15 @@ var mobiusEngine = {};
 ////////////////////////////////////////////////////////////////////////////////////////////////
 // BattleEngine2 angular module
 ////////////////////////////////////////////////////////////////////////////////////////////////
-mobiusEngine.app = angular.module('mobiusEngine',['ui.bootstrap']);
+mobiusEngine.app = angular.module('mobiusEngine',['ui.bootstrap','ngRoute']);
 
-mobiusEngine.app.config(['$compileProvider',
-    function ($compileProvider) {
+mobiusEngine.app.config(['$compileProvider','$routeProvider',
+    function ($compileProvider,$routeProvider) {
         $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|ftp|mailto|tel|file|blob|data):/);
+        $routeProvider.when("/",{
+        	template: '<main-welcome></main-welcome>'
+        })
+        .when("/combat", {
+        	template: '<combat-engine></combat-engine>'
+        });
 }]);

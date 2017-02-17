@@ -19,13 +19,13 @@
 						<span class="icon-bar"></span>
 						<span class="icon-bar"></span>
 					</button>
-					<a class="navbar-brand mobius-title" href="#">Mobius Engine</a>
+					<a class="navbar-brand mobius-title" href="#/">Mobius Engine</a>
 				</div>
 				<div id="navbar" class="collapse navbar-collapse">
 					<ul class="nav navbar-nav">
 						<li><a href=""><span class="glyphicon glyphicon-tower"></span> Fleets</a></li>
 						<li><a href=""><span class="glyphicon glyphicon-send"></span> Units</a></li>
-						<li><a href=""><span class="glyphicon glyphicon-fire"></span> Combat</a></li>
+						<li><a href="#/combat"><span class="glyphicon glyphicon-fire"></span> Combat</a></li>
 					</ul>
 					<ul class="nav navbar-nav navbar-right">
 						<li class="dropdown">
@@ -46,15 +46,14 @@
 				</div>
 			</div>
 		</nav>
-		<div class="container">
-			<main-welcome></main-welcome>
-			<combat-engine import="ctl.import"></combat-engine>
+		<div class="container" ng-view>
 		</div>
 		<script type="text/javascript" src="js/uuid.js"></script>
 		<script type="text/javascript" src="js/angular.js"></script>
 		<script type="text/javascript" src="js/angular-animate.js"></script>
 		<script type="text/javascript" src="js/angular-touch.js"></script>
 		<script type="text/javascript" src="js/angular-resource.js"></script>
+		<script type="text/javascript" src="js/angular-route.js"></script>
 		<script type="text/javascript" src="js/ui-bootstrap-2.1.3.js"></script>
 		<script type="text/javascript" src="js/underscore.js"></script>
 		<script type="text/javascript" src="js/angular-editable-text.js"></script>
