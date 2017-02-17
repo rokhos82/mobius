@@ -1,0 +1,165 @@
+<div class="mobius-sidenav">
+	<a href="#">Top</a>
+	<span>Fleets</span>
+	<a href="#attacker">Attackers</a>
+	<a href="#defender">Defenders</a>
+	<span>Combat</span>
+	<a href="#controls">Controls</a>
+	<a href="#results">Results</a>
+</div>
+<div class="row">
+	<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+		<div class="panel panel-default">
+			<div class="panel-heading"><h4 class="text-info mobius-title">Attacking Fleet</h4><a class="mobius-bookmark" id="attacker"></a></div>
+			<div class="panel-body" ng-show="!$ctrl.fleets.attacker.name">
+				<button class="btn btn-primary btn-lg" ng-click="$ctrl.importAttacker()">Import</button>
+				<hr>
+				<div class="well">
+					<textarea class="form-control fleet-import" ng-model="$ctrl.import.attacker"></textarea>
+				</div>
+			</div>
+			<div class="panel-body" ng-show="$ctrl.fleets.attacker.name">
+				<button class="btn btn-primary btn-lg" ng-click="$ctrl.clearAttacker()">Clear</button>
+				<hr>
+				<div class="well" ng-init="attacker = $ctrl.fleets.attacker">
+					<p>Fleet Name: {{attacker.name}}</p>
+					<p>Faction: {{attacker.faction}}</p>
+					<p>Breakoff: {{attacker.breakoff}}</p>
+					<p>Unit Count: {{attacker.combat.unitCount}}</p>
+					<button type="button" class="btn btn-default" ng-click="$ctrl.states.unitTables.attacker = !$ctrl.states.unitTables.attacker">Toggle Units</button>
+					<hr>
+					<table class="table table-striped table-hover" ng-show="$ctrl.states.unitTables.attacker">
+						<thead>
+							<tr>
+								<th class="col-md-1">#</th>
+								<th class="col-md-4">Name</th>
+								<th class="col-md-3">Type</th>
+								<th class="col-md-4">Class</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr ng-repeat="unit in attacker.units" ng-class="{'text-info':(unit.unit.type === 'Starship'),'text-danger':(unit.unit.type === 'Fighter'),'text-warning':(unit.unit.type === 'Gunboat')}">
+								<td>{{$index+1}}</td>
+								<td>{{unit.unit.name}}</td>
+								<td>{{unit.unit.type}}</td>
+								<td>{{unit.template}}</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+			<div class="panel-footer"></div>
+		</div>
+	</div>
+	<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+		<div class="panel panel-default">
+			<div class="panel-heading"><h4 class="text-info mobius-title">Defending Fleet</h4><a class="mobius-bookmark" id="defender"></a></div>
+			<div class="panel-body" ng-show="!$ctrl.fleets.defender.name">
+				<button class="btn btn-primary btn-lg" ng-click="$ctrl.importDefender()">Import</button>
+				<hr>
+				<div class="well">
+					<textarea class="form-control fleet-import" ng-model="$ctrl.import.defender"></textarea>
+				</div>
+			</div>
+			<div class="panel-body" ng-show="$ctrl.fleets.defender.name">
+				<button class="btn btn-primary btn-lg" ng-click="$ctrl.clearDefender()">Clear</button>
+				<hr>
+				<div class="well" ng-init="defender = $ctrl.fleets.defender">
+					<p>Fleet Name: {{defender.name}}</p>
+					<p>Faction: {{defender.faction}}</p>
+					<p>Breakoff: {{defender.breakoff}}</p>
+					<p>Unit Count: {{defender.combat.unitCount}}</p>
+					<button type="button" class="btn btn-default" ng-click="$ctrl.states.unitTables.defender = !$ctrl.states.unitTables.defender">Toggle Units</button>
+					<hr>
+					<table class="table table-striped table-hover" ng-show="$ctrl.states.unitTables.defender">
+						<thead>
+							<tr>
+								<th class="col-md-1">#</th>
+								<th class="col-md-4">Name</th>
+								<th class="col-md-3">Type</th>
+								<th class="col-md-4">Class</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr ng-repeat="unit in defender.units" ng-class="{'text-info':(unit.unit.type === 'Starship'),'text-danger':(unit.unit.type === 'Fighter'),'text-warning':(unit.unit.type === 'Gunboat')}">
+								<td>{{$index+1}}</td>
+								<td>{{unit.unit.name}}</td>
+								<td>{{unit.unit.type}}</td>
+								<td>{{unit.template}}</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+			<div class="panel-footer"></div>
+		</div>
+	</div>
+</div>
+<div class="row">
+	<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+		<div class="panel panel-primary">
+			<div class="panel-body">
+				<a class="mobius-bookmark" id="controls"></a>
+				<div class="btn-group btn-group-justified">
+					<label class="btn btn-info btn-lg" ng-click="$ctrl.startCombat()">Start</label>
+					<label class="btn btn-danger btn-lg" ng-click="$ctrl.stopCombat()">Stop</label>
+					<label class="btn btn-warning btn-lg" ng-click="$ctrl.clearCombat()">Clear</label>
+					<a class="btn btn-success btn-lg" ng-class="['btn','btn-success','btn-lg',{'disabled':($ctrl.combat.state != $ctrl.combat.states.stopped)}]" href="{{$ctrl.download}}" ng-click="$ctrl.downloadLogs()" download="report.txt">Download Log</a>
+				</div>
+				<h4 class="text-warning mobius-title">Combat Status: {{$ctrl.combat.state}}</h4>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+		<div class="panel panel-default">
+			<div class="panel-heading"><h4 class="text-info mobius-title">Combat Results</h4><a class="mobius-bookmark" id="results"></a></div>
+			<div class="panel-body">
+				<div class="panel panel-default" ng-repeat="entry in $ctrl.combat.logs" ng-init="$ctrl.initTurnState(entry.turn)">
+					<div class="panel-heading"><h4 class="text-info mobius-title">Turn: {{entry.turn}}</h4></div>
+					<div class="panel-body">
+						<div class="well well-sm" ng-repeat="fentry in entry.logs.fleetInfo">
+							<h4 class="text-info mobius-title">Turn Results: {{fentry.fleet.name}} - {{fentry.fleet.faction}}</h4>
+							<table class="table table-striped table-hover">
+								<thead>
+									<tr><th class="col-md-4">Unit</th><th>Hits/Shots</th><th class="col-md-1">Type</th><th class="col-md-2">Shield (cur/max)</th><th class="col-md-2">Hull (cur/max)</th class="col-md-1"><th>Reserve (%)</th></tr>
+								</thead>
+								<tbody>
+									<tr ng-repeat="uentry in fentry.unitInfo track by $index" ng-class="{'danger':uentry.unit.combat.destroyed}"><td>{{uentry.unit.unit.name}}</td><td>{{uentry.hit}}/{{uentry.shot}}</td><td>{{uentry.unit.unit.type}}</td><td ng-class="{'text-warning':((uentry.unit.shield.current < uentry.unit.shield.max) && !uentry.unit.combat.destroyed)}">{{uentry.unit.shield.current}}/{{uentry.unit.shield.max}}</td><td ng-class="{'text-warning':((uentry.unit.hull.current < uentry.unit.hull.max) && !uentry.unit.combat.destroyed)}">{{uentry.unit.hull.current}}/{{uentry.unit.hull.max}}</td><td>{{uentry.unit.unit.reserve}}</td></tr>
+								</tbody>
+							</table>
+						</div>
+						<div class="well well-sm">
+							<h4 class="text-info mobius-title">Combat Log</h4>
+							<div class="panel panel-default" ng-repeat="(key,unitInfo) in entry.logs.fleetInfo.attacker.unitInfo" ng-init="$ctrl.initLogTableState(entry.turn,'attacker',key);">
+								<div class="panel-heading" ng-click="$ctrl.toggleLogTableState(entry.turn,'attacker',key)">
+									<span class="badge pull-right">{{unitInfo.log.length}}</span>
+									<h5 class="text-info mobius-title-sm">{{key}}</h5>
+								</div>
+								<table class="table table-striped table-hover" ng-show="$ctrl.getLogTableState(entry.turn,'attacker',key)">
+									<tbody>
+										<tr ng-repeat="line in unitInfo.log track by $index"><td>{{line}}</td></tr>
+									</tboday>
+								</table>
+							</div>
+							<div class="panel panel-default" ng-repeat="(key,unitInfo) in entry.logs.fleetInfo.defender.unitInfo" ng-init="$ctrl.initLogTableState(entry.turn,'defender',key);">
+								<div class="panel-heading" ng-click="$ctrl.toggleLogTableState(entry.turn,'defender',key)">
+									<span class="badge pull-right">{{unitInfo.log.length}}</span>
+									<h5 class="text-info mobius-title-sm">{{key}}</h5>
+								</div>
+								<table class="table table-striped table-hover" ng-show="$ctrl.getLogTableState(entry.turn,'defender',key)">
+									<tbody>
+										<tr ng-repeat="line in unitInfo.log track by $index"><td>{{line}}</td></tr>
+									</tboday>
+								</table>
+							</div>
+						</div>
+					</div>
+					<div class="panel-footer"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
