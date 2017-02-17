@@ -288,7 +288,7 @@ mobiusEngine.combat.controller = function($scope,$log){
 // Mobius Combat Engine Component
 ////////////////////////////////////////////////////////////////////////////////////////////////
 mobiusEngine.app.component("combatEngine",{
-	templateUrl: 'app/combat/combatEngine.html',
+	templateUrl: 'app/component/combat.main.html',
 	controller: ["$scope","$log",mobiusEngine.combat.controller],
 	bindings: {
 	}
