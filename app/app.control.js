@@ -3,10 +3,27 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////
 
 // Mobius Engine States ------------------------------------------------------------------------
+// Simulation State Cycle:
+//   1. Preparing - prior to fleet data importing.  Two fleets must be imported prior to moving
+//		"ready" state.
+//   2. Ready - fleets are imported and combat simulation can be started.
+//   3. Running - combat simulation has been started and is currently running.
+//   4. Finished - combat simulation has completed.
+// Clearing the combat simulation returns the engine to a ready state.
 mobiusEngine.states = {
 	reset: "reset",
 	started: "started",
-	stopped: "stopped"
+	stopped: "stopped",
+	running: "running",
+	ready: "ready",
+	preparing: "preparing",
+	finished: "finished"
+};
+
+// Mobius Engine Message Types -----------------------------------------------------------------
+mobiusEngine.messageTypes = {
+	entry: "entry",
+	summary: "summary"
 };
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -125,10 +142,15 @@ mobiusEngine.controller = mobiusEngine.app.controller("mobiusCtl",["$scope","$lo
 }'
 	};
 
+	// Alert Messages --------------------------------------------------------------------------
 	this.alerts = [
 		{type:"danger",msg:"Reserved keywords: skip"},
 		{type:"warning",msg:"Only the following tags currently work: short, sticky, reserve, ammo, long, deflect"},
-		{type:"info",msg:["short: expects a number of turns that the weapon cannot fire after the unit has entered combat.","sticky: used to designated weapons that provide continuous damage over multiple turns against the same target.","reserve: expects a number that is the percentage of units in the fleet needed to provide cover.","long: expects a number that represents the number of precombat rounds of long range fire with a weapon system.","deflect: expects a number to reduce incoming damage by."]}
+		{type:"info",msg:"short: expects a number of turns that the weapon cannot fire after the unit has entered combat."},
+		{type:"info",msg:"sticky: used to designated weapons that provide continuous damage over multiple turns against the same target."},
+		{type:"info",msg:"reserve: expects a number that is the percentage of units in the fleet needed to provide cover."},
+		{type:"info",msg:"long: expects a number that represents the number of precombat rounds of long range fire with a weapon system."},
+		{type:"info",msg:"deflect: expects a number to reduce incoming damage by."}
 	];
 
 	this.closeAlert = function(index) {
@@ -142,11 +164,12 @@ mobiusEngine.controller = mobiusEngine.app.controller("mobiusCtl",["$scope","$lo
 		this.combat.state = mobiusEngine.states.started;
 		this.worker = new Worker("app/app.worker.js");
 		this.worker.onmessage = function(event) {
+			var msg = event.data;
 			self.combat.logs.push(event.data);
 			if(event.data.done) {
 				self.stopCombat();
+				$scope.$apply();
 			}
-			$scope.$apply();
 		};
 		var critTable = localStorage.critTable ? localStorage.critTable : {};
 		this.worker.postMessage(this.fleets);
@@ -233,7 +256,6 @@ mobiusEngine.controller = mobiusEngine.app.controller("mobiusCtl",["$scope","$lo
 	}
 
 	this.downloadLogs = function() {
-		//this.download = 'data:text/plain;charset=utf-8,' + encodeURIComponent(JSON.stringify(this.combat.logs));
 		this.download = 'data:application/octet-stream;charset=utf-8;base64,' + btoa(JSON.stringify(this.combat.logs));
 	};
 }]);
