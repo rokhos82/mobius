@@ -31,7 +31,7 @@ label.btn,button.btn,ul.nav > li,a.btn {
 	text-shadow: 0 0 0;
 }
 
-textarea.fleet-import {
+textarea.fleet-import,textarea.mobius-import {
 	height: 400px;
 	overflow: scroll;
 	white-space: nowrap;
@@ -67,4 +67,8 @@ a.mobius-bookmark {
 
 .mobius-top-row {
 	margin-top: 60px;
+}
+
+.mobius-top-lg {
+	margin-top: 20px;
 }

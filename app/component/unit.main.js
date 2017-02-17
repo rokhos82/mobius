@@ -3,6 +3,12 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////
 mobiusEngine.app.component("unitMain",{
 	templateUrl: 'app/component/unit.main.html',
-	controller: function() {},
+	controller: function() {
+		this.states = {
+			controls: false
+		};
+
+		this.toggleState = function(key) { this.states[key] = !this.states[key]; };
+	},
 	bindings: {}
 });
