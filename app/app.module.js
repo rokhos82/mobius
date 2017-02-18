@@ -36,8 +36,15 @@ mobiusEngine.app.config(['$compileProvider','$stateProvider',
         	template: '<unit-main></unit-main>'
         };
 
+        var reportState = {
+        	name: 'reports',
+        	url: '/reports',
+        	template: '<reports-main></reports-main>'
+        };
+
         $stateProvider.state(defaultState);
         $stateProvider.state(combatState);
         $stateProvider.state(fleetState);
         $stateProvider.state(unitState);
+        $stateProvider.state(reportState);
 }]);
