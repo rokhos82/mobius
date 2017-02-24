@@ -13,7 +13,7 @@ mobiusEngine.combat = {};
 //   4. Finished - combat simulation has completed.  A combat summary will be displayed and
 //		the combat log can be downloaded as a text file.
 // Clearing the combat simulation returns the engine to a "ready" state.
-/*mobiusEngine.states = {
+mobiusEngine.combat.states = {
 	reset: "reset",
 	started: "started",
 	stopped: "stopped",
@@ -26,19 +26,22 @@ mobiusEngine.combat = {};
 // Mobius Engine Message Types -----------------------------------------------------------------
 // entry - this is a message that contains a combat turn of log information
 // summary - this is a message that contains the final summary of a full combat simulation
-mobiusEngine.messageTypes = {
+mobiusEngine.combat.messageTypes = {
 	entry: "entry",
 	summary: "summary"
-};*/
+};
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
 // Mobius Combat Engine Controller
 ////////////////////////////////////////////////////////////////////////////////////////////////
-mobiusEngine.combat.controller = function($scope,$log){
+mobiusEngine.combat.controller = function($scope,$log,_data){
 	this.combat = {
 		logs: [],
-		state: mobiusEngine.states.reset,
-		states: mobiusEngine.states
+		state: mobiusEngine.combat.states.reset,
+		states: mobiusEngine.combat.states,
+		uuid: window.uuid.v4(),
+		name: "",
+		summary: {}
 	};
 
 	// Placeholder for the log file text download button
@@ -170,10 +173,34 @@ mobiusEngine.combat.controller = function($scope,$log){
 		this.alerts.splice(index,1);
 	};
 
+	// onPrepare
+	this.onPrepare = function() {};
+
+	// onReady
+	this.onReady = function() {};
+
+	// onRun
+	this.onRun = function() {};
+
+	// onFinished
+	this.onFinished = function() {};
+
+	// onSave
+	this.onSave = function() {
+		var sim = _data.newSimulation();
+
+		sim.name = this.combat.name;
+		sim.uuid = this.combat.uuid;
+		sim.logs = this.combat.logs;
+		sim.summary = this.combat.summary;
+
+		_data.addSimulation(sim);
+	};
+
 	// Create the web worker object and start the combat simulation.
 	this.startCombat = function() {
 		var self = this;
-		this.combat.state = mobiusEngine.states.started;
+		this.combat.state = mobiusEngine.combat.states.started;
 		this.worker = new Worker("app/app.worker.js");
 		this.worker.onmessage = function(event) {
 			var msg = event.data;
@@ -190,7 +217,7 @@ mobiusEngine.combat.controller = function($scope,$log){
 
 	// Terminate the web worker thread.  This does not reset the combat engine.
 	this.stopCombat = function() {
-		this.combat.state = mobiusEngine.states.stopped;
+		this.combat.state = mobiusEngine.combat.states.stopped;
 		this.worker.terminate();
 		this.worker = undefined;
 		$log.log("Stopping Combat!");
@@ -198,7 +225,7 @@ mobiusEngine.combat.controller = function($scope,$log){
 
 	// Reset the combat engine to the "ready" state.
 	this.clearCombat = function() {
-		this.combat.state = mobiusEngine.states.reset;
+		this.combat.state = mobiusEngine.combat.states.reset;
 		if(!_.isUndefined(this.worker)) {
 			this.stopCombat();
 		}
@@ -289,7 +316,7 @@ mobiusEngine.combat.controller = function($scope,$log){
 ////////////////////////////////////////////////////////////////////////////////////////////////
 mobiusEngine.app.component("combatEngine",{
 	templateUrl: 'app/component/combat.main.html',
-	controller: ["$scope","$log",mobiusEngine.combat.controller],
+	controller: ["$scope","$log","mobius.data.simulation",mobiusEngine.combat.controller],
 	bindings: {
 	}
 });

@@ -7,16 +7,18 @@
 		<div class="panel panel-default">
 			<div class="panel-heading"><h4 class="text-info mobius-title">General Settings</h4></div>
 			<div class="panel-body">
-				<div class="form-group">
-					<label for="engagmentName" class="col-lg-2 control-label">Engagment Name:</label>
-					<div class="col-lg-10">
-						<input type="text" class="form-control" id="engagmentName" placeholder="name" />
+				<div class="form-horizontal">
+					<div class="form-group">
+						<label for="engagmentName" class="col-lg-2 control-label">Engagment Name</label>
+						<div class="col-lg-10">
+							<input type="text" class="form-control" id="engagmentName" placeholder="name" ng-model="$ctrl.combat.name" />
+						</div>
 					</div>
-				</div>
-				<div class="form-group">
-					<label for="uuid" class="col-lg-2 control-label">UUID:</label>
-					<div class="col-lg-10">
-						<input type="text" class="form-control" id="uuid" readonly="readonly" value="{{$ctrl.uuid}}" />
+					<div class="form-group">
+						<label for="uuid" class="col-lg-2 control-label">UUID</label>
+						<div class="col-lg-10">
+							<input type="text" class="form-control" id="uuid" readonly="readonly" value="{{$ctrl.combat.uuid}}" />
+						</div>
 					</div>
 				</div>
 			</div>
@@ -118,7 +120,8 @@
 					<label class="btn btn-info btn-lg" ng-click="$ctrl.startCombat()">Start</label>
 					<label class="btn btn-danger btn-lg" ng-click="$ctrl.stopCombat()">Stop</label>
 					<label class="btn btn-warning btn-lg" ng-click="$ctrl.clearCombat()">Clear</label>
-					<a class="btn btn-success btn-lg" ng-class="['btn','btn-success','btn-lg',{'disabled':($ctrl.combat.state != $ctrl.combat.states.stopped)}]" href="{{$ctrl.download}}" ng-click="$ctrl.downloadLogs()" download="report.txt">Download Log</a>
+					<a ng-class="['btn','btn-success','btn-lg',{'disabled':($ctrl.combat.state != $ctrl.combat.states.stopped)}]" href="{{$ctrl.download}}" ng-click="$ctrl.downloadLogs()" download="report.txt">Download Report</a>
+					<label ng-class="['btn','btn-success','btn-lg',{'disabled':($ctrl.combat.state != $ctrl.combat.states.stopped)}]" ng-click="$ctrl.onSave()">Save Report</label>
 				</div>
 				<h4 class="text-warning mobius-title">Combat Status: {{$ctrl.combat.state}}</h4>
 			</div>
