@@ -204,8 +204,11 @@ mobiusEngine.combat.controller = function($scope,$log,_data){
 		this.worker = new Worker("app/app.worker.js");
 		this.worker.onmessage = function(event) {
 			var msg = event.data;
-			self.combat.logs.push(event.data);
-			if(event.data.done) {
+			if(msg.type === "entry") {
+				self.combat.logs.push(msg.entry);
+			}
+			else if(msg.type === "summary") {
+				self.combat.summary = msg.summary;
 				self.stopCombat();
 				$scope.$apply();
 			}
@@ -230,6 +233,7 @@ mobiusEngine.combat.controller = function($scope,$log,_data){
 			this.stopCombat();
 		}
 		this.combat.logs.length = 0;
+		this.combat.uuid = window.uuid.v4();
 		$log.log("Clearing Combat!");
 	};
 
