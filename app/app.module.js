@@ -33,7 +33,7 @@ mobiusEngine.app.config(['$compileProvider','$stateProvider',
         var unitState = {
         	name: 'unit',
         	url: '/unit',
-        	template: '<unit-main></unit-main>'
+        	template: '<unit-main units="$ctrl.units"></unit-main>'
         };
 
         var reportState = {

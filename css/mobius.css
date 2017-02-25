@@ -72,3 +72,14 @@ a.mobius-bookmark {
 .mobius-top-lg {
 	margin-top: 20px;
 }
+
+.mobius-unit-header {
+	padding: 5px 10px 5px 10px;
+}
+
+.mobius-unit-footer {
+	padding: 5px 10px 5px 10px;
+	font-size: 12px;
+}
+
+.mobius-unit-content {}
