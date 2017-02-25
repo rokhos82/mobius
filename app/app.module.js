@@ -42,6 +42,17 @@ mobiusEngine.app.config(['$compileProvider','$stateProvider',
         	template: '<reports-main></reports-main>'
         };
 
+        var reportDtlState = {
+            name: 'report',
+            url: '/reports/{reportID}',
+            component: 'reportsDetail',
+            resolve: {
+                simulation: ["mobius.data.simulation","$transition$",function(_data,$transition$) {
+                    return _data.getSimulation($transition.params().key);
+                }]
+            }
+        };
+
         $stateProvider.state(defaultState);
         $stateProvider.state(combatState);
         $stateProvider.state(fleetState);
