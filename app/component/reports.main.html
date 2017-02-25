@@ -3,10 +3,12 @@
 	<p>Welcome to the combat reports viewer.</p>
 </div>
 <div class="row">
-	<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-		<div class="panel panel-default">
-			<div class="panel-heading"><h4 class="text-info mobius-title">Reports Route!</h4></div>
-			<div class="panel-body"></div>
+	<div class="col-lg-6 col-md-12 col-sm-12 col-xs-12" ng-repeat="key in $ctrl.simulations">
+		<div class="panel panel-default" ng-init="sim = $ctrl.getSimulation(key)">
+			<div class="panel-heading"><label class="btn btn-danger btn-sm pull-right" ng-click="$ctrl.deleteSimulation(key)">Delete</label><h4 class="text-info mobius-title">{{sim.name}}</h4></div>
+			<div class="panel-body">
+				<p>Combat Duration: {{sim.summary.turnCount}} turns</p>
+			</div>
 			<div class="panel-footer"></div>
 		</div>
 	</div>

@@ -34,7 +34,7 @@ mobiusEngine.combat.messageTypes = {
 ////////////////////////////////////////////////////////////////////////////////////////////////
 // Mobius Combat Engine Controller
 ////////////////////////////////////////////////////////////////////////////////////////////////
-mobiusEngine.combat.controller = function($scope,$log,_data){
+mobiusEngine.combat.controller = function($scope,$log,_data) {
 	this.combat = {
 		logs: [],
 		state: mobiusEngine.combat.states.reset,

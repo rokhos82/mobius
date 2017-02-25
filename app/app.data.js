@@ -82,6 +82,7 @@ mobiusEngine.data.simulation = function($rootScope,_mData) {
 	service.deleteSimulation = function(key) {
 		var obj = _data[key];
 		delete _data[key];
+		$rootScope.$broadcast(mobiusEngine.data.events.dirty);
 		return obj;
 	};
 	
