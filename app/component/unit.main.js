@@ -16,14 +16,16 @@ mobiusEngine.unit.validate = function(obj) {
 	return valid;
 };
 
-mobiusEngine.unit.controller = function($scope) {
+mobiusEngine.unit.controller = function($scope,_data) {
 	this.states = {
 		controls: false
 	}
 
 	this.import = undefined;
 
-	this.units = {};
+	this.units = _data.getAllUnits();
+
+	this.getUnit = _data.getUnit;
 
 	this.toggleState = function(key) { this.states[key] = !this.states[key]; };
 
@@ -34,28 +36,27 @@ mobiusEngine.unit.controller = function($scope) {
 			// Import an array of units
 			for(var i in imp) {
 				var unit = imp[i];
-				var uuid = unit.uuid || window.uuid.v4();
-				this.units[uuid] = unit;
-				this.units[uuid].uuid = uuid;
+				unit.uuid = unit.uuid || window.uuid.v4();
+				_data.addUnit(unit);
 			}
 		}
 		else if(_.isObject(imp)) {
-			console.log("import a single object");
 			// Import a single unit
-			var uuid = imp.uuid || window.uuid.v4();
-			this.units[uuid] = imp;
-			this.units[uuid].uuid = uuid;
+			imp.uuid = imp.uuid || window.uuid.v4();
+			_data.addUnit(imp);
 		}
 		else {
 			// Not sure what is being imported but it is not expected.
 			console.log("Unexpected data sent to unit import.");
 		}
+
+		this.units = _data.getAllUnits();
 	};
 };
 
 mobiusEngine.app.component("unitMain",{
 	templateUrl: 'app/component/unit.main.html',
-	controller: ["$scope",mobiusEngine.unit.controller],
+	controller: ["$scope","mobius.data.unit",mobiusEngine.unit.controller],
 	bindings: {
 		"units": "="
 	}

@@ -32,6 +32,9 @@ mobiusEngine.messageTypes = {
 ////////////////////////////////////////////////////////////////////////////////////////////////
 // Mobius Engine Controller
 ////////////////////////////////////////////////////////////////////////////////////////////////
-mobiusEngine.controller = mobiusEngine.app.controller("mobiusCtl",function(){
-	this.units = {};
-});
+mobiusEngine.controller = mobiusEngine.app.controller("mobiusCtl",["$location",function($location){
+	// Added a redirect from mobius/ to mobius/#/ so that the mainWelcome state is encountered
+	if($location.path() === "") {
+		$location.url("/");
+	}
+}]);
