@@ -8,36 +8,54 @@ var mobiusEngine = {};
 ////////////////////////////////////////////////////////////////////////////////////////////////
 mobiusEngine.app = angular.module('mobiusEngine',['ui.bootstrap','ui.router']);
 
-mobiusEngine.app.config(['$compileProvider','$stateProvider',
-    function ($compileProvider,$stateProvider) {
+mobiusEngine.app.config(['$compileProvider','$stateProvider','$locationProvider',
+    function ($compileProvider,$stateProvider,$locationProvider) {
         $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|ftp|mailto|tel|file|blob|data):/);
 
         var defaultState = {
         	name: 'main',
         	url: '/',
-        	template: '<main-welcome></main-welcome>'
+        	component: 'mainWelcome'
         };
 
         var combatState = {
         	name: 'combat',
         	url: '/combat',
-        	template: '<combat-engine></combat-engine>'
+        	component: 'combatEngine'
         };
 
         var fleetState = {
         	name: 'fleet',
         	url: '/fleet',
-        	template: '<fleet-main></fleet-main>'
+        	component: 'fleetMain'
         };
 
         var unitState = {
         	name: 'unit',
         	url: '/unit',
-        	template: '<unit-main></unit-main>'
+        	component: 'unitMain'
+        };
+
+        var reportState = {
+        	name: 'reports',
+        	url: '/reports',
+        	component: 'reportsMain'
+        };
+
+        var reportDtlState = {
+            name: 'report',
+            url: '/reports/{reportID}',
+            component: 'reportsDetail',
+            resolve: {
+                simulation: ["mobius.data.simulation","$transition$",function(_data,$transition$) {
+                    return _data.getSimulation($transition.params().key);
+                }]
+            }
         };
 
         $stateProvider.state(defaultState);
         $stateProvider.state(combatState);
         $stateProvider.state(fleetState);
         $stateProvider.state(unitState);
+        $stateProvider.state(reportState);
 }]);
