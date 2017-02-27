@@ -87,6 +87,6 @@ a.mobius-bookmark {
 }
 
 .mobius-unit-stat {
-	padding: 0px;
+	padding: 2px 0px 2px 10px !important;
 	margin: 0px;
 }
