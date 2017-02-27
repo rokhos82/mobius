@@ -43,9 +43,16 @@
 	<div class="col-lg-3 col-md-4 col-sm-6 col-xs-12" ng-repeat="key in $ctrl.units">
 		<div class="panel panel-default" ng-init="unit = $ctrl.getUnit(key)">
 			<div class="panel-heading mobius-unit-header">
-				{{unit.general.name}} - {{unit.general.type}} ({{unit.general.size}})
+				{{unit.general.name}}
 			</div>
-			<div class="panel-body">
+			<div class="panel-body" ng-init="firepower = $ctrl.firepower(unit)">
+				<p class="mobius-unit-stat">Type: {{unit.general.type}}</p>
+				<p class="mobius-unit-stat">Size: {{unit.general.size}}</p>
+				<p class="mobius-unit-stat">Hull: {{unit.hull.max}}</p>
+				<p class="mobius-unit-stat">Shield: {{unit.shield.max}}</p>
+				<p class="mobius-unit-stat">Direct Firepower: {{firepower.direct}}</p>
+				<p class="mobius-unit-stat">Packet Firepower: {{firepower.packet}}</p>
+				<p class="mobius-unit-stat">Cost: {{unit.general.cost}}</p>
 			</div>
 			<div class="panel-footer mobius-unit-footer">
 				{{unit.uuid}}

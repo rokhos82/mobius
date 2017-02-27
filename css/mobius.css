@@ -83,3 +83,8 @@ a.mobius-bookmark {
 }
 
 .mobius-unit-content {}
+
+.mobius-unit-stat {
+	padding: 0px;
+	margin: 0px;
+}
