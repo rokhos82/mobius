@@ -65,7 +65,6 @@ mobiusEngine.unit.controller = function($scope,_data) {
 	this.onImport = function() {
 		var imp = JSON.parse(this.import);
 		if(_.isArray(imp)) {
-			console.log("import an array");
 			// Import an array of units
 			for(var i in imp) {
 				var unit = imp[i];
@@ -84,13 +83,12 @@ mobiusEngine.unit.controller = function($scope,_data) {
 		}
 
 		this.units = _data.getAllUnits();
+		this.import = undefined;
 	};
 };
 
 mobiusEngine.app.component("unitMain",{
 	templateUrl: 'app/component/unit.main.html',
 	controller: ["$scope","mobius.data.unit",mobiusEngine.unit.controller],
-	bindings: {
-		"units": "="
-	}
+	bindings: {}
 });

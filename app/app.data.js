@@ -29,7 +29,6 @@ mobiusEngine.data.factory = function($rootScope) {
 		localStorage.setItem('mobius.data.simulations',JSON.stringify(_data.simulations));
 		localStorage.setItem('mobius.data.fleets',JSON.stringify(_data.fleets));
 		localStorage.setItem('mobius.data.units',JSON.stringify(_data.units));
-		console.log("Saving to localStorage");
 	});
 
 	if(!_state.loaded) {
