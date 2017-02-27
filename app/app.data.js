@@ -43,8 +43,6 @@ mobiusEngine.data.factory = function($rootScope) {
 	service.getFleetStore = function() {return _data.fleets;};
 	service.getUnitStore = function() {return _data.units;};
 
-	console.log(_data);
-
 	return service;
 };
 

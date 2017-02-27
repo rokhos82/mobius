@@ -82,7 +82,9 @@ a.mobius-bookmark {
 	font-size: 12px;
 }
 
-.mobius-unit-content {}
+.mobius-unit-content {
+	padding: 5px 10px 5px 10px;
+}
 
 .mobius-unit-stat {
 	padding: 0px;
