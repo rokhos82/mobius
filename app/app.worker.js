@@ -653,7 +653,7 @@ function doCombatSimulation() {
 	processStack(longStack,prelogs);
 	var m = new message(combat.turn);
 	m.logs = prelogs;
-	self.postMessage(m);
+	self.postMessage({"type":"entry","entry":m});
 
 	console.groupEnd();
 
@@ -756,10 +756,17 @@ function doCombatSimulation() {
 		});
 		
 		m.logs = logs;
-		self.postMessage(m);
 
 		console.groupEnd();
+		self.postMessage({"type":"entry","entry":m});
 	}
+
+	// Send the finally summary
+	var summary = {};
+	summary.fleets = {};
+	summary.fleets = combat.fleets;
+	summary.turnCount = combat.turn;
+	self.postMessage({"type":"summary","summary":summary});
 
 	close();
 }

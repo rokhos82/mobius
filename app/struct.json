@@ -1,0 +1,35 @@
+{
+	"simulation": {
+		"uuid": "",
+		"summary": {
+			"fleets": {
+				"<fleet-uuid>": {},
+				"<fleet-uuid>": {}
+			},
+			"turnCount": 0,
+			"victor": "<fleet-uuid>"
+		},
+		"logs": [
+			{
+				"turn": 0,
+			}
+		]
+	},
+	"fleet": {
+		"uuid": "",
+		"name": "",
+		"faction": "",
+		"breakoff": 100,
+		"units": ["<uuid>","<uuid>"]
+	},
+	"units": {
+		"<uuid>": {
+			"uuid": "<uuid>"
+			"general": {},
+			"hull": {},
+			"shield": {},
+			"direct-fire": {},
+			"packet-fire": {},
+		}
+	}
+}
