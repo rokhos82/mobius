@@ -335,7 +335,7 @@
 
 
 {
-	"unit": {
+	"general": {
 		"name":"Missile Destroyer A",
 		"type":"Starship",
 		"defense":15,
@@ -343,18 +343,15 @@
 		"cost": 77
 	},
 	"hull": {
-		"max":11,
-		"current":11
+		"max":11
 	},
 	"shield": {
-		"max":0,
-		"current":0
+		"max":0
 	},
 	"direct-fire":[],
 	"packet-fire":[
 		{"packets":20,"volley":1,"low":true,"ammo":10,"target":35,"yield":50,"eccm":0}
-	],
-	"template":"Beam Destroyer B"
+	]
 }
 
 "Missile Destroyer A": {"unit":{"name":"Missile Destroyer A","type":"Starship","defense":15,"size":6,"cost": 77},"hull": {"max":11,"current":11},"shield": {"max":0,"current":0},"direct-fire":[],"packet-fire":[{"packets":20,"volley":1,"low":true,"ammo":10,"target":35,"yield":50,"eccm":0}],"template":"Beam Destroyer B"}

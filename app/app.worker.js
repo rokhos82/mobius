@@ -36,8 +36,13 @@ combat.setup = {
 combat.filters = {
 	"destroyed": function(unit) { return unit.combat.destroyed; },
 	"reserve": function(unit) { return unit.combat.reserve; },
-	"untargetable": function(unit) { return (!unit.combat.destroyed && !unit.combat.reserve); },
+	"untargetable": function(unit) { return (!this.units[unit].combat.destroyed && !this.units[unit].combat.reserve); },
 	"long": function(unit) { var l = false; _.each(unit["direct-fire"],function(weapon){ if(weapon.long) { l=true; } }); _.each(unit["packet-fire"],function(weapon){ if(weapon.log) { l=true; } }); return l; }
+};
+
+combat.defaults = {};
+combat.defaults.fleets = {
+	"combat": {}
 };
 
 // Utility Functions -------------------------------------------------------------------------------
@@ -45,9 +50,10 @@ combat.functions = {
 	getTarget: function(unit) {
 		var fleet = unit.fleet;
 		var enemy = combat.fleets[fleet].enemy;
-		var targetList = _.filter(combat.fleets[enemy].units,combat.filters.untargetable);
+		var targetList = _.chain(combat.fleets[enemy].units).keys().filter(combat.filters.untargetable,combat.fleets[enemy]).value();
+		//var targetList = _.filter(combat.fleets[enemy].units,combat.filters.untargetable);
 		var target = _.sample(targetList);
-		return target;
+		return combat.fleets[enemy].units[target];
 	},
 	getNumericTag: function(unit,tag) {
 		var sum = 0;
@@ -83,25 +89,25 @@ combat.functions = {
 	},
 	determineCrits: function(unit,table) {
 		crits = [];
-		if(unit.hull.current <= Math.round(unit.hull.max*.75) && !unit.combat.crit.first && unit.unit.type !== "Fighter") {
+		if(unit.hull.current <= Math.round(unit.hull.max*.75) && !unit.combat.crit.first && unit.general.type !== "Fighter") {
 			var crit = _.table(combat.crits.default);
 			crits.push(crit);
 			console.log("First Crit - " + crit);
 			unit.combat.crit.first = crit;
 		}
-		if(unit.hull.current <= Math.round(unit.hull.max*.5) && !unit.combat.crit.second && unit.unit.type !== "Fighter") {
+		if(unit.hull.current <= Math.round(unit.hull.max*.5) && !unit.combat.crit.second && unit.general.type !== "Fighter") {
 			var crit = _.table(combat.crits.default);
 			crits.push(crit);
 			console.log("Second Crit - " + crit);
 			unit.combat.crit.second = crit;
 		}
-		if(unit.hull.current <= Math.round(unit.hull.max*.25) && !unit.combat.crit.third && unit.unit.type !== "Fighter") {
+		if(unit.hull.current <= Math.round(unit.hull.max*.25) && !unit.combat.crit.third && unit.general.type !== "Fighter") {
 			var crit = _.table(combat.crits.default);
 			crits.push(crit);
 			console.log("Third Crit - " + crit);
 			unit.combat.crit.third = crit;
 		}
-		if(unit.hull.current <= 0 && !unit.combat.crit.fourth && unit.unit.type !== "Fighter") {
+		if(unit.hull.current <= 0 && !unit.combat.crit.fourth && unit.general.type !== "Fighter") {
 			var crit = _.table(combat.crits.default);
 			crits.push(crit);
 			console.log("Fourth Crit - " + crit);
@@ -136,7 +142,7 @@ combat.logs.log = function(turn) {
 };
 combat.logs.log.prototype.push = function(unit,msg) {
 	var fleet = unit.fleet;
-	var key = unit.unit.name;
+	var key = unit.general.name;
 	this.init(fleet,key);
 	this.fleetInfo[fleet].unitInfo[key].log.push(msg);
 };
@@ -146,13 +152,13 @@ combat.logs.log.prototype.init = function(fleet,unit) {
 };
 combat.logs.log.prototype.addHit = function(unit) {
 	var fleet = unit.fleet;
-	var key = unit.unit.name;
+	var key = unit.general.name;
 	this.init(fleet,key);
 	this.fleetInfo[fleet].unitInfo[key].hit++;
 };
 combat.logs.log.prototype.addShot = function(unit) {
 	var fleet = unit.fleet;
-	var key = unit.unit.name;
+	var key = unit.general.name;
 	this.init(fleet,key);
 	this.fleetInfo[fleet].unitInfo[key].shot++;
 };
@@ -308,12 +314,12 @@ combat.crits = {
 
 // Ready a unit for the combat turn ----------------------------------------------------------------
 combat.functions.ready = function(stack,logs) {
-	console.groupCollapsed("Ready - " + this.unit.unit.name);
+	console.groupCollapsed("Ready - " + this.unit.general.name);
 	var unit = this.unit;
 
 	// Run preprocess 'ready' scripts for unit and combat tags
 	console.info("Begin unit preprocess scripts.");
-	_.each(unit.unit,function(obj,tag) { if(combat.tags[tag]) { eval(combat.tags[tag].ready.pre); } });
+	_.each(unit.general,function(obj,tag) { if(combat.tags[tag]) { eval(combat.tags[tag].ready.pre); } });
 	_.each(unit.combat,function(obj,tag) { if(combat.tags[tag]) { eval(combat.tags[tag].ready.pre); } });
 
 	// Should we skip this unit this turn?
@@ -375,7 +381,7 @@ combat.functions.ready = function(stack,logs) {
 
 	// Run postprocess 'ready' scripts for unit and combat tags
 	console.info("Begin unit postprocess scripts.");
-	_.each(unit.unit,function(obj,tag) { if(combat.tags[tag]) { eval(combat.tags[tag].ready.post); } });
+	_.each(unit.general,function(obj,tag) { if(combat.tags[tag]) { eval(combat.tags[tag].ready.post); } });
 	_.each(unit.combat,function(obj,tag) { if(combat.tags[tag]) { eval(combat.tags[tag].ready.post); } });
 
 	// End console message grouping
@@ -384,14 +390,14 @@ combat.functions.ready = function(stack,logs) {
 
 // Select a target for the weapon ------------------------------------------------------------------
 combat.functions.aim = function(stack,logs) {
-	console.groupCollapsed("Aim - " + this.unit.unit.name);
+	console.groupCollapsed("Aim - " + this.unit.general.name);
 	var unit = this.unit;
 	var weapon = this.weapon;
 	var target = undefined;
 
 	// Run preprocess 'aim' scripts for unit and combat tags
 	console.info("Begin unit preprocess scripts.");
-	_.each(unit.unit,function(obj,tag) { if(combat.tags[tag]) { eval(combat.tags[tag].aim.pre); } });
+	_.each(unit.general,function(obj,tag) { if(combat.tags[tag]) { eval(combat.tags[tag].aim.pre); } });
 	_.each(unit.combat,function(obj,tag) { if(combat.tags[tag]) { eval(combat.tags[tag].aim.pre); } });
 
 	// Run preprocess 'aim' scripts for weapon tags
@@ -403,13 +409,15 @@ combat.functions.aim = function(stack,logs) {
 		target = combat.functions.getTarget(unit);
 	}
 
+	console.log(target);
+
 	// Run postprocess 'aim' scripts for weapon tags
 	console.info("Begin weapon postprocess scripts.");
 	_.each(weapon,function(obj,tag) { if(combat.tags[tag]) { eval(combat.tags[tag].aim.post); } });
 
 	// Run postprocess 'aim' scripts for unit and combat tags
 	console.info("Begin unit postprocess scripts.");
-	_.each(unit.unit,function(obj,tag) { if(combat.tags[tag]) { eval(combat.tags[tag].aim.post); } });
+	_.each(unit.general,function(obj,tag) { if(combat.tags[tag]) { eval(combat.tags[tag].aim.post); } });
 	_.each(unit.combat,function(obj,tag) { if(combat.tags[tag]) { eval(combat.tags[tag].aim.post); } });
 
 	// Add the target to the token, set the next action, and push the token on to the stack.
@@ -422,21 +430,21 @@ combat.functions.aim = function(stack,logs) {
 
 // Fire the weapon at the target -------------------------------------------------------------------
 combat.functions.fire = function(stack,logs) {
-	console.groupCollapsed("Fire - " + this.unit.unit.name);
+	console.groupCollapsed("Fire - " + this.unit.general.name);
 	var unit = this.unit;
 	var weapon = this.weapon;
 	var target = this.target;
 	var volley = undefined;
 	var damagePercent = undefined;
 	var damage = undefined;
-	var message = unit.unit.name + " fires at " + target.unit.name + " and ";
+	var message = unit.general.name + " fires at " + target.general.name + " and ";
 	var defense = undefined;
 
 	// Run preprocess 'fire' scripts for unit and combat tags
 	console.info("Begin unit preprocess scripts.");
-	_.each(unit.unit,function(obj,tag) { if(combat.tags[tag]) { eval(combat.tags[tag].fire.pre); } });
+	_.each(unit.general,function(obj,tag) { if(combat.tags[tag]) { eval(combat.tags[tag].fire.pre); } });
 	_.each(unit.combat,function(obj,tag) { if(combat.tags[tag]) { eval(combat.tags[tag].fire.pre); } });
-	_.each(target.unit,function(obj,tag) { if(combat.tags[tag]) { eval(combat.tags[tag].fire.pre); } });
+	_.each(target.general,function(obj,tag) { if(combat.tags[tag]) { eval(combat.tags[tag].fire.pre); } });
 	_.each(target.combat,function(obj,tag) { if(combat.tags[tag]) { eval(combat.tags[tag].fire.pre); } });
 
 	// Run preprocess 'fire' scripts for weapon tags
@@ -483,9 +491,9 @@ combat.functions.fire = function(stack,logs) {
 	console.info("Begin unit postprocess scripts.");
 	_.each(unit,function(obj){ _.each(obj,function(sub,tag) { if(_.isString(tag) && combat.tags[tag]) { eval(combat.tags[tag].fire.post); }	}); });
 	_.each(target,function(obj){ _.each(obj,function(sub,tag) { if(_.isString(tag) && combat.tags[tag]) { eval(combat.tags[tag].fire.post); } }); });
-	/*_.each(unit.unit,function(obj,tag) { if(combat.tags[tag]) { eval(combat.tags[tag].fire.post); } });
+	/*_.each(unit.general,function(obj,tag) { if(combat.tags[tag]) { eval(combat.tags[tag].fire.post); } });
 	_.each(unit.combat,function(obj,tag) { if(combat.tags[tag]) { eval(combat.tags[tag].fire.post); } });
-	_.each(target.unit,function(obj,tag) { if(combat.tags[tag]) { eval(combat.tags[tag].fire.post); } });
+	_.each(target.general,function(obj,tag) { if(combat.tags[tag]) { eval(combat.tags[tag].fire.post); } });
 	_.each(target.combat,function(obj,tag) { if(combat.tags[tag]) { eval(combat.tags[tag].fire.post); } });*/
 
 	logs.push(unit,message);
@@ -495,7 +503,7 @@ combat.functions.fire = function(stack,logs) {
 };
 // Resolve the damage incoming to the target -------------------------------------------------------
 combat.functions.resolve = function(stack,logs) {
-	console.groupCollapsed("Resolve - " + this.unit.unit.name);
+	console.groupCollapsed("Resolve - " + this.unit.general.name);
 	var unit = this.unit;
 	var weapon = this.weapon;
 	var target = this.target;
@@ -504,9 +512,9 @@ combat.functions.resolve = function(stack,logs) {
 	
 	// Run preprocess 'resolve' scripts for unit and combat tags
 	console.info("Begin unit preprocess scripts.");
-	_.each(unit.unit,function(obj,tag) { if(combat.tags[tag]) { eval(combat.tags[tag].resolve.pre); } });
+	_.each(unit.general,function(obj,tag) { if(combat.tags[tag]) { eval(combat.tags[tag].resolve.pre); } });
 	_.each(unit.combat,function(obj,tag) { if(combat.tags[tag]) { eval(combat.tags[tag].resolve.pre); } });
-	_.each(target.unit,function(obj,tag) { if(combat.tags[tag]) { eval(combat.tags[tag].resolve.pre); } });
+	_.each(target.general,function(obj,tag) { if(combat.tags[tag]) { eval(combat.tags[tag].resolve.pre); } });
 	_.each(target.combat,function(obj,tag) { if(combat.tags[tag]) { eval(combat.tags[tag].resolve.pre); } });
 
 	// Run preprocess 'resolve' scripts for weapon tags
@@ -520,13 +528,13 @@ combat.functions.resolve = function(stack,logs) {
 	var crits = combat.functions.determineCrits(target);
 	_.each(crits,function(crit) {
 		eval(crit.script);
-		logs.push(target,target.unit.name + " was crit -- " + crit.msg);
+		logs.push(target,target.general.name + " was crit -- " + crit.msg);
 	});
 
 	// Is the unit destroyed?
 	if(target.hull.current <= 0) {
 		target.combat.destroyed = true;
-		logs.push(target,target.unit.name + " has been destroyed!");
+		logs.push(target,target.general.name + " has been destroyed!");
 	}
 
 	// Run postprocess 'resolve' scripts for weapon tags
@@ -535,9 +543,9 @@ combat.functions.resolve = function(stack,logs) {
 
 	// Run postprocess 'resolve' scripts for unit and combat tags
 	console.info("Begin unit postprocess scripts.");
-	_.each(unit.unit,function(obj,tag) { if(combat.tags[tag]) { eval(combat.tags[tag].resolve.post); } });
+	_.each(unit.general,function(obj,tag) { if(combat.tags[tag]) { eval(combat.tags[tag].resolve.post); } });
 	_.each(unit.combat,function(obj,tag) { if(combat.tags[tag]) { eval(combat.tags[tag].resolve.post); } });
-	_.each(target.unit,function(obj,tag) { if(combat.tags[tag]) { eval(combat.tags[tag].resolve.post); } });
+	_.each(target.general,function(obj,tag) { if(combat.tags[tag]) { eval(combat.tags[tag].resolve.post); } });
 	_.each(target.combat,function(obj,tag) { if(combat.tags[tag]) { eval(combat.tags[tag].resolve.post); } });
 
 	this.action = combat.functions.crit;
@@ -547,7 +555,7 @@ combat.functions.resolve = function(stack,logs) {
 };
 // Determine if a critical hit happened and what critical hit it is --------------------------------
 combat.functions.crit = function(stack,logs) {
-	console.groupCollapsed("Crit - " + this.unit.unit.name);
+	console.groupCollapsed("Crit - " + this.unit.general.name);
 	var unit = this.unit;
 	var weapon = this.weapon;
 	var target = this.target;
@@ -556,7 +564,7 @@ combat.functions.crit = function(stack,logs) {
 
 	// Run preprocess 'crit' scripts for unit and combat tags
 	console.info("Begin unit preprocess scripts.");
-	_.each(unit.unit,function(obj,tag) { if(combat.tags[tag]) { eval(combat.tags[tag].crit.pre); } });
+	_.each(unit.general,function(obj,tag) { if(combat.tags[tag]) { eval(combat.tags[tag].crit.pre); } });
 	_.each(unit.combat,function(obj,tag) { if(combat.tags[tag]) { eval(combat.tags[tag].crit.pre); } });
 
 	// Run preprocess 'crit' scripts for weapon tags
@@ -569,7 +577,7 @@ combat.functions.crit = function(stack,logs) {
 
 	// Run postprocess 'crit' scripts for unit and combat tags
 	console.info("Begin unit postprocess scripts.");
-	_.each(unit.unit,function(obj,tag) { if(combat.tags[tag]) { eval(combat.tags[tag].crit.post); } });
+	_.each(unit.general,function(obj,tag) { if(combat.tags[tag]) { eval(combat.tags[tag].crit.post); } });
 	_.each(unit.combat,function(obj,tag) { if(combat.tags[tag]) { eval(combat.tags[tag].crit.post); } });
 
 	console.groupEnd();
@@ -595,11 +603,11 @@ function sleep(milliseconds) {
 }
 
 var filters = {
-	reserveUnit: function(unit) { return (!_.isNumber(unit.unit.reserve)); }
+	reserveUnit: function(unit) { return (!_.isNumber(unit.general.reserve)); }
 };
 
 var maps = {
-	unitName: function(unit) { return unit.unit.name; }
+	unitName: function(unit) { return unit.general.name; }
 };
 
 // Process a combat stack --------------------------------------------------------------------------
@@ -611,13 +619,29 @@ function processStack(stack,logs) {
 	}
 }
 
+// End of Combat Test ------------------------------------------------------------------------------
+function endOfCombat() {
+	var eoc = false;
+
+	_.each(combat.fleets,function(fleet) {
+		if(fleet.combat.loseCount >= fleet.combat.unitCount) {
+			eoc = true;
+		}
+	});
+
+	return eoc;
+}
+
 // Main Combat Simulation Loop ---------------------------------------------------------------------
 function doCombatSimulation() {
 	// Fleet initialization
+	combat.fleets.attacker.combat = {};
+	combat.fleets.defender.combat = {};
 	combat.fleets.attacker.enemy = "defender";
 	combat.fleets.defender.enemy = "attacker";
 	_.each(combat.fleets,function(fleet,key) {
 		fleet.combat.loseCount = 0;
+		fleet.combat.unitCount = _.keys(fleet.units).length;
 		_.each(fleet.units,function(unit){
 			unit.fleet = key;
 			combat.functions.unitDefaults(unit);
@@ -631,8 +655,8 @@ function doCombatSimulation() {
 	var prelogs = new combat.logs.log(combat.turn);
 	
 	var longStack = [];
-	_.each(combat.fleets,function(fleet,key){
-		_.each(fleet.units,function(unit){
+	_.each(combat.fleets,function(fleet,key) {
+		_.each(fleet.units,function(unit) {
 			combat.functions.unitDefaults(unit);
 			_.each(unit["direct-fire"],function(weapon) {
 				if(_.has(weapon,"long")) {
@@ -657,6 +681,10 @@ function doCombatSimulation() {
 
 	console.groupEnd();
 
+	if(endOfCombat()) {
+		combat.status = combat.statuses.done;
+	}
+
 	// Run the main combat loop.
 	while(combat.status !== combat.statuses.done) {
 		// Update the combat turn.
@@ -680,9 +708,9 @@ function doCombatSimulation() {
 		// Setup the initial ready action tokens for the attacking fleet.
 		_.each(combat.fleets.attacker.units,function(unit) {
 			// Is the unit a reserve unit?
-			if(unit.unit.reserve && !unit.combat.reserve) {
+			if(unit.general.reserve && !unit.combat.reserve) {
 				// Initialize the number of units in the fleet for the unit to be in reserve.
-				unit.combat.reserve = Math.ceil(unit.unit.reserve / 100 * (combat.fleets.attacker.combat.unitCount - 1));
+				unit.combat.reserve = Math.ceil(unit.general.reserve / 100 * (combat.fleets.attacker.combat.unitCount - 1));
 			}
 			
 			// Is the unit destroyed?
@@ -705,15 +733,15 @@ function doCombatSimulation() {
 		// Setup the initial ready action tokens for the defending fleet.
 		_.each(combat.fleets.defender.units,function(unit) {
 			// Is the unit a reserve unit?
-			if(unit.unit.reserve && !unit.combat.reserve) {
+			if(unit.general.reserve && !unit.combat.reserve) {
 				// Initialize the number of units in the fleet for the unit to be in reserve.
-				unit.combat.reserve = Math.ceil(unit.unit.reserve / 100 * (combat.fleets.attacker.combat.unitCount - 1));
+				unit.combat.reserve = Math.ceil(unit.general.reserve / 100 * (combat.fleets.attacker.combat.unitCount - 1));
 			}
 
 			if(!unit.combat.destroyed) {
 				// Setup reserve units
-				if(unit.unit.reserve && !unit.combat.reserve) {
-					var reserveLevel = Math.ceil(unit.unit.reserve / 100 * (combat.fleets.defender.combat.unitCount - 1));
+				if(unit.general.reserve && !unit.combat.reserve) {
+					var reserveLevel = Math.ceil(unit.general.reserve / 100 * (combat.fleets.defender.combat.unitCount - 1));
 					unit.combat.reserve = reserveLevel;
 				}
 
@@ -748,12 +776,10 @@ function doCombatSimulation() {
 		var m = new message(combat.turn);
 
 		// Check for end of combat
-		_.each(combat.fleets,function(fleet) {
-			if(fleet.combat.loseCount >= fleet.combat.unitCount) {
-				combat.status = combat.statuses.done;
-				m.done = true;
-			}
-		});
+		if(endOfCombat()) {
+			combat.status = combat.statuses.done;
+			m.done = true;
+		}
 		
 		m.logs = logs;
 
