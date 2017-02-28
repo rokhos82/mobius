@@ -4,7 +4,8 @@
 
 mobiusEngine.unit.importController = function($scope,_data) {
 	var json = atob(this.import);
-	console.log(json);
+	var unit = JSON.parse(json);
+	_data.addUnit(unit);
 };
 
 mobiusEngine.app.component("unitImport",{
