@@ -14,7 +14,16 @@ mobiusEngine.data.defaults.fleet = {
 	"faction": "",
 	"breakoff": 0,
 	"uuid": undefined,
-	"units": []
+	"units": {}
+};
+mobiusEngine.data.defaults.realUnit = {
+	"hull": {
+		"current": 0
+	},
+	"shield": {
+		"current": 0
+	},
+	"template": ""
 };
 
 mobiusEngine.data.events = {};
@@ -111,6 +120,7 @@ mobiusEngine.data.simulation = function($rootScope,_mData) {
 	return service;
 };
 
+// FleetService ------------------------------------------------------------------------------------
 mobiusEngine.data.fleet = function($rootScope,_mData) {
 	var service = {};
 	var _data = _mData.getFleetStore();
@@ -157,10 +167,30 @@ mobiusEngine.data.fleet = function($rootScope,_mData) {
 	service.newFleet = function() {
 		return angular.copy(mobiusEngine.data.defaults.fleet);
 	};
+	service.addUnit = function(fleet,unit) {
+		var key = unit.uuid;
+		if(_.isObject(fleet)) {
+			fleet.units[key] = unit;
+		}
+		else if(_.isString(fleet)) {
+			_data[fleet].units[key] = unit;
+		}
+	};
+
+	service.deleteUnit = function(fleet,unit) {
+		var key = unit;
+		if(_.isObject(fleet)) {
+			delete fleet.units[key];
+		}
+		else {
+			delete _data[fleet].units[key];
+		}
+	};
 
 	return service;
 };
 
+// UnitService -------------------------------------------------------------------------------------
 mobiusEngine.data.unit = function($rootScope,_mData) {
 	var service = {};
 	var _data = _mData.getUnitStore();
@@ -203,6 +233,15 @@ mobiusEngine.data.unit = function($rootScope,_mData) {
 		delete _data[key];
 		$rootScope.$broadcast(mobiusEngine.data.events.dirty);
 		return obj;
+	};
+	service.realUnit = function(uuid) {
+		var unit = angular.copy(_data[uuid]);
+		_.defaults(unit,mobiusEngine.data.defaults.realUnit);
+		unit.template = unit.uuid;
+		unit.uuid = window.uuid.v4();
+		unit.hull.current = unit.hull.max;
+		unit.shield.current = unit.shield.max;
+		return unit;
 	};
 
 	return service;

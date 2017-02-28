@@ -1,11 +1,50 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////
 // Mobius Fleet Detail Controller
 ////////////////////////////////////////////////////////////////////////////////////////////////
-mobiusEngine.fleet.dtlController = function($scope,_data) {
-	this.fleet = _data.getFleet(this.uuid);
+mobiusEngine.fleet.dtlController = function($scope,_fdata,_udata) {
+	this.fleet = _fdata.getFleet(this.uuid);
+	this.add = {
+		unit: _udata.getAllUnits()[0],
+		count: 1
+	};
+
+	this.getAllUnits = function() {
+		var keys = _udata.getAllUnits();
+		var dict = {};
+		_.each(keys,function(key){
+			dict[key] = _udata.getUnit(key);
+		});
+		return dict;
+	};
 
 	this.onSave = function() {
 		$scope.$emit(mobiusEngine.data.events.dirty);
+	};
+
+	this.onAddUnit = function() {
+		console.log(this.add);
+		var uuid = this.add.unit;
+		var count = this.add.count;
+		for(var i = 0;i < count;i++) {
+			var unit = _udata.realUnit(uuid);
+			_fdata.addUnit(this.fleet,unit);
+		}
+		console.log(this.fleet);
+	};
+
+	this.getTemplate = function(uuid) {
+		var template = _udata.getUnit(uuid);
+		return template.general.name;
+	};
+
+	this.getFirepower = function(uuid) {
+		var fp = mobiusEngine.unit.calculateFirepower(_udata.getUnit(uuid));
+		return (fp.direct + fp.packet);
+	};
+
+	this.onDeleteUnit = function(uuid) {
+		console.log("deleting " + uuid);
+		_fdata.deleteUnit(this.fleet,uuid);
 	};
 };
 
@@ -14,7 +53,7 @@ mobiusEngine.fleet.dtlController = function($scope,_data) {
 ////////////////////////////////////////////////////////////////////////////////////////////////
 mobiusEngine.app.component("fleetDetail",{
 	templateUrl: 'app/component/fleet.detail.html',
-	controller: ["$scope","mobius.data.fleet",mobiusEngine.fleet.dtlController],
+	controller: ["$scope","mobius.data.fleet","mobius.data.unit",mobiusEngine.fleet.dtlController],
 	bindings: {
 		uuid: "<"
 	}
