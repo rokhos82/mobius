@@ -22,14 +22,12 @@ mobiusEngine.fleet.dtlController = function($scope,_fdata,_udata) {
 	};
 
 	this.onAddUnit = function() {
-		console.log(this.add);
 		var uuid = this.add.unit;
 		var count = this.add.count;
 		for(var i = 0;i < count;i++) {
 			var unit = _udata.realUnit(uuid);
 			_fdata.addUnit(this.fleet,unit);
 		}
-		console.log(this.fleet);
 	};
 
 	this.getTemplate = function(uuid) {
