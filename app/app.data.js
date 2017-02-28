@@ -207,6 +207,7 @@ mobiusEngine.data.unit = function($rootScope,_mData) {
 			}
 			else {
 				// Yes. Ahhhhhh!
+				console.error(unit.uuid + " already exists!");
 			}
 		}
 	};
