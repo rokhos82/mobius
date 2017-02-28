@@ -8,19 +8,26 @@
 			<div class="panel-body">
 				<div class="form-horiztional">
 					<div class="form-group">
-						<label for="fleetName" class="control-label col-lg-2">Name</label>
+						<label for="fleetName" class="col-lg-2 control-label">Name</label>
 						<div class="col-lg-10">
 							<input type="text" id="fleetName" class="form-control" ng-model="$ctrl.fleet.name" />
 						</div>
 					</div>
 					<div class="form-group">
-						<label for="fleetFaction" class="control-label col-lg-2">Faction</label>
+						<label for="fleetFaction" class="col-lg-2 control-label">Faction</label>
 						<div class="col-lg-10">
 							<input type="text" id="fleetFaction" class="form-control" ng-model="$ctrl.fleet.faction" />
 						</div>
 					</div>
+					<div class="form-group">
+					</div>
 				</div>
 			</div>
+			<table class="table table-striped table-hover">
+				<thead>
+					<tr><th class="col-md-3">Unit</th><th class="col-md-3">Template</th><th class="col-md-1">Type</th><th class="col-md-1">Size</th><th class="col-md-1">Hull</th><th class="col-md-1">Shield</th><th class="col-md-1">Firepower</th><th class="col-md-1">Cost</th></tr>
+				</thead>
+			</table>
 			<div class="panel-footer">
 				{{$ctrl.fleet.uuid}}
 			</div>
