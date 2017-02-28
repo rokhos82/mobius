@@ -5,9 +5,67 @@
 <div class="row">
 	<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 		<div class="panel panel-default">
-			<div class="panel-heading"><h4 class="text-info mobius-title">Fleet Route!</h4></div>
-			<div class="panel-body"></div>
+			<div class="panel-heading" ng-click="$ctrl.toggleState('controls')" tooltip-placement="top" uib-tooltip="Click to show/hide.">
+				<h4 class="text-info mobius-title">Fleet Controls</h4>
+			</div>
+			<div class="panel-body" ng-show="$ctrl.states.controls">
+				<uib-tabset active="0" justified="true">
+					<uib-tab index="0" heading="Create">
+						<div class="form-horizontal mobius-top-lg">
+							<div class="form-group">
+								<label for="fleetName" class="col-lg-2 control-label">Name</label>
+								<div class="col-lg-10">
+									<input type="text" class="form-control" id="fleetName" placeholder="Fleet Name" ng-model="$ctrl.create.name" />
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="fleetFaction" class="col-lg-2 control-label">Faction</label>
+								<div class="col-lg-10">
+									<input type="text" class="form-control" id="fleetFaction" placeholder="Fleet Faction" ng-model="$ctrl.create.faction" />
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="fleetBreakoff" class="col-lg-2 control-label">Breakoff</label>
+								<div class="col-lg-10">
+									<input type="text" class="form-control" id="fleetBreakoff" ng-model="$ctrl.create.breakoff" />
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="fleetId" class="col-lg-2 control-label">UUID</label>
+								<div class="col-lg-10">
+									<input type="text" class="form-control" id="fleetId" ng-model="$ctrl.create.uuid" readonly="readonly" />
+								</div>
+							</div>
+							<button class="form-control btn btn-info" ng-click="$ctrl.onCreate()">Create Fleet</button>
+						</div>
+					</uib-tab>
+					<uib-tab index="1" heading="Import">
+						<div class="well well-sm text-info mobius-top-lg">Use the text field below to import a fleet JSON string.</div>
+						<textarea class="form-control mobius-import" ng-model="$ctrl.import"></textarea>
+						<button class="form-control btn btn-primary mobius-top-lg" ng-click="$ctrl.onImport()">Import Fleet</button>
+					</uib-tab>
+					<uib-tab index="2" heading="Export">
+						<div class="well well-sm text-info mobius-top-lg">The text field below contains the JSON string for all fleets currently in the system.</div>
+						<textarea class="form-control mobius-import" ng-readonly="true"></textarea>
+					</uib-tab>
+				</uib-tabset>
+			</div>
 			<div class="panel-footer"></div>
+		</div>
+	</div>
+	<div class="col-lg-3 col-md-4 col-sm-6 col-xs-12" ng-repeat="key in $ctrl.fleets">
+		<div class="panel ng-class:{'panel-info':hover,'panel-primary':!hover};" ng-init="fleet = $ctrl.getFleet(key)" ng-mouseenter="hover = true" ng-mouseleave="hover = false">
+			<div class="panel-heading mobius-unit-header">
+				{{fleet.name}}
+			</div>
+			<div class="panel-body mobius-unit-content">
+				<label class="pull-right btn btn-danger btn-sm" ng-click="$ctrl.onDelete(key)">Delete</label>
+				<p class="mobius-unit-stat">Faction: {{fleet.faction}}</p>
+				<p class="mobius-unit-stat">Breakoff: {{fleet.breakoff}}</p>
+			</div>
+			<div class="panel-footer mobius-unit-footer">
+				<a ui-sref="fleetDtl({fleetID:fleet.uuid})">{{fleet.uuid}}</a>
+			</div>
 		</div>
 	</div>
 </div>

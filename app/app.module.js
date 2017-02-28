@@ -30,16 +30,49 @@ mobiusEngine.app.config(['$compileProvider','$stateProvider','$locationProvider'
         	component: 'fleetMain'
         };
 
+        var fleetDtlState = {
+            name: 'fleetDtl',
+            url: '/fleet/{fleetID}',
+            component: 'fleetDetail',
+            resolve: {
+                uuid: ["$transition$",function($transition$) {
+                    return $transition$.params().fleetID;
+                }]
+            }
+        };
+
         var unitState = {
         	name: 'unit',
         	url: '/unit',
         	component: 'unitMain'
         };
 
+        var unitImport = {
+            name: 'unitImport',
+            url: '/unit/import/{import}',
+            component: 'unitImport',
+            resolve: {
+                import: ["$transition$",function($transition$) {
+                    return $transition$.params().import;
+                }]
+            }
+        };
+
+        var unitDetail = {
+            name: 'unitDtl',
+            url: '/unit/{uuid}',
+            component: 'unitDetail',
+            resolve: {
+                uuid: ["$transition$",function($transition$) {
+                    return $transition$.params().uuid;
+                }]
+            }
+        };
+
         var reportState = {
         	name: 'reports',
         	url: '/reports',
-        	component: 'reportsMain'
+        	component: 'reportsMain',
         };
 
         var reportDtlState = {
@@ -56,6 +89,9 @@ mobiusEngine.app.config(['$compileProvider','$stateProvider','$locationProvider'
         $stateProvider.state(defaultState);
         $stateProvider.state(combatState);
         $stateProvider.state(fleetState);
+        $stateProvider.state(fleetDtlState);
         $stateProvider.state(unitState);
+        $stateProvider.state(unitImport);
+        $stateProvider.state(unitDetail);
         $stateProvider.state(reportState);
 }]);
