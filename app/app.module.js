@@ -30,6 +30,17 @@ mobiusEngine.app.config(['$compileProvider','$stateProvider','$locationProvider'
         	component: 'fleetMain'
         };
 
+        var fleetDtlState = {
+            name: 'fleetDtl',
+            url: '/fleet/{fleetID}',
+            component: 'fleetDetail',
+            resolve: {
+                uuid: ["$transition$",function($transition$) {
+                    return $transition$.params().fleetID;
+                }]
+            }
+        };
+
         var unitState = {
         	name: 'unit',
         	url: '/unit',
@@ -56,6 +67,7 @@ mobiusEngine.app.config(['$compileProvider','$stateProvider','$locationProvider'
         $stateProvider.state(defaultState);
         $stateProvider.state(combatState);
         $stateProvider.state(fleetState);
+        $stateProvider.state(fleetDtlState);
         $stateProvider.state(unitState);
         $stateProvider.state(reportState);
 }]);

@@ -9,6 +9,13 @@ mobiusEngine.data.defaults.simulation = {
 	"summary": {},
 	"logs": []
 };
+mobiusEngine.data.defaults.fleet = {
+	"name": "",
+	"faction": "",
+	"breakoff": 0,
+	"uuid": undefined,
+	"units": []
+};
 
 mobiusEngine.data.events = {};
 mobiusEngine.data.events.dirty = "mobius.data.dirty";
@@ -25,11 +32,13 @@ mobiusEngine.data.factory = function($rootScope) {
 		"loaded": false
 	};
 
-	$rootScope.$on(mobiusEngine.data.events.dirty,function(){
+	function saveToLocalStorage() {
 		localStorage.setItem('mobius.data.simulations',JSON.stringify(_data.simulations));
 		localStorage.setItem('mobius.data.fleets',JSON.stringify(_data.fleets));
 		localStorage.setItem('mobius.data.units',JSON.stringify(_data.units));
-	});
+	}
+
+	$rootScope.$on(mobiusEngine.data.events.dirty,saveToLocalStorage);
 
 	if(!_state.loaded) {
 		_data.simulations = JSON.parse(localStorage.getItem('mobius.data.simulations')) || {};
@@ -106,11 +115,48 @@ mobiusEngine.data.fleet = function($rootScope,_mData) {
 	var service = {};
 	var _data = _mData.getFleetStore();
 
-	service.addFleet = function(sim) {};
-	service.getFleet = function(key) {};
+	service.addFleet = function(fleet) {
+		if(service.validateFleet(fleet)) {
+			// Get the key from the fleet
+			var key = fleet.uuid;
+			// Does the key already exist in the database?
+			if(!_data[key]) {
+				// No, then add the fleet.
+				_data[key] = fleet;
+				$rootScope.$broadcast(mobiusEngine.data.events.dirty);
+			}
+			else {
+				// Yes, then panic!
+			}
+		}
+	};
+	service.getFleet = function(key) {
+		return _data[key];
+	};
+	service.getAllFleets = function() {
+		return _.keys(_data);
+	};
 	service.updateFleet = function(key) {};
-	service.deleteFleet = function(key) {};
-	service.validateFleet = function(sim) {};
+	service.deleteFleet = function(key) {
+		delete _data[key];
+		$rootScope.$broadcast(mobiusEngine.data.events.dirty);
+	};
+	service.validateFleet = function(fleet) {
+		var valid = true;
+
+		if(!fleet.uuid) {
+			valid = false;
+		}
+
+		if(!fleet.name) {
+			valid = false;
+		}
+
+		return valid;
+	};
+	service.newFleet = function() {
+		return angular.copy(mobiusEngine.data.defaults.fleet);
+	};
 
 	return service;
 };

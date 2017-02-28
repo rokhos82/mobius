@@ -73,8 +73,17 @@ a.mobius-bookmark {
 	margin-top: 20px;
 }
 
+.mobius-top-md {
+	margin-top: 10px;
+}
+
+.mobius-top-sm {
+	margin-top: 5px;
+}
+
 .mobius-unit-header {
 	padding: 5px 10px 5px 10px;
+	font-size: 15px;
 }
 
 .mobius-unit-footer {

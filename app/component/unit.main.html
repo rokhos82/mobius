@@ -41,7 +41,7 @@
 		</div>
 	</div>
 	<div class="col-lg-3 col-md-4 col-sm-6 col-xs-12" ng-repeat="key in $ctrl.units">
-		<div class="panel ng-class:{'panel-primary':hover,'panel-default':!hover};" ng-init="unit = $ctrl.getUnit(key)" ng-mouseenter="hover = true" ng-mouseleave="hover = false">
+		<div class="panel ng-class:{'panel-info':hover,'panel-primary':!hover};" ng-init="unit = $ctrl.getUnit(key)" ng-mouseenter="hover = true" ng-mouseleave="hover = false">
 			<div class="panel-heading mobius-unit-header">
 				{{unit.general.name}}
 			</div>
