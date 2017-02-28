@@ -26,6 +26,7 @@ mobiusEngine.fleet.dtlController = function($scope,_fdata,_udata) {
 		var count = this.add.count;
 		for(var i = 0;i < count;i++) {
 			var unit = _udata.realUnit(uuid);
+			unit.general.name += " " + (i + 1);
 			_fdata.addUnit(this.fleet,unit);
 		}
 	};
@@ -41,7 +42,6 @@ mobiusEngine.fleet.dtlController = function($scope,_fdata,_udata) {
 	};
 
 	this.onDeleteUnit = function(uuid) {
-		console.log("deleting " + uuid);
 		_fdata.deleteUnit(this.fleet,uuid);
 	};
 };
