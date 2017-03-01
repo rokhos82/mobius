@@ -247,6 +247,14 @@ combat.tags["deflect"] = _.deep(combat.defaults.tag);
 combat.tags["deflect"].fire.post = 'if(hitSuccess) { message += " " + ((target[defense].deflect || 0) * (weapon.guns || 1)) + " damage deflected"; }';
 combat.tags["deflect"].resolve.pre = 'damage -= (target[defense].deflect || 0) * (weapon.guns || 1);';
 
+combat.tags["offline"] = _.deep(combat.defaults.tag);
+combat.tags["offline"].ready.pre = 'if(weapon.offline > 0 ) { weapon.skip = true; }';
+combat.tags["offline"].ready.post = "weapon.offline--;"
+
+combat.tags["fireRate"] = _.deep(combat.defaults.tag);
+combat.tags["fireRate"].ready.pre = 'if(weapon.fireRate.step < weapon.fireRate.interval) { weapon.skip = true; }';
+combat.tags["fireRate"].ready.post = 'weapon.fireRate.step++; weapon.fireRate.step = (weapon.fireRate.step > weapon.fireRate.interval) ? 1 : weapon.fireRate.step;';
+
 // Crit Tables -------------------------------------------------------------------------------------
 combat.crits = {
 	"default": [
@@ -772,25 +780,6 @@ function doCombatSimulation() {
 			longStack.push(new combat.token(unit,combat.functions.long));
 		});
 	});
-	/*_.each(combat.fleets,function(fleet,key) {
-		_.each(fleet.units,function(unit) {
-			combat.functions.unitDefaults(unit);
-			_.each(unit["direct-fire"],function(weapon) {
-				if(_.has(weapon,"long")) {
-					var token = new combat.token(unit,combat.functions.ready);
-					unit.fleet = key;
-					longStack.push(token);
-				}
-			});
-			_.each(unit["packet-fire"],function(weapon) {
-				if(_.has(weapon,"long")) {
-					var token = new combat.token(unit,combat.functions.ready);
-					unit.fleet = key;
-					longStack.push(token);
-				}
-			});
-		});
-	});//*/
 	processStack(longStack,prelogs);
 	var m = new message(combat.turn);
 	m.logs = prelogs;

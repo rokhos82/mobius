@@ -8,11 +8,11 @@
 			<div class="panel-heading"><h4 class="mobius-title text-info">{{name}} - Turn {{entry.turn}}</h4></div>
 			<div class="panel-body">
 				<div class="panel panel-default" ng-repeat="info in entry.logs.fleetInfo">
-					<div class="panel-heading"><h5 class="mobius-title text-info">{{info.fleet.name}} - {{info.fleet.combat.loseCount}} of {{info.fleet.combat.unitCount}}</h5></div>
-					<div class="panel-body">
+					<div class="panel-heading" ng-init="visible = false" tooltip-placement="right" uib-tooltip="Click to show/hide unit logs!"><h5 class="mobius-title text-info" ng-click="visible = !visible">{{info.fleet.name}} - {{info.fleet.combat.loseCount}} of {{info.fleet.combat.unitCount}}</h5></div>
+					<div class="panel-body" ng-show="visible">
 						<div class="panel panel-default" ng-repeat="(name,unit) in info.unitInfo">
-							<div class="panel-heading"><h5 class="mobius-title-sm text-info">{{name}}</h5></div>
-							<table class="table table-striped table-hover">
+							<div class="panel-heading" ng-init="visible = false" tooltip-placement="right" uib-tooltip="Click to show/hide log!"><h5 class="mobius-title-sm text-info" ng-click="visible = !visible">{{name}}</h5></div>
+							<table class="table table-striped table-hover" ng-show="visible">
 								<tr ng-repeat="line in unit.log track by $index"><td>{{line}}</td></tr>
 							</table>
 						</div>

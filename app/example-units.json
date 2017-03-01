@@ -13,3 +13,6 @@
 {"general":{"name":"Bugger Carrier","type":"Starship","defense":120,"target":60,"size":10,"cost": 408,"carrier": 60,"reserve":33},"hull": {"max":15,"current":15},"shield":{ "max":0,"current":0}},
 {"general":{"name":"Bugger Tender","type":"Starship","defense":120,"target":60,"size":10,"cost": 108,"carrier": 60,"reserve":33},"hull": {"max":15,"current":15},"shield":{ "max":0,"current":0}},
 {"general":{"name":"Blisterbug","type":"Gunboat","defense":120,"target":60,"size":4,"cost":52},"hull":{"max":6,"current":6},"shield":{"max":0,"current":0},"direct-fire":[{"batteries":1,"guns":1,"volley":[6,12],"sticky":true,"target":-20,"short":1}]}]
+
+
+{"general":{"name":"Missile Destroyer C ROF 3","type":"Starship","size":6,"cost":56,"defense":15},"hull":{"max":11},"shield":{"max":0},"direct-fire":[],"packet-fire":[{"packets":2,"size":4,"volley":16,"ammo":15,"target":35,"fireRate":{"step":2,"interval":2}}]}
