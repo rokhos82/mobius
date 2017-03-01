@@ -626,7 +626,7 @@ combat.functions.flee = function(stack,logs) {
 
 	console.groupEnd();
 };
-// Determine what to do when fleeing ---------------------------------------------------------------
+// Determine what to do when checking long range weapons -------------------------------------------
 combat.functions.long = function(stack,logs) {
 	console.groupCollapsed("Long - " + this.unit.general.name);
 	var unit = this.unit;
@@ -699,6 +699,25 @@ combat.functions.long = function(stack,logs) {
 	console.info("Begin unit postprocess scripts.");
 	_.each(unit.general,function(obj,tag) { if(combat.tags[tag]) { eval(combat.tags[tag].long.post); } });
 	_.each(unit.combat,function(obj,tag) { if(combat.tags[tag]) { eval(combat.tags[tag].long.post); } });
+
+	console.groupEnd();
+};
+// Determine what to do with board party -----------------------------------------------------------
+combat.functions.boarding = function(stack,logs) {
+	console.info("Boarding - " + this.unit.general.name);
+	var unit = this.unit;
+
+	// Run preprocess 'board' scripts for unit and combat tags
+	console.log("Begin unit preprocess scripts.");
+	_.each(unit.general,function(obj,tag) { if(combat.tags[tag]) { eval(combat.tags[tag].board.pre); } });
+	_.each(unit.combat,function(obj,tag) { if(combat.tags[tag]) { eval(combat.tags[tag].board.pre); } });
+
+	//
+
+	// Run postprocess 'board' scripts for unit and combat tags
+	console.log("Begin unit postprocess scripts.");
+	_.each(unit.general,function(obj,tag) { if(combat.tags[tag]) { eval(combat.tags[tag].board.post); } });
+	_.each(unit.combat,function(obj,tag) { if(combat.tags[tag]) { eval(combat.tags[tag].board.post); } });
 
 	console.groupEnd();
 };
