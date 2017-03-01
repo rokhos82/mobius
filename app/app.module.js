@@ -80,8 +80,8 @@ mobiusEngine.app.config(['$compileProvider','$stateProvider','$locationProvider'
             url: '/reports/{reportID}',
             component: 'reportsDetail',
             resolve: {
-                simulation: ["mobius.data.simulation","$transition$",function(_data,$transition$) {
-                    return _data.getSimulation($transition.params().key);
+                uuid: ["mobius.data.simulation","$transition$",function(_data,$transition$) {
+                    return $transition$.params().reportID;
                 }]
             }
         };
@@ -94,4 +94,5 @@ mobiusEngine.app.config(['$compileProvider','$stateProvider','$locationProvider'
         $stateProvider.state(unitImport);
         $stateProvider.state(unitDetail);
         $stateProvider.state(reportState);
+        $stateProvider.state(reportDtlState);
 }]);
