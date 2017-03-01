@@ -7,15 +7,18 @@ mobiusEngine.report.detail = {};
 // Mobius Main Reports Controller
 ////////////////////////////////////////////////////////////////////////////////////////////////
 mobiusEngine.report.detail.controller = function($scope,$log,_data) {
-	this.key = "";
-	this.simulation = _data.getSimulation(this.key);
+	this.report = _data.getSimulation(this.uuid);
+
+	this.keys = function(obj) {return _.keys(obj);};
 };
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
 // Mobius Main Reports Component
 ////////////////////////////////////////////////////////////////////////////////////////////////
 mobiusEngine.app.component("reportsDetail",{
-	templateUrl: 'app/component/reports.main.html',
+	templateUrl: 'app/component/reports.detail.html',
 	controller: ["$scope","$log","mobius.data.simulation",mobiusEngine.report.detail.controller],
-	bindings: {}
+	bindings: {
+		uuid: "<"
+	}
 });

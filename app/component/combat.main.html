@@ -88,7 +88,7 @@
 							<tr><th class="col-md-6">Unit</th><th class="col-md-2">Type</th><th class="col-md-2">Shield (cur/max)</th><th class="col-md-2">Hull (cur/max)</th></tr>
 						</thead>
 						<tbody>
-							<tr ng-repeat="unit in fleet.units track by $index" ng-class="{'danger':unit.combat.destroyed}"><td>{{unit.general.name}}</td><td>{{unit.general.type}}</td><td ng-class="{'text-warning':((unit.shield.current < unit.shield.max) && !unit.combat.destroyed)}">{{unit.shield.current}}/{{unit.shield.max}}</td><td ng-class="{'text-warning':((unit.hull.current < unit.hull.max) && !unit.combat.destroyed)}">{{unit.hull.current}}/{{unit.hull.max}}</td></tr>
+							<tr ng-repeat="unit in fleet.units track by $index" ng-class="{'danger':unit.combat.destroyed,'warning':unit.combat.fled}"><td>{{unit.general.name}}</td><td>{{unit.general.type}}</td><td ng-class="{'text-warning':((unit.shield.current < unit.shield.max) && !unit.combat.destroyed)}">{{unit.shield.current}}/{{unit.shield.max}}</td><td ng-class="{'text-warning':((unit.hull.current < unit.hull.max) && !unit.combat.destroyed)}">{{unit.hull.current}}/{{unit.hull.max}}</td></tr>
 						</tbody>
 					</table>
 					<div class="panel-footer"></div>

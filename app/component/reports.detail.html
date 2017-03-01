@@ -3,4 +3,28 @@
 	<p>Welcome to the combat reports viewer.</p>
 </div>
 <div class="row">
+	<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" ng-init="name = $ctrl.report.name">
+		<div class="panel panel-default" ng-repeat="entry in $ctrl.report.logs">
+			<div class="panel-heading"><h4 class="mobius-title text-info">{{name}} - Turn {{entry.turn}}</h4></div>
+			<div class="panel-body">
+				<div class="panel panel-default" ng-repeat="info in entry.logs.fleetInfo">
+					<div class="panel-heading"><h5 class="mobius-title text-info">{{info.fleet.name}} - {{info.fleet.combat.loseCount}} of {{info.fleet.combat.unitCount}}</h5></div>
+					<div class="panel-body">
+						<div class="panel panel-default" ng-repeat="(name,unit) in info.unitInfo">
+							<div class="panel-heading"><h5 class="mobius-title-sm text-info">{{name}}</h5></div>
+							<table class="table table-striped table-hover">
+								<tr ng-repeat="line in unit.log track by $index"><td>{{line}}</td></tr>
+							</table>
+						</div>
+					</div>
+					<table class="table table-striped table-hover">
+						<thead>
+							<tr><th class="col-md-6">Name</th><th class="col-md-2">Type</th><th class="col-md-2">Shield</th><th class="col-md-2">Hull</th></tr>
+						</thead>
+						<tr ng-repeat="unit in info.fleet.units" ng-class="{'danger':unit.combat.destroyed,'warning':unit.combat.fled}"><td>{{unit.general.name}}</td><td>{{unit.general.type}}</td><td>{{unit.shield.current}}/{{unit.shield.max}}</td><td>{{unit.hull.current}}/{{unit.hull.max}}</td></tr>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
 </div>
