@@ -85,6 +85,16 @@ mobiusEngine.unit.controller = function($scope,_data) {
 		this.units = _data.getAllUnits();
 		this.import = undefined;
 	};
+
+	this.onDelete = function(uuid) {
+		_data.deleteUnit(uuid);
+		this.units = _data.getAllUnits();
+	};
+
+	this.onDeleteAll = function() {
+		_data.deleteAllUnits();
+		this.units = _data.getAllUnits();
+	};
 };
 
 mobiusEngine.app.component("unitMain",{

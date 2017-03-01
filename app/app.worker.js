@@ -255,6 +255,9 @@ combat.tags["fireRate"] = _.deep(combat.defaults.tag);
 combat.tags["fireRate"].ready.pre = 'if(weapon.fireRate.step < weapon.fireRate.interval) { weapon.skip = true; }';
 combat.tags["fireRate"].ready.post = 'weapon.fireRate.step++; weapon.fireRate.step = (weapon.fireRate.step > weapon.fireRate.interval) ? 1 : weapon.fireRate.step;';
 
+combat.tags["low"] = _.deep(combat.defaults.tag);
+combat.tags["low"].resolve.pre = 'if(defense == "shield") { damage = 0; }';
+
 // Crit Tables -------------------------------------------------------------------------------------
 combat.crits = {
 	"default": [
