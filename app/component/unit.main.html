@@ -41,24 +41,5 @@
 			</div>
 		</div>
 	</div>
-	<div class="col-lg-3 col-md-4 col-sm-6 col-xs-12" ng-repeat="key in $ctrl.units">
-		<div class="panel ng-class:{'panel-info':hover,'panel-primary':!hover};" ng-init="unit = $ctrl.getUnit(key)" ng-mouseenter="hover = true" ng-mouseleave="hover = false">
-			<div class="panel-heading mobius-unit-header">
-				{{unit.general.name}}
-			</div>
-			<table class="table table-striped table-hover" ng-init="firepower = $ctrl.firepower(unit)">
-				<tbody>
-					<tr><td class="mobius-unit-stat col-md-6">Type:</td><td class="mobius-unit-stat">{{unit.general.type}}</td></tr>
-					<tr><td class="mobius-unit-stat col-md-6">Size:</td><td class="mobius-unit-stat">{{unit.general.size}}</td></tr>
-					<tr><td class="mobius-unit-stat col-md-6">Hull:</td><td class="mobius-unit-stat">{{unit.hull.max}}</td></tr>
-					<tr><td class="mobius-unit-stat col-md-6">Shield:</td><td class="mobius-unit-stat">{{unit.shield.max}}</td></tr>
-					<tr><td class="mobius-unit-stat col-md-6">Direct Firepower:</td><td class="mobius-unit-stat">{{firepower.direct}}</td></tr>
-					<tr><td class="mobius-unit-stat col-md-6">Packet Firepower:</td><td class="mobius-unit-stat">{{firepower.packet}}</td></tr>
-				</tbody>
-			</table>
-			<div class="panel-footer mobius-unit-footer">
-				<a ui-sref="unitDtl({uuid:unit.uuid})">{{unit.uuid}}</a>
-			</div>
-		</div>
-	</div>
+	<unit-card unit="unit" ng-repeat="unit in $ctrl.listUnits()"></unit-card>
 </div>
