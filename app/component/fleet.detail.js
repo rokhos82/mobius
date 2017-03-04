@@ -36,11 +36,6 @@ mobiusEngine.fleet.dtlController = function($scope,_fdata,_udata) {
 		return template.general.name;
 	};
 
-	this.getFirepower = function(uuid) {
-		var fp = mobiusEngine.unit.calculateFirepower(_udata.getUnit(uuid));
-		return (fp.direct + fp.packet);
-	};
-
 	this.onDeleteUnit = function(uuid) {
 		_fdata.deleteUnit(this.fleet,uuid);
 	};

@@ -33,7 +33,7 @@ mobiusEngine.unit.calculateFirepower = function(unit) {
 	var packet = unit["packet-fire"];
 	fp.packet = _.chain(packet).map(_pmap).reduce(_reduce,0).value();
 
-	return fp;
+	return fp.direct + fp.packet;
 };
 
 mobiusEngine.unit.validate = function(obj) {
@@ -69,12 +69,14 @@ mobiusEngine.unit.controller = function($scope,_data) {
 			for(var i in imp) {
 				var unit = imp[i];
 				unit.uuid = unit.uuid || window.uuid.v4();
+				unit.general.firepower = mobiusEngine.unit.calculateFirepower(unit);
 				_data.addUnit(unit);
 			}
 		}
 		else if(_.isObject(imp)) {
 			// Import a single unit
 			imp.uuid = imp.uuid || window.uuid.v4();
+			imp.general.firepower = mobiusEngine.unit.calculateFirepower(imp);
 			_data.addUnit(imp);
 		}
 		else {
@@ -94,6 +96,14 @@ mobiusEngine.unit.controller = function($scope,_data) {
 	this.onDeleteAll = function() {
 		_data.deleteAllUnits();
 		this.units = _data.getAllUnits();
+	};
+
+	this.listUnits = function() {
+		var dict = {};
+		_.each(this.units,function(uuid) {
+			dict[uuid] = _data.getUnit(uuid);
+		});
+		return dict;
 	};
 };
 
