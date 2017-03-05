@@ -55,6 +55,8 @@ mobiusEngine.unit.controller = function($scope,_data) {
 
 	this.import = undefined;
 
+	this.alerts = [];
+
 	this.units = _data.getAllUnits();
 
 	this.getUnit = _data.getUnit;
@@ -66,18 +68,22 @@ mobiusEngine.unit.controller = function($scope,_data) {
 		var imp = JSON.parse(this.import);
 		if(_.isArray(imp)) {
 			// Import an array of units
+			var alert = new mobiusEngine.pageAlerts.alert("Successfully imported","success");
 			for(var i in imp) {
 				var unit = imp[i];
 				unit.uuid = unit.uuid || window.uuid.v4();
 				unit.general.firepower = mobiusEngine.unit.calculateFirepower(unit);
 				_data.addUnit(unit);
+				alert.msg += " " + unit.general.name;
 			}
+			this.alerts.push(alert);
 		}
 		else if(_.isObject(imp)) {
 			// Import a single unit
 			imp.uuid = imp.uuid || window.uuid.v4();
 			imp.general.firepower = mobiusEngine.unit.calculateFirepower(imp);
 			_data.addUnit(imp);
+			this.alerts.push(new mobiusEngine.pageAlerts.alert("Successfully imported " + unit.general.name,"success"));
 		}
 		else {
 			// Not sure what is being imported but it is not expected.
