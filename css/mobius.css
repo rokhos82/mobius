@@ -37,6 +37,11 @@ textarea.fleet-import,textarea.mobius-import {
 	white-space: nowrap;
 }
 
+textarea.mobius-export {
+	height: 400px;
+	white-space: wrap;
+}
+
 .text-dark {
 	color: #131313 !important;
 	text-shadow: none;

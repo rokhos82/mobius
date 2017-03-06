@@ -111,12 +111,36 @@ mobiusEngine.unit.controller = function($scope,_data,$uibModal) {
 			animation: true,
 			component: "importModal",
 			resolve: {
-				options: function(){return {title:"Unit Import",msg:"Use the text field below to import a unit JSON string."};}
+				options: function(){return {title:"Unit Import",msg:"Use the JSON string below to share units."};}
 			}
 		});
 
 		modal.result.then(function(importJSON){
 			$ctrl.onImport(importJSON);
+		});
+	};
+
+	$ctrl.openExportModal = function() {
+
+		var modal = $uibModal.open({
+			animation: true,
+			component: "exportModal",
+			resolve: {
+				options: function(){
+					return { 
+						title:"Unit Export",
+						msg:"Use the text field below to import a unit JSON string."
+					};
+				},
+				json: function(){
+					var unitlist = [];
+					_.each($ctrl.units,function(uuid){
+						unitlist.push(_data.getUnit(uuid));
+					});
+					console.log(unitlist);
+					return JSON.stringify(unitlist);
+				}
+			}
 		});
 	};
 };
