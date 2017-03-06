@@ -132,13 +132,12 @@ mobiusEngine.unit.controller = function($scope,_data,$uibModal) {
 						msg:"Use the text field below to import a unit JSON string."
 					};
 				},
-				json: function(){
+				output: function(){
 					var unitlist = [];
 					_.each($ctrl.units,function(uuid){
 						unitlist.push(_data.getUnit(uuid));
 					});
-					console.log(unitlist);
-					return JSON.stringify(unitlist);
+					return unitlist;
 				}
 			}
 		});
