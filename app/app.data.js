@@ -59,6 +59,11 @@ mobiusEngine.data.factory = function($rootScope) {
 	service.getSimulationStore = function() {return _data.simulations;};
 	service.getFleetStore = function() {return _data.fleets;};
 	service.getUnitStore = function() {return _data.units;};
+	service.purgeUnitStore = function() {
+		delete _data.units;
+		_data.units = {};
+		$rootScope.$broadcast(mobiusEngine.data.events.dirty);
+	};
 
 	return service;
 };
@@ -243,6 +248,11 @@ mobiusEngine.data.unit = function($rootScope,_mData) {
 		unit.hull.current = unit.hull.max;
 		unit.shield.current = unit.shield.max;
 		return unit;
+	};
+	service.deleteAllUnits = function() {
+		_data = undefined;
+		_mData.purgeUnitStore();
+		_data = _mData.getUnitStore();
 	};
 
 	return service;

@@ -37,6 +37,11 @@ textarea.fleet-import,textarea.mobius-import {
 	white-space: nowrap;
 }
 
+textarea.mobius-export {
+	height: 400px;
+	white-space: wrap;
+}
+
 .text-dark {
 	color: #131313 !important;
 	text-shadow: none;
@@ -98,6 +103,18 @@ a.mobius-bookmark {
 .mobius-unit-stat {
 	padding: 2px 0px 2px 10px !important;
 	margin: 0px;
+}
+
+.mobius-unit-button-cell {
+	padding: 0px !important;
+	margin: 0px !important;
+}
+
+.mobius-unit-button {
+	padding: 2px !important;
+	margin: 0px !important;
+	vertical-align: middle !important;
+	width: 100%;
 }
 
 .mobius-control-sm {

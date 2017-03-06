@@ -6,7 +6,6 @@ _.mixin({
 	},
 	"table":function(table){
 		var roll = _.random(1,_.max(table,function(crit){ return crit.threshold; }).threshold);
-		console.log(roll);
 		var entry = undefined;
 		_.each(table,function(crit) {
 			if(roll <= crit.threshold) {
@@ -81,9 +80,11 @@ combat.functions = {
 		var fleet = unit.fleet;
 		var enemy = combat.fleets[fleet].enemy;
 		var targetList = _.chain(combat.fleets[enemy].units).keys().filter(combat.filters.untargetable,combat.fleets[enemy]).value();
-		console.log(targetList);
 		var target = _.sample(targetList);
-		console.log(target);
+		if(_.isUndefined(target)) {
+			console.error("Target is undefined");
+			console.log(combat.fleets[enemy]);
+		}
 		return combat.fleets[enemy].units[target];
 	},
 	getNumericTag: function(unit,tag) {
@@ -123,25 +124,21 @@ combat.functions = {
 		if(unit.hull.current <= Math.round(unit.hull.max*.75) && !unit.combat.crit.first && unit.general.type !== "Fighter") {
 			var crit = _.table(combat.crits.default);
 			crits.push(crit);
-			console.log("First Crit - " + crit);
 			unit.combat.crit.first = crit;
 		}
 		if(unit.hull.current <= Math.round(unit.hull.max*.5) && !unit.combat.crit.second && unit.general.type !== "Fighter") {
 			var crit = _.table(combat.crits.default);
 			crits.push(crit);
-			console.log("Second Crit - " + crit);
 			unit.combat.crit.second = crit;
 		}
 		if(unit.hull.current <= Math.round(unit.hull.max*.25) && !unit.combat.crit.third && unit.general.type !== "Fighter") {
 			var crit = _.table(combat.crits.default);
 			crits.push(crit);
-			console.log("Third Crit - " + crit);
 			unit.combat.crit.third = crit;
 		}
 		if(unit.hull.current <= 0 && !unit.combat.crit.fourth && unit.general.type !== "Fighter") {
 			var crit = _.table(combat.crits.default);
 			crits.push(crit);
-			console.log("Fourth Crit - " + crit);
 			unit.combat.crit.fourth = crit;
 		}
 		return crits;
@@ -255,6 +252,16 @@ combat.tags["fireRate"] = _.deep(combat.defaults.tag);
 combat.tags["fireRate"].ready.pre = 'if(weapon.fireRate.step < weapon.fireRate.interval) { weapon.skip = true; }';
 combat.tags["fireRate"].ready.post = 'weapon.fireRate.step++; weapon.fireRate.step = (weapon.fireRate.step > weapon.fireRate.interval) ? 1 : weapon.fireRate.step;';
 
+combat.tags["low"] = _.deep(combat.defaults.tag);
+combat.tags["low"].resolve.pre = 'if(defense == "shield") { damage = 0; }';
+
+combat.tags["affinity"] = _.deep(combat.defaults.tag);
+combat.tags["affinity"].aim.pre = '';
+
+combat.tags["reserve"] = _.deep(combat.defaults.tag);
+combat.tags["reserve"].ready.pre = 'var unitLevel = 100 - Math.round(fleet.combat.loseCount/fleet.combat.unitCount*100); if(unitLevel < unit.general.reserve) {unit.combat.reserve = false;} else {unit.combat.reserve = true;}';
+combat.tags["reserve"].long.pre = 'var unitLevel = 100 - Math.round(fleet.combat.loseCount/fleet.combat.unitCount*100); if(unitLevel < unit.general.reserve) {unit.combat.reserve = false;} else {unit.combat.reserve = true;}';
+
 // Crit Tables -------------------------------------------------------------------------------------
 combat.crits = {
 	"default": [
@@ -305,17 +312,65 @@ combat.crits = {
 		{weight:2,threshold:97,msg:"All Sensors Out (Offline and no movement until repaired)",script:''},
 		{weight:2,threshold:99,msg:"Shield Power Couplings Down (Sh=0 until repaired)",script:'target.shield.current = 0;'},
 		{weight:1,threshold:100,msg:"Reactor Containment Failure (Ship explodes)",script:'target.combat.destroyed = true;'}
+	],
+	"boarding": [
+		{weight:1,threshold:1,msg:"Reactor Core Breach (Ship explodes)",script:'target.combat.destroyed = true;'},
+		{weight:2,threshold:3,msg:"Structural Collapse (+3 damage)",script:'damage += 3;'},
+		{weight:2,threshold:5,msg:"Explosion Amidships (+2 damage)",script:'damage += 2;'},
+		{weight:2,threshold:7,msg:"Superstructure Hit (+1 damage)",script:'damage += 1;'},
+		{weight:2,threshold:9,msg:"Inertial Dampeners Down (+1 damage)",script:'damage += 1;'},
+		{weight:4,threshold:13,msg:"Weapons Damaged (Offline until repaired)",script:'target.combat.flee = true;'},
+		{weight:2,threshold:15,msg:"Radiation Leak (+5% crew casualties)",script:''},
+		{weight:2,threshold:17,msg:"Coolant Leak (+5% crew casualties)",script:''},
+		{weight:2,threshold:19,msg:"Hull Breach (+5% crew casualties)",script:''},
+		{weight:2,threshold:21,msg:"Main Fusion Reactors Down (+1 damage)",script:'damage += 1;'},
+		{weight:2,threshold:23,msg:"Auxiliary Fusion Reactors Down (+1 damage)",script:'damage += 1;'},
+		{weight:4,threshold:27,msg:"Weapon Power Short (Some offline until repaired)",script:''},
+		{weight:4,threshold:31,msg:"Engine Power Short (Drifting for 1 turn)",script:''},
+		{weight:2,threshold:33,msg:"Shuttle/Fighter Bay Hit",script:''},
+		{weight:2,threshold:35,msg:"Main Fire Control Out (Offline for 1 turn)",script:''},
+		{weight:2,threshold:37,msg:"Main Scanners Out (Offline for 1 turn)",script:''},
+		{weight:2,threshold:39,msg:"Maglock/Tractor Beams Down",script:''},
+		{weight:2,threshold:41,msg:"Main Bridge Hit (Bridge crew killed, Offline for 1 turn)",script:''},
+		{weight:2,threshold:43,msg:"Main Engineering Hit (Drifting for 1 turn)",script:''},
+		{weight:4,threshold:47,msg:"Warp Engine Hit (No warp movement until repaired)",script:''},
+		{weight:2,threshold:49,msg:"Barracks/Cargo Holds Breached (+5% crew casualties)",script:''},
+		{weight:2,threshold:51,msg:"Warp Drive Down (No warp movement until repaired)",script:''},
+		{weight:2,threshold:53,msg:"Crew Quarters Breached (+5% crew casualties)",script:''},
+		{weight:2,threshold:55,msg:"Impulse Engines Down (Drifting for 1 turn)",script:''},
+		{weight:2,threshold:57,msg:"Auxiliary Scanners Out",script:''},
+		{weight:2,threshold:59,msg:"Weapon Power Couplings Down (Offline until repaired)",script:'target.combat.flee = true;'},
+		{weight:2,threshold:61,msg:"Emergency Power Out",script:''},
+		{weight:2,threshold:63,msg:"Primary Life Support Out (+10% crew casualties)",script:''},
+		{weight:2,threshold:65,msg:"Navigational Deflectors Out (No warp movement until repaired)",script:''},
+		{weight:2,threshold:67,msg:"Internal Damage (+10% crew casualties)",script:''},
+		{weight:2,threshold:69,msg:"Main Computer Down (Offline for 1 turn)",script:''},
+		{weight:2,threshold:71,msg:"Internal Damage (+5% crew casualties)",script:''},
+		{weight:2,threshold:73,msg:"Emergency Life Support Out (+5% crew casualties)",script:''},
+		{weight:2,threshold:75,msg:"Auxiliary Computer Down",script:''},
+		{weight:2,threshold:77,msg:"Auxiliary Fire Control Out",script:''},
+		{weight:2,threshold:79,msg:"Fire: Level 1 (+1 damage)",script:'damage += 1;'},
+		{weight:2,threshold:81,msg:"Explosion Amidships (+1 damage)",script:'damage += 1;'},
+		{weight:2,threshold:83,msg:"ECM/Cloaking Systems Out",script:''},
+		{weight:2,threshold:85,msg:"Fire: Level 2 (+2 damage)",script:'damage += 2;'},
+		{weight:2,threshold:87,msg:"Explosion Amidships (+2 damage)",script:'damage += 2;'},
+		{weight:2,threshold:89,msg:"Ammunition Bay/Magazine Explosion (+Tp damage)",script:''},
+		{weight:2,threshold:91,msg:"Fire: Level 3 (+3 damage)",script:'damage += 3;'},
+		{weight:2,threshold:93,msg:"Auxiliary Bridge Hit",script:''},
+		{weight:2,threshold:95,msg:"Explosive Chain Reaction (+4 damage)",script:'damage += 4;'},
+		{weight:2,threshold:97,msg:"All Sensors Out (Offline and no movement until repaired)",script:''},
+		{weight:2,threshold:99,msg:"Shield Power Couplings Down (Sh=0 until repaired)",script:'target.shield.current = 0;'},
+		{weight:1,threshold:100,msg:"Boarding party captures unit!",script:'target.combat.captured = true;'}
 	]
 };
 
 // Ready a unit for the combat turn ----------------------------------------------------------------
 combat.functions.ready = function(stack,logs) {
-	console.groupCollapsed("Ready - " + this.unit.general.name);
 	var unit = this.unit;
 	var breakoff = combat.functions.fleetBreakoff(unit.fleet);
+	var fleet = combat.fleets[unit.fleet];
 
 	// Run preprocess 'ready' scripts for unit and combat tags
-	console.info("Begin unit preprocess scripts.");
 	_.each(unit.general,function(obj,tag) { if(combat.tags[tag]) { eval(combat.tags[tag].ready.pre); } });
 	_.each(unit.combat,function(obj,tag) { if(combat.tags[tag]) { eval(combat.tags[tag].ready.pre); } });
 
@@ -326,7 +381,6 @@ combat.functions.ready = function(stack,logs) {
 	if(unit.combat.skip) {
 		// Push the cleanup event to the back of the queue.
 		stack.push(new combat.token(unit,combat.functions.cleanup));
-		console.warn("Unit is skipping combat this turn.");
 	}
 	else if(breakoff) {
 		// The unit should flee due to breakoff level on fleet
@@ -342,7 +396,6 @@ combat.functions.ready = function(stack,logs) {
 			weapon.skip = false;
 
 			// Run preprocess 'ready' scripts for weapon tags
-			console.info("Begin weapon preprocess scripts.");
 			_.each(weapon,function(obj,tag) { if(combat.tags[tag]) { eval(combat.tags[tag].ready.pre); } });
 
 			// Should we skip this set of batteries?
@@ -355,12 +408,8 @@ combat.functions.ready = function(stack,logs) {
 					stack.unshift(token);
 				}
 			}
-			else {
-				console.log("Skipping weapon group");
-			}
 
 			// Run postprocess 'ready' scripts for weapon tags
-			console.info("Begin weapon postprocess scripts.");
 			_.each(weapon,function(obj,tag) { if(combat.tags[tag]) { eval(combat.tags[tag].ready.post); } });
 		});
 		
@@ -370,7 +419,6 @@ combat.functions.ready = function(stack,logs) {
 			weapon.skip = false;
 
 			// Run preprocess 'ready' scripts for weapon tags
-			console.info("Begin weapon preprocess scripts.");		
 			_.each(weapon,function(obj,tag) { if(combat.tags[tag]) { eval(combat.tags[tag].ready.pre); } });
 
 			// Should we skip this set of packets?
@@ -385,34 +433,28 @@ combat.functions.ready = function(stack,logs) {
 			}
 
 			// Run postprocess 'ready' scripts for weapon tags
-			console.info("Begin weapon postprocess scripts.");
 			_.each(weapon,function(obj,tag) { if(combat.tags[tag]) { eval(combat.tags[tag].ready.post); } });
 		});
 	}
 
 	// Run postprocess 'ready' scripts for unit and combat tags
-	console.info("Begin unit postprocess scripts.");
 	_.each(unit.general,function(obj,tag) { if(combat.tags[tag]) { eval(combat.tags[tag].ready.post); } });
 	_.each(unit.combat,function(obj,tag) { if(combat.tags[tag]) { eval(combat.tags[tag].ready.post); } });
 
-	// End console message grouping
-	console.groupEnd();
+	// End console message groupin
 };
 
 // Select a target for the weapon ------------------------------------------------------------------
 combat.functions.aim = function(stack,logs) {
-	console.groupCollapsed("Aim - " + this.unit.general.name);
 	var unit = this.unit;
 	var weapon = this.weapon;
 	var target = undefined;
 
 	// Run preprocess 'aim' scripts for unit and combat tags
-	console.info("Begin unit preprocess scripts.");
 	_.each(unit.general,function(obj,tag) { if(combat.tags[tag]) { eval(combat.tags[tag].aim.pre); } });
 	_.each(unit.combat,function(obj,tag) { if(combat.tags[tag]) { eval(combat.tags[tag].aim.pre); } });
 
 	// Run preprocess 'aim' scripts for weapon tags
-	console.info("Begin weapon preprocess scripts.");
 	_.each(weapon,function(obj,tag) { if(combat.tags[tag]) { eval(combat.tags[tag].aim.pre); } });
 
 	// Select a target for the weapon unless one has already been provided.
@@ -421,11 +463,9 @@ combat.functions.aim = function(stack,logs) {
 	}
 
 	// Run postprocess 'aim' scripts for weapon tags
-	console.info("Begin weapon postprocess scripts.");
 	_.each(weapon,function(obj,tag) { if(combat.tags[tag]) { eval(combat.tags[tag].aim.post); } });
 
 	// Run postprocess 'aim' scripts for unit and combat tags
-	console.info("Begin unit postprocess scripts.");
 	_.each(unit.general,function(obj,tag) { if(combat.tags[tag]) { eval(combat.tags[tag].aim.post); } });
 	_.each(unit.combat,function(obj,tag) { if(combat.tags[tag]) { eval(combat.tags[tag].aim.post); } });
 
@@ -433,13 +473,10 @@ combat.functions.aim = function(stack,logs) {
 	this.target = target;
 	this.action = combat.functions.fire;
 	stack.unshift(this);
-
-	console.groupEnd();
 };
 
 // Fire the weapon at the target -------------------------------------------------------------------
 combat.functions.fire = function(stack,logs) {
-	console.groupCollapsed("Fire - " + this.unit.general.name);
 	var unit = this.unit;
 	var weapon = this.weapon;
 	var target = this.target;
@@ -450,14 +487,12 @@ combat.functions.fire = function(stack,logs) {
 	var defense = undefined;
 
 	// Run preprocess 'fire' scripts for unit and combat tags
-	console.info("Begin unit preprocess scripts.");
 	_.each(unit.general,function(obj,tag) { if(combat.tags[tag]) { eval(combat.tags[tag].fire.pre); } });
 	_.each(unit.combat,function(obj,tag) { if(combat.tags[tag]) { eval(combat.tags[tag].fire.pre); } });
 	_.each(target.general,function(obj,tag) { if(combat.tags[tag]) { eval(combat.tags[tag].fire.pre); } });
 	_.each(target.combat,function(obj,tag) { if(combat.tags[tag]) { eval(combat.tags[tag].fire.pre); } });
 
 	// Run preprocess 'fire' scripts for weapon tags
-	console.info("Begin weapon preprocess scripts.");
 	_.each(weapon,function(obj,tag) { if(combat.tags[tag]) { eval(combat.tags[tag].fire.pre); } });
 
 	// Fire the weapon at the target
@@ -494,22 +529,17 @@ combat.functions.fire = function(stack,logs) {
 	}
 
 	// Run postprocess 'fire' scripts for weapon tags
-	console.info("Begin weapon postprocess scripts.");
 	_.each(weapon,function(obj,tag) { if(combat.tags[tag]) { eval(combat.tags[tag].fire.post); } });
 
 	// Run postprocess 'fire' scripts for unit and combat tags
-	console.info("Begin unit postprocess scripts.");
 	_.each(unit,function(obj){ _.each(obj,function(sub,tag) { if(_.isString(tag) && combat.tags[tag]) { eval(combat.tags[tag].fire.post); }	}); });
 	_.each(target,function(obj){ _.each(obj,function(sub,tag) { if(_.isString(tag) && combat.tags[tag]) { eval(combat.tags[tag].fire.post); } }); });
 
 	logs.push(unit,message);
 	logs.push(target,message);
-
-	console.groupEnd();
 };
 // Resolve the damage incoming to the target -------------------------------------------------------
 combat.functions.resolve = function(stack,logs) {
-	console.groupCollapsed("Resolve - " + this.unit.general.name);
 	var unit = this.unit;
 	var weapon = this.weapon;
 	var target = this.target;
@@ -517,14 +547,12 @@ combat.functions.resolve = function(stack,logs) {
 	var defense = this.defense;
 	
 	// Run preprocess 'resolve' scripts for unit and combat tags
-	console.info("Begin unit preprocess scripts.");
 	_.each(unit.general,function(obj,tag) { if(combat.tags[tag]) { eval(combat.tags[tag].resolve.pre); } });
 	_.each(unit.combat,function(obj,tag) { if(combat.tags[tag]) { eval(combat.tags[tag].resolve.pre); } });
 	_.each(target.general,function(obj,tag) { if(combat.tags[tag]) { eval(combat.tags[tag].resolve.pre); } });
 	_.each(target.combat,function(obj,tag) { if(combat.tags[tag]) { eval(combat.tags[tag].resolve.pre); } });
 
 	// Run preprocess 'resolve' scripts for weapon tags
-	console.info("Begin weapon preprocess scripts.");
 	_.each(weapon,function(obj,tag) { if(combat.tags[tag]) { eval(combat.tags[tag].resolve.pre); } });
 
 	// Apply damage to the defense system
@@ -538,17 +566,13 @@ combat.functions.resolve = function(stack,logs) {
 	});
 
 	// Run postprocess 'resolve' scripts for weapon tags
-	console.info("Begin weapon postprocess scripts.");
 	_.each(weapon,function(obj,tag) { if(combat.tags[tag]) { eval(combat.tags[tag].resolve.post); } });
 
 	// Run postprocess 'resolve' scripts for unit and combat tags
-	console.info("Begin unit postprocess scripts.");
 	_.each(unit.general,function(obj,tag) { if(combat.tags[tag]) { eval(combat.tags[tag].resolve.post); } });
 	_.each(unit.combat,function(obj,tag) { if(combat.tags[tag]) { eval(combat.tags[tag].resolve.post); } });
 	_.each(target.general,function(obj,tag) { if(combat.tags[tag]) { eval(combat.tags[tag].resolve.post); } });
 	_.each(target.combat,function(obj,tag) { if(combat.tags[tag]) { eval(combat.tags[tag].resolve.post); } });
-
-	console.groupEnd();
 };
 // Determine if a critical hit happened and what critical hit it is --------------------------------
 combat.functions.cleanup = function(stack,logs) {
@@ -558,15 +582,11 @@ combat.functions.cleanup = function(stack,logs) {
 	var damage = this.damage;
 	var defense = this.defense;
 
-	console.info("Cleanup - " + unit.general.name);
-
 	// Run preprocess 'cleanup' scripts for unit and combat tags
-	console.log("Begin unit preprocess scripts.");
 	_.each(unit.general,function(obj,tag) { if(combat.tags[tag]) { eval(combat.tags[tag].cleanup.pre); } });
 	_.each(unit.combat,function(obj,tag) { if(combat.tags[tag]) { eval(combat.tags[tag].cleanup.pre); } });
 
 	// Run preprocess 'cleanup' scripts for weapon tags
-	console.log("Begin weapon preprocess scripts.");
 	_.each(weapon,function(obj,tag) { if(combat.tags[tag]) { eval(combat.tags[tag].cleanup.pre); } });
 
 	logs.push(unit,unit.general.name + " is doing end of combat turn cleanup");
@@ -578,12 +598,12 @@ combat.functions.cleanup = function(stack,logs) {
 
 	if(unit.combat.flee) {
 		unit.combat.fled = true;
-		console.warn(unit.general.name + " has fled!");
+		console.log(unit.general.name + " has fled!");
 		logs.push(unit,unit.general.name + " has fled");
 	}
 
 	if(unit.combat.destroyed) {
-		console.warn(unit.general.name + " has been destroyed!");
+		console.log(unit.general.name + " has been destroyed!");
 		logs.push(unit,unit.general.name + " has been destroyed!");
 	}
 
@@ -592,21 +612,17 @@ combat.functions.cleanup = function(stack,logs) {
 	}
 
 	// Run postprocess 'cleanup' scripts for weapon tags
-	console.log("Begin weapon postprocess scripts.");
 	_.each(weapon,function(obj,tag) { if(combat.tags[tag]) { eval(combat.tags[tag].cleanup.post); } });
 
 	// Run postprocess 'cleanup' scripts for unit and combat tags
-	console.log("Begin unit postprocess scripts.");
 	_.each(unit.general,function(obj,tag) { if(combat.tags[tag]) { eval(combat.tags[tag].cleanup.post); } });
 	_.each(unit.combat,function(obj,tag) { if(combat.tags[tag]) { eval(combat.tags[tag].cleanup.post); } });
 };
 // Determine what to do when fleeing ---------------------------------------------------------------
 combat.functions.flee = function(stack,logs) {
-	console.groupCollapsed("Fleeing - " + this.unit.general.name);
 	var unit = this.unit;
 
 	// Run preprocess 'flee' scripts for unit and combat tags
-	console.info("Begin unit preprocess scripts.");
 	_.each(unit.general,function(obj,tag) { if(combat.tags[tag]) { eval(combat.tags[tag].flee.pre); } });
 	_.each(unit.combat,function(obj,tag) { if(combat.tags[tag]) { eval(combat.tags[tag].flee.pre); } });
 
@@ -617,19 +633,15 @@ combat.functions.flee = function(stack,logs) {
 	stack.push(this);
 
 	// Run postprocess 'flee' scripts for unit and combat tags
-	console.info("Begin unit postprocess scripts.");
 	_.each(unit.general,function(obj,tag) { if(combat.tags[tag]) { eval(combat.tags[tag].flee.post); } });
 	_.each(unit.combat,function(obj,tag) { if(combat.tags[tag]) { eval(combat.tags[tag].flee.post); } });
-
-	console.groupEnd();
 };
-// Determine what to do when fleeing ---------------------------------------------------------------
+// Determine what to do when checking long range weapons -------------------------------------------
 combat.functions.long = function(stack,logs) {
-	console.groupCollapsed("Long - " + this.unit.general.name);
 	var unit = this.unit;
+	var fleet = combat.fleets[unit.fleet];
 
 	// Run preprocess 'long' scripts for unit and combat tags
-	console.info("Begin unit preprocess scripts.");
 	_.each(unit.general,function(obj,tag) { if(combat.tags[tag]) { eval(combat.tags[tag].long.pre); } });
 	_.each(unit.combat,function(obj,tag) { if(combat.tags[tag]) { eval(combat.tags[tag].long.pre); } });
 
@@ -642,7 +654,6 @@ combat.functions.long = function(stack,logs) {
 			weapon.skip = false;
 
 			// Run preprocess 'ready' scripts for weapon tags
-			console.info("Begin weapon preprocess scripts.");
 			_.each(weapon,function(obj,tag) { if(combat.tags[tag]) { eval(combat.tags[tag].long.pre); } });
 
 			// Should we skip this set of batteries?
@@ -660,7 +671,6 @@ combat.functions.long = function(stack,logs) {
 			}
 
 			// Run postprocess 'ready' scripts for weapon tags
-			console.info("Begin weapon postprocess scripts.");
 			_.each(weapon,function(obj,tag) { if(combat.tags[tag]) { eval(combat.tags[tag].long.post); } });
 		});
 		
@@ -670,7 +680,6 @@ combat.functions.long = function(stack,logs) {
 			weapon.skip = false;
 
 			// Run preprocess 'ready' scripts for weapon tags
-			console.info("Begin weapon preprocess scripts.");		
 			_.each(weapon,function(obj,tag) { if(combat.tags[tag]) { eval(combat.tags[tag].long.pre); } });
 
 			// Should we skip this set of packets?
@@ -685,7 +694,6 @@ combat.functions.long = function(stack,logs) {
 			}
 
 			// Run postprocess 'ready' scripts for weapon tags
-			console.info("Begin weapon postprocess scripts.");
 			_.each(weapon,function(obj,tag) { if(combat.tags[tag]) { eval(combat.tags[tag].long.post); } });
 		});
 	}
@@ -693,15 +701,26 @@ combat.functions.long = function(stack,logs) {
 	stack.push(new combat.token(unit,combat.functions.cleanup));
 
 	// Run postprocess 'long' scripts for unit and combat tags
-	console.info("Begin unit postprocess scripts.");
 	_.each(unit.general,function(obj,tag) { if(combat.tags[tag]) { eval(combat.tags[tag].long.post); } });
 	_.each(unit.combat,function(obj,tag) { if(combat.tags[tag]) { eval(combat.tags[tag].long.post); } });
+};
+// Determine what to do with board party -----------------------------------------------------------
+combat.functions.boarding = function(stack,logs) {
+	var unit = this.unit;
 
-	console.groupEnd();
+	// Run preprocess 'board' scripts for unit and combat tags
+	_.each(unit.general,function(obj,tag) { if(combat.tags[tag]) { eval(combat.tags[tag].board.pre); } });
+	_.each(unit.combat,function(obj,tag) { if(combat.tags[tag]) { eval(combat.tags[tag].board.pre); } });
+
+	//
+
+	// Run postprocess 'board' scripts for unit and combat tags
+	_.each(unit.general,function(obj,tag) { if(combat.tags[tag]) { eval(combat.tags[tag].board.post); } });
+	_.each(unit.combat,function(obj,tag) { if(combat.tags[tag]) { eval(combat.tags[tag].board.post); } });
 };
 // Display a message to the log --------------------------------------------------------------------
 combat.functions.tap = function() {
-	// Pose the message to the console log
+	// Post the message to the console log
 	console.log(this.msg);
 };
 
@@ -742,7 +761,6 @@ function endOfCombat() {
 
 	_.each(combat.fleets,function(fleet) {
 		console.log(fleet.name + " " + fleet.combat.loseCount + " of " + fleet.combat.unitCount + "(" + fleet.breakoff + ")");
-		console.log(fleet);
 		if(fleet.combat.loseCount >= fleet.combat.unitCount) {
 			eoc = true;
 		}
@@ -768,7 +786,7 @@ function doCombatSimulation() {
 	});
 
 	// Check for long range weapons
-	console.groupCollapsed("Precombat Actions");
+	console.info("Precombat Actions");
 	
 	// Log Entry array for precombat turn
 	var prelogs = new combat.logs.log(combat.turn);
@@ -789,8 +807,6 @@ function doCombatSimulation() {
 		combat.status = combat.statuses.done;
 	}
 
-	console.groupEnd();
-
 	// Run the main combat loop.
 	while(combat.status !== combat.statuses.done) {
 		// Update the combat turn.
@@ -803,7 +819,7 @@ function doCombatSimulation() {
 		}//*/
 
 		// Begin the logging group for the turn.
-		console.groupCollapsed("Turn: " + combat.turn);
+		console.info("Turn: " + combat.turn);
 
 		// Combat Action Stack
 		var stack = [];
@@ -813,56 +829,21 @@ function doCombatSimulation() {
 
 		// Setup the initial ready action tokens for the attacking fleet.
 		_.each(combat.fleets.attacker.units,function(unit) {
-			// Is the unit a reserve unit?
-			if(unit.general.reserve && !unit.combat.reserve) {
-				// Initialize the number of units in the fleet for the unit to be in reserve.
-				unit.combat.reserve = Math.ceil(unit.general.reserve / 100 * (combat.fleets.attacker.combat.unitCount - 1));
-			}
-			
 			// Is the unit destroyed?
 			if(!unit.combat.destroyed  && !unit.combat.fled) {
 				// The unit is still operational.  Assume it needs to be readied.
-				// Is the unit still in reserve?
-				if(unit.combat.reserve && unit.combat.reserve > (combat.fleets.attacker.combat.unitCount - combat.fleets.attacker.combat.loseCount - 1)) {
-					var s = new combat.token(unit,combat.functions.ready);
-					unit.fleet = "attacker";
-					stack.push(s);
-				}
-				else if(!unit.combat.reserve) {
-					var s = new combat.token(unit,combat.functions.ready);
-					unit.fleet = "attacker";
-					stack.push(s);
-					delete unit.combat.reserve;
-				}
+				var s = new combat.token(unit,combat.functions.ready);
+				unit.fleet = "attacker";
+				stack.push(s);
 			}
 		});
 		// Setup the initial ready action tokens for the defending fleet.
 		_.each(combat.fleets.defender.units,function(unit) {
-			// Is the unit a reserve unit?
-			if(unit.general.reserve && !unit.combat.reserve) {
-				// Initialize the number of units in the fleet for the unit to be in reserve.
-				unit.combat.reserve = Math.ceil(unit.general.reserve / 100 * (combat.fleets.attacker.combat.unitCount - 1));
-			}
-
+			// Is the unit destroyed or gone?
 			if(!unit.combat.destroyed && !unit.combat.fled) {
-				// Setup reserve units
-				if(unit.general.reserve && !unit.combat.reserve) {
-					var reserveLevel = Math.ceil(unit.general.reserve / 100 * (combat.fleets.defender.combat.unitCount - 1));
-					unit.combat.reserve = reserveLevel;
-				}
-
-				// Is the unit still in reserve?
-				if(unit.combat.reserve && unit.combat.reserve > (combat.fleets.defender.combat.unitCount - combat.fleets.defender.combat.loseCount - 1)) {
-					var s = new combat.token(unit,combat.functions.ready);
-					unit.fleet = "defender";
-					stack.push(s);
-					delete unit.combat.reserve;
-				}
-				else if(!unit.combat.reserve) {
-					var s = new combat.token(unit,combat.functions.ready);
-					unit.fleet = "defender";
-					stack.push(s);
-				}
+				var s = new combat.token(unit,combat.functions.ready);
+				unit.fleet = "defender";
+				stack.push(s);
 			}
 		});
 
@@ -878,7 +859,6 @@ function doCombatSimulation() {
 		
 		m.logs = logs;
 
-		console.groupEnd();
 		self.postMessage({"type":"entry","entry":m});
 	}
 
