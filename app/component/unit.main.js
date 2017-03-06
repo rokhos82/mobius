@@ -48,13 +48,9 @@ mobiusEngine.unit.validate = function(obj) {
 	return valid;
 };
 
-mobiusEngine.unit.controller = function($scope,_data) {
-	this.states = {
-		controls: false
-	}
-
-	this.import = undefined;
-
+mobiusEngine.unit.controller = function($scope,_data,$uibModal) {
+	var $ctrl = this;
+	
 	this.alerts = [];
 
 	this.units = _data.getAllUnits();
@@ -64,39 +60,37 @@ mobiusEngine.unit.controller = function($scope,_data) {
 
 	this.toggleState = function(key) { this.states[key] = !this.states[key]; };
 
-	this.onImport = function() {
-		var imp = JSON.parse(this.import);
+	$ctrl.onImport = function(importJSON) {
+		var imp = JSON.parse(importJSON);
 		if(_.isArray(imp)) {
 			// Import an array of units
-			var alert = new mobiusEngine.pageAlerts.alert("Successfully imported","success");
 			for(var i in imp) {
 				var unit = imp[i];
 				unit.uuid = unit.uuid || window.uuid.v4();
 				unit.general.firepower = mobiusEngine.unit.calculateFirepower(unit);
 				_data.addUnit(unit);
-				alert.msg += " " + unit.general.name;
+				$ctrl.alerts.push(new mobiusEngine.pageAlerts.alert("Successfully imported " + unit.general.name,"success",5000));
 			}
-			this.alerts.push(alert);
 		}
 		else if(_.isObject(imp)) {
 			// Import a single unit
 			imp.uuid = imp.uuid || window.uuid.v4();
 			imp.general.firepower = mobiusEngine.unit.calculateFirepower(imp);
 			_data.addUnit(imp);
-			this.alerts.push(new mobiusEngine.pageAlerts.alert("Successfully imported " + unit.general.name,"success"));
+			$ctrl.alerts.push(new mobiusEngine.pageAlerts.alert("Successfully imported " + imp.general.name,"success",2000));
 		}
 		else {
 			// Not sure what is being imported but it is not expected.
 			console.log("Unexpected data sent to unit import.");
 		}
 
-		this.units = _data.getAllUnits();
-		this.import = undefined;
+		$ctrl.units = _data.getAllUnits();
 	};
 
-	this.onDelete = function(uuid) {
-		_data.deleteUnit(uuid);
+	this.deleteUnit = function(uuid) {
+		var u = _data.deleteUnit(uuid);
 		this.units = _data.getAllUnits();
+		this.alerts.push(new mobiusEngine.pageAlerts.alert("Deleted " + u.general.name,"warning",2000));
 	};
 
 	this.onDeleteAll = function() {
@@ -111,10 +105,24 @@ mobiusEngine.unit.controller = function($scope,_data) {
 		});
 		return dict;
 	};
+
+	$ctrl.openImportModal = function() {
+		var modal = $uibModal.open({
+			animation: true,
+			component: "importModal",
+			resolve: {
+				options: function(){return {title:"Unit Import",msg:"Use the text field below to import a unit JSON string."};}
+			}
+		});
+
+		modal.result.then(function(importJSON){
+			$ctrl.onImport(importJSON);
+		});
+	};
 };
 
 mobiusEngine.app.component("unitMain",{
 	templateUrl: 'app/component/unit.main.html',
-	controller: ["$scope","mobius.data.unit",mobiusEngine.unit.controller],
+	controller: ["$scope","mobius.data.unit","$uibModal",mobiusEngine.unit.controller],
 	bindings: {}
 });

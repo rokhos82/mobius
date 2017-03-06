@@ -2,6 +2,7 @@
 // Mobius Fleet Detail Controller
 ////////////////////////////////////////////////////////////////////////////////////////////////
 mobiusEngine.fleet.dtlController = function($scope,_fdata,_udata) {
+	this.alerts = [];
 	this.fleet = _fdata.getFleet(this.uuid);
 	this.add = {
 		unit: _udata.getAllUnits()[0],
@@ -19,6 +20,7 @@ mobiusEngine.fleet.dtlController = function($scope,_fdata,_udata) {
 
 	this.onSave = function() {
 		$scope.$emit(mobiusEngine.data.events.dirty);
+		this.alerts.push(new mobiusEngine.pageAlerts.alert("Successfully saved " + this.fleet.name,"success",1500));
 	};
 
 	this.onAddUnit = function() {

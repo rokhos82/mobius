@@ -100,6 +100,18 @@ a.mobius-bookmark {
 	margin: 0px;
 }
 
+.mobius-unit-button-cell {
+	padding: 0px !important;
+	margin: 0px !important;
+}
+
+.mobius-unit-button {
+	padding: 2px !important;
+	margin: 0px !important;
+	vertical-align: middle !important;
+	width: 100%;
+}
+
 .mobius-control-sm {
 	padding: 0px 10px 0px 10px;
 }
