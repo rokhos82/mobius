@@ -1,9 +1,11 @@
-<div class="row mobius-top-row">
+<page-title title="Fleet Detail" message="This is the fleet detail for the fleet {{$ctrl.fleet.name}} of the {{$ctrl.fleet.faction}}.  Here you can change general fleet infomration and add/remove units to the fleet."></page-title>
+<page-alerts alerts="$ctrl.alerts"></page-alerts>
+<div class="row">
 	<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 		<div class="panel panel-default">
 			<div class="panel-heading">
 				<label class="pull-right btn btn-success" ng-click="$ctrl.onSave()">Save</label>
-				<h4 class="mobius-title text-info">Fleet Detail</h4>
+				<h4 class="mobius-title text-info">Fleet Information</h4>
 			</div>
 			<div class="panel-body">
 				<div class="form-horizontal">
@@ -17,6 +19,12 @@
 						<label for="fleetFaction" class="col-lg-2 control-label">Faction</label>
 						<div class="col-lg-10">
 							<input type="text" id="fleetFaction" class="form-control" ng-model="$ctrl.fleet.faction" />
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="fleetBreakoff" class="col-lg-2 control-label">Breakoff</label>
+						<div class="col-lg-10">
+							<input type="number" id="fleetBreakoff" class="form-control" ng-model="$ctrl.fleet.breakoff" />
 						</div>
 					</div>
 					<div class="form-group">
@@ -39,9 +47,12 @@
 					<tr><th class="col-md-3">Unit</th><th class="col-md-2">Template</th><th class="col-md-1">Type</th><th class="col-md-1">Size</th><th class="col-md-1">Hull</th><th class="col-md-1">Shield</th><th class="col-md-1">Firepower</th><th class="col-md-1">Cost</th><th class="col-md-1"></th></tr>
 				</thead>
 				<tbody>
-					<tr ng-repeat="unit in $ctrl.fleet.units" class="mobius-fleet-table"><td class="mobius-cell-control"><input type="text" class="form-control mobius-control-sm" ng-model="unit.general.name" /></td><td>{{$ctrl.getTemplate(unit.template)}}</td><td>{{unit.general.type}}</td><td>{{unit.general.size}}</td><td>{{unit.hull.current}}/{{unit.hull.max}}</td><td>{{unit.shield.current}}/{{unit.shield.max}}</td><td>{{$ctrl.getFirepower(unit.template)}}</td><td>{{unit.general.cost}}</td><td><button class="btn btn-danger btn-sm" ng-click="$ctrl.onDeleteUnit(unit.uuid)">Delete</button></td></tr>
+					<tr ng-repeat="unit in $ctrl.fleet.units" class="mobius-fleet-table"><td class="mobius-cell-control"><input type="text" class="form-control mobius-control-sm" ng-model="unit.general.name" /></td><td>{{$ctrl.getTemplate(unit.template)}}</td><td>{{unit.general.type}}</td><td>{{unit.general.size}}</td><td>{{unit.hull.current}}/{{unit.hull.max}}</td><td>{{unit.shield.current}}/{{unit.shield.max}}</td><td>{{unit.general.firepower}}</td><td>{{unit.general.cost}}</td><td><button class="btn btn-danger btn-sm" ng-click="$ctrl.onDeleteUnit(unit.uuid)">Delete</button></td></tr>
 				</tbody>
 			</table>
+			<div class="panel-body">
+				{{$ctrl.fleet}}
+			</div>
 			<div class="panel-footer">
 				{{$ctrl.fleet.uuid}}
 			</div>
