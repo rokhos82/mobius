@@ -2,15 +2,15 @@
 // Mobius Unit Import Component
 ////////////////////////////////////////////////////////////////////////////////////////////////
 
-mobiusEngine.unit.importController = function($scope,_data) {
+mobiusEngine.unit.importController = function($scope,$state) {
+	var $ctrl = this;
 	var json = atob(this.import);
-	var unit = JSON.parse(json);
-	_data.addUnit(unit);
+	var unit = angular.fromJSON(json);
 };
 
 mobiusEngine.app.component("unitImport",{
-	template: '<div class="jumbotron">Your unit has been imported!</div>',
-	controller: ["$scope","mobius.data.unit",mobiusEngine.unit.importController],
+	template: '<div class="jumbotron">Your unit has been imported!</div><page-alerts alerts="$ctrl.alerts"></page-alerts>',
+	controller: ["$scope","$state",mobiusEngine.unit.importController],
 	bindings: {
 		import: "<"
 	}

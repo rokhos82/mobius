@@ -4,9 +4,7 @@
 
 mobiusEngine.unit.dtlController = function($scope,_data) {
 	this.unit = _data.getUnit(this.uuid);
-	console.log(this.uuid);
-	this.link = "http://rokhos82.github.io/mobius/#/unit/import/" + btoa(JSON.stringify(this.unit));
-	console.log(this.link);
+	this.link = "http://rokhos82.github.io/mobius/#/unit/import/" + btoa(angular.toJson(this.unit));
 };
 
 mobiusEngine.app.component("unitDetail",{
