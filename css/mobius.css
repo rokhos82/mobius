@@ -86,6 +86,14 @@ a.mobius-bookmark {
 	margin-top: 5px;
 }
 
+.mobius-right-lg {margin-right: 20px;}
+.mobius-right-md {margin-right: 10px;}
+.mobius-right-sm {margin-right: 5px;}
+
+.mobius-left-lg {margin-left: 20px;}
+.mobius-left-md {margin-left: 10px;}
+.mobius-left-sm {margin-left: 5px;}
+
 .mobius-unit-header {
 	padding: 5px 10px 5px 10px;
 	font-size: 15px;
@@ -106,8 +114,8 @@ a.mobius-bookmark {
 }
 
 .mobius-unit-button-cell,.mobius-tight-cell {
-	padding: 0px !important;
-	margin: 0px !important;
+	padding: 0px;
+	margin: 0px;
 }
 
 .mobius-attr-cell {
