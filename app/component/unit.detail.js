@@ -3,8 +3,12 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////
 
 mobiusEngine.unit.dtlController = function($scope,_data) {
-	this.unit = _data.getUnit(this.uuid);
-	this.link = "http://rokhos82.github.io/mobius/#/unit/import/" + btoa(angular.toJson(this.unit));
+	var $ctrl = this;
+	$ctrl.unit = _data.getUnit($ctrl.uuid);
+	$ctrl.link = "http://rokhos82.github.io/mobius/#/unit/import/" + btoa(angular.toJson($ctrl.unit));
+	$ctrl.sectionFilter = function(value,index,arr) {
+		return _.omit($ctrl.unit,["direct-fire","packet-fire","uuid"]);
+	};
 };
 
 mobiusEngine.app.component("unitDetail",{
