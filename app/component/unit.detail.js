@@ -3,10 +3,43 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////
 
 mobiusEngine.unit.dtlController = function($scope,_data) {
-	this.unit = _data.getUnit(this.uuid);
-	console.log(this.uuid);
-	this.link = "http://rokhos82.github.io/mobius/#/unit/import/" + btoa(JSON.stringify(this.unit));
-	console.log(this.link);
+	var $ctrl = this;
+	$ctrl.unit = _data.getUnit($ctrl.uuid);
+	$ctrl.link = "http://rokhos82.github.io/mobius/#/unit/import/" + btoa(angular.toJson($ctrl.unit));
+	$ctrl.alerts = [];
+
+	$ctrl.sectionFilter = function(value,index,arr) {
+		return _.omit($ctrl.unit,["direct-fire","packet-fire","uuid"]);
+	};
+
+	$ctrl.addAttribute = function(section,attribute) {
+		var key = attribute.toLowerCase();
+		if($ctrl.unit[section][key]) {
+			$ctrl.alerts.push(new mobiusEngine.pageAlerts.alert(attribute + " already exists in " + section + "!","warning"));
+		}
+		else {
+			$ctrl.unit[section][key] = "";
+		}
+	};
+
+	$ctrl.addSection = function(section) {
+		var key = section.toLowerCase();
+		if($ctrl.unit[key]) {
+			$ctrl.alerts.push(new mobiusEngine.pageAlerts.alert(section + " already exists!","warning",2000));
+		}
+		else {
+			$ctrl.unit[key] = {};
+			$ctrl.alerts.push(new mobiusEngine.pageAlerts.alert("Created section: " + section,"success",1500));
+		}
+	};
+
+	$ctrl.removeAttribute = function(section,key) {
+		delete $ctrl.unit[section][key];
+	};
+
+	$ctrl.removeSection = function(section) {
+		delete $ctrl.unit[section];
+	};
 };
 
 mobiusEngine.app.component("unitDetail",{
