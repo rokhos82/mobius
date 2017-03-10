@@ -114,8 +114,8 @@ a.mobius-bookmark {
 }
 
 .mobius-unit-button-cell,.mobius-tight-cell {
-	padding: 0px;
-	margin: 0px;
+	padding: 0px !important;
+	margin: 0px !important;
 }
 
 .mobius-attr-cell {
