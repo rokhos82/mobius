@@ -9,7 +9,7 @@ mobiusEngine.unit.dtlController = function($scope,_data) {
 	$ctrl.alerts = [];
 
 	$ctrl.sectionFilter = function(value,index,arr) {
-		return _.omit($ctrl.unit,["direct-fire","packet-fire","uuid"]);
+		return _.omit($ctrl.unit,["direct-fire","packet-fire","uuid","combat"]);
 	};
 
 	$ctrl.addAttribute = function(section,attribute) {
@@ -39,6 +39,25 @@ mobiusEngine.unit.dtlController = function($scope,_data) {
 
 	$ctrl.removeSection = function(section) {
 		delete $ctrl.unit[section];
+	};
+
+	// Direct Fire Weapons Groups ------------------------------------------------------------------
+	$ctrl.hasDirectFire = function() {
+		return ($ctrl.unit["direct-fire"].length > 0);
+	};
+
+	$ctrl.directFireGroups = function() {
+		return $ctrl.unit["direct-fire"];
+	};
+
+	$ctrl.removeDirectFireGroup = function(group) {};
+
+	$ctrl.removeDirectFireAttribute = function(group,attr) {
+		console.log($ctrl.unit["direct-fire"][group],attr);
+	};
+
+	$ctrl.addDirectFireGroup = function() {
+		$ctrl.unit["direct-fire"].push(angular.copy(mobiusEngine.data.defaults.directFireGroup));
 	};
 };
 

@@ -25,6 +25,12 @@ mobiusEngine.data.defaults.realUnit = {
 	},
 	"template": ""
 };
+mobiusEngine.data.defaults.directFireGroup = {
+	"batteries": 1,
+	"gun": 1,
+	"size": 1,
+	"volley": 2
+};
 
 mobiusEngine.data.events = {};
 mobiusEngine.data.events.dirty = "mobius.data.dirty";

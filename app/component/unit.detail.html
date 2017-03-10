@@ -50,4 +50,29 @@
 			<div class="panel-footer"></div>
 		</div>
 	</div>
+	<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" ng-if="$ctrl.hasDirectFire()">
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<h3 class="mobius-title-sm text-info">Section: direct-fire</h3>
+			</div>
+			<div class="panel-body">
+				<form class="form-horizontal mobius-left-lg mobius-right-lg">
+					<div class="form-group">
+						<button class="btn btn-primary form-control" ng-click="$ctrl.addDirectFireGroup()">Add Weapon Group</button>
+					</div>
+				</form>
+				<div class="panel panel-default" ng-repeat="(groupIndex,group) in $ctrl.directFireGroups()">
+					<table class="table table-stripe table-hover">
+						<thead>
+							<tr><th class="col-md-1">Attribute</th><th class="col-md-10">Value</th><th></th></tr>
+						</thead>
+						<tbody>
+							<tr class="mobius-table-row" ng-repeat="(attr,val) in group"><td class="mobius-attr-cell text-capitalize">{{attr}}</td><td class="mobius-tight-cell"><input type="text" class="form-control mobius-table-control" ng-model="val" /></td><td class="mobius-tight-cell mobius-right-sm"><button class="btn btn-danger mobius-table-button" ng-click="$ctrl.removeDirectFireAttribute(groupIndex,attr)">Remove</button></td></tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+			<div class="panel-footer"></div>
+		</div>
+	</div>
 </div>
