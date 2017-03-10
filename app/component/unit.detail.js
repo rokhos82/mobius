@@ -6,6 +6,7 @@ mobiusEngine.unit.dtlController = function($scope,_data) {
 	var $ctrl = this;
 	$ctrl.unit = _data.getUnit($ctrl.uuid);
 	$ctrl.link = "http://rokhos82.github.io/mobius/#/unit/import/" + btoa(angular.toJson($ctrl.unit));
+	$ctrl.alerts = [];
 
 	$ctrl.sectionFilter = function(value,index,arr) {
 		return _.omit($ctrl.unit,["direct-fire","packet-fire","uuid"]);
@@ -18,11 +19,21 @@ mobiusEngine.unit.dtlController = function($scope,_data) {
 
 	$ctrl.addSection = function(section) {
 		var key = section.toLowerCase();
-		$ctrl.unit[key] = {};
+		if($ctrl.unit[key]) {
+			$ctrl.alerts.push(new mobiusEngine.pageAlerts.alert(section + " already exists!","warning",2000));
+		}
+		else {
+			$ctrl.unit[key] = {};
+			$ctrl.alerts.push(new mobiusEngine.pageAlerts.alert("Created section: " + section,"success",1500));
+		}
 	};
 
 	$ctrl.removeAttribute = function(section,key) {
 		delete section[key];
+	};
+
+	$ctrl.removeSection = function(section) {
+		delete $ctrl.unit[section];
 	};
 };
 
