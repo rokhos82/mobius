@@ -14,7 +14,12 @@ mobiusEngine.unit.dtlController = function($scope,_data) {
 
 	$ctrl.addAttribute = function(section,attribute) {
 		var key = attribute.toLowerCase();
-		section[key] = 0;
+		if($ctrl.unit[section][key]) {
+			$ctrl.alerts.push(new mobiusEngine.pageAlerts.alert(attribute + " already exists in " + section + "!","warning"));
+		}
+		else {
+			$ctrl.unit[section][key] = "";
+		}
 	};
 
 	$ctrl.addSection = function(section) {
@@ -29,7 +34,7 @@ mobiusEngine.unit.dtlController = function($scope,_data) {
 	};
 
 	$ctrl.removeAttribute = function(section,key) {
-		delete section[key];
+		delete $ctrl.unit[section][key];
 	};
 
 	$ctrl.removeSection = function(section) {
