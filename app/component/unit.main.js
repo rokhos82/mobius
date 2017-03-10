@@ -48,7 +48,7 @@ mobiusEngine.unit.validate = function(obj) {
 	return valid;
 };
 
-mobiusEngine.unit.controller = function($scope,_data,$uibModal) {
+mobiusEngine.unit.controller = function($scope,_data,$uibModal,$state) {
 	var $ctrl = this;
 	
 	this.alerts = [];
@@ -91,6 +91,11 @@ mobiusEngine.unit.controller = function($scope,_data,$uibModal) {
 		var u = _data.deleteUnit(uuid);
 		this.units = _data.getAllUnits();
 		this.alerts.push(new mobiusEngine.pageAlerts.alert("Deleted " + u.general.name,"warning",2000));
+	};
+
+	$ctrl.unitDetails = function(uuid) {
+		console.log(uuid);
+		//$state.transitionTo('unitDtl',{uuid:uuid});
 	};
 
 	this.onDeleteAll = function() {
@@ -146,6 +151,6 @@ mobiusEngine.unit.controller = function($scope,_data,$uibModal) {
 
 mobiusEngine.app.component("unitMain",{
 	templateUrl: 'app/component/unit.main.html',
-	controller: ["$scope","mobius.data.unit","$uibModal",mobiusEngine.unit.controller],
+	controller: ["$scope","mobius.data.unit","$uibModal","$state",mobiusEngine.unit.controller],
 	bindings: {}
 });

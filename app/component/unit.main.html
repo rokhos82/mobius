@@ -19,5 +19,5 @@
 			</div>
 		</div>
 	</div>
-	<unit-card unit="unit" delete="$ctrl.deleteUnit(unit.uuid);" ng-repeat="unit in $ctrl.listUnits()"></unit-card>
+	<unit-card unit="unit" delete="$ctrl.deleteUnit(unit.uuid);" detail="$ctrl.unitDetails(unit.uuid);" ng-repeat="unit in $ctrl.listUnits()"></unit-card>
 </div>
