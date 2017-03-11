@@ -43,6 +43,8 @@ mobiusEngine.data.factory = function($rootScope) {
 		"units": {}
 	};
 
+	var _indexed = undefined;
+
 	var _state = {
 		"loaded": false
 	};
@@ -59,6 +61,21 @@ mobiusEngine.data.factory = function($rootScope) {
 		_data.simulations = JSON.parse(localStorage.getItem('mobius.data.simulations')) || {};
 		_data.fleets = JSON.parse(localStorage.getItem('mobius.data.fleets')) || {};
 		_data.units = JSON.parse(localStorage.getItem('mobius.data.units')) || {};
+
+		var unitDBRequest = indexedDB.open("mobius",1);
+		unitDBRequest.onerror = function(event) {
+			console.error("The indexedDB did not open! :(");
+			console.error("Database eroor: " + event.target.errorCode);
+		};
+		unitDBRequest.onsuccess = function(event) {
+			console.log("indexedDB openned successfully! :)");
+			_indexed = event.target.result;
+		};
+		unitDBRequest.onupgradeneeded = function(event) {
+			// Fill this out with initialization code for the database stores.
+			var db = event.target.result;
+		};
+
 		_state.loaded = true;
 	}
 

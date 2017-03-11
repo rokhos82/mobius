@@ -44,7 +44,7 @@
 					<tr><th class="col-md-1">Attribute</th><th class="col-md-10">Value</th><th></th></tr>
 				</thead>
 				<tbody>
-					<tr class="mobius-table-row" ng-repeat="(attr,val) in section"><td class="mobius-attr-cell text-capitalize">{{attr}}</td><td class="mobius-tight-cell"><input type="text" class="form-control mobius-table-control" ng-model="val" /></td><td class="mobius-tight-cell mobius-right-sm"><button class="btn btn-danger mobius-table-button" ng-click="$ctrl.removeAttribute(title,attr)">Remove</button></td></tr>
+					<tr class="mobius-table-row" ng-repeat="(attr,val) in section"><td class="mobius-attr-cell text-capitalize">{{attr}}</td><td class="mobius-tight-cell"><input type="text" class="form-control mobius-table-control" ng-model="section[attr]" /></td><td class="mobius-tight-cell mobius-right-sm"><button class="btn btn-danger mobius-table-button" ng-click="$ctrl.removeAttribute(title,attr)">Remove</button></td></tr>
 				</tbody>
 			</table>
 			<div class="panel-footer"></div>
@@ -67,7 +67,7 @@
 							<tr><th class="col-md-1">Attribute</th><th class="col-md-10">Value</th><th></th></tr>
 						</thead>
 						<tbody>
-							<tr class="mobius-table-row" ng-repeat="(attr,val) in group"><td class="mobius-attr-cell text-capitalize">{{attr}}</td><td class="mobius-tight-cell"><input type="text" class="form-control mobius-table-control" ng-model="val" /></td><td class="mobius-tight-cell mobius-right-sm"><button class="btn btn-danger mobius-table-button" ng-click="$ctrl.removeDirectFireAttribute(groupIndex,attr)">Remove</button></td></tr>
+							<tr class="mobius-table-row" ng-repeat="(attr,val) in group"><td class="mobius-attr-cell text-capitalize">{{attr}}</td><td class="mobius-tight-cell"><input type="text" class="form-control mobius-table-control" ng-model="group[attr]" /></td><td class="mobius-tight-cell mobius-right-sm"><button class="btn btn-danger mobius-table-button" ng-click="$ctrl.removeDirectFireAttribute(groupIndex,attr)">Remove</button></td></tr>
 						</tbody>
 					</table>
 				</div>

@@ -8,6 +8,10 @@ mobiusEngine.unit.dtlController = function($scope,_data) {
 	$ctrl.link = "http://rokhos82.github.io/mobius/#/unit/import/" + btoa(angular.toJson($ctrl.unit));
 	$ctrl.alerts = [];
 
+	$ctrl.$doCheck = function() {
+		console.log("Changes...");
+	};//*/
+
 	$ctrl.sectionFilter = function(value,index,arr) {
 		return _.omit($ctrl.unit,["direct-fire","packet-fire","uuid","combat"]);
 	};
