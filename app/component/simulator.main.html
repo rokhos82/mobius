@@ -1,2 +1,43 @@
-<page-title title="Simulator" message="This is the new environment based simulator"></page-title>
+<page-title title="Simulator" message="This is the new environment based simulator."></page-title>
 <page-alerts alerts="$ctrl.alerts"></page-alerts>
+<div class="row">
+	<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+		<div class="panel">
+			<div class="panel-body">
+				<div class="form-group">
+					<div class="btn-group btn-group-justified">
+						<label class="btn btn-info disabled">Setup</label>
+						<label class="btn btn-warning" ng-click="$ctrl.start()">Start</label>
+						<label class="btn btn-danger disabled">Stop</label>
+						<label class="btn btn-danger disabled">Reset</label>
+						<label class="btn btn-info" ng-click="$ctrl.dump()">Dump</label>
+					</div>
+				</div>
+				<span>Current Simulator State: {{$ctrl.state}}</span>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="row">
+	<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+		<div class="well">
+			<p class="text-warning">Attacking fleet card placeholder.</p>
+		</div>
+	</div>
+	<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+		<div class="well">
+			<p class="text-warning">Defending fleet card placeholder.</p>
+		</div>
+	</div>
+</div>
+<div class="row">
+	<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<h4 class="mobius-title text-info">Simulator Log</h4>
+			</div>
+			<div class="panel-body">
+			</div>
+		</div>
+	</div>
+</div>
