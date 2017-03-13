@@ -22,6 +22,11 @@ mobiusEngine.simulator.controller = function($scope) {
 
 	$ctrl.start = function() {
 		$ctrl.alerts.unshift(new mobiusEngine.pageAlerts.alert("Starting the simulator!","success",3500));
+		$ctrl.state = mobiusEngine.simulator.states.start;
+		$ctrl.worker = new Worker('app/app.simulator.js');
+		$ctrl.worker.onmessage = function(event) {
+			var blob = event.data;
+		};
 	};
 
 	$ctrl.dump = function() {
