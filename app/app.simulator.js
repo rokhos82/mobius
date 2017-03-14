@@ -25,8 +25,8 @@ simulator.defaults = {};
 simulator.defaults.location = {
 	"name": "",
 	"key": "",
-	"up": "",
-	"down": ""
+	"neighbors": {"up":undefined,"down":undefined},
+	"actors": {}
 };
 
 // Location object for the simulator ///////////////////////////////////////////////////////////////
@@ -34,19 +34,16 @@ simulator.location = function(key,name) {
 	// Setup the new object given the parameters.
 	this.key = key;
 	this.name = name;
-	this.neighbors = {
-		up: undefined;
-		down: undefined;
-	};
 
 	// Apply defaults to the object.
 	_.defaults(this,simulator.defaults.location);
 };
 
 // Actor object for the simulator //////////////////////////////////////////////////////////////////
-simulator.actor = function(unit,location) {
+simulator.actor = function(unit,location,environment) {
 	this.unit = unit;
 	this.location = location;
+	this.environment = environment;
 };
 
 simulator.actor.prototype.move = function(options) {
@@ -79,6 +76,17 @@ simulator.actor.prototype.decide = function(options) {
 	}
 	else {
 		console.log("Actor can't decide what to do...");
+	}
+};
+
+// testActor Unit Defintion ------------------------------------------------------------------------
+simulator.testActor = {
+	uuid: "testActor",
+	general: {
+		name: "Test Actor",
+		speed: 1,
+		type: "Starship",
+		size: 6
 	}
 };
 
@@ -136,32 +144,20 @@ simulator.environment = function() {
 	locs["D5"] = new simulator.location("D5","Defender 5");
 	locs["D6"] = new simulator.location("D6","Defender Flee");
 
+	var keys = ["D6","D5","D4","D3","D2","D1","A1","A2","A3","A4","A5","A6"];
+
 	this.battlefield = {};
 
-	this.battlefield["A6"] = locs["A6"];
-	this.battlefield["A6"].neighbors.up = null;
-	this.battlefield["A6"].neighbors.down = locs["A5"];
-
-	this.battlefield["A5"] = locs["A5"];
-	this.battlefield["A5"].neighbors.up = locs["A6"];
-	this.battlefield["A5"].neighbors.down = locs["A4"];
-
-	this.actors = {};
-};
-
-simulator.environment.prototype.addActor = function(unit,location) {
-	if(unit.uuid) {
-		console.log("Adding actor to environment...");
-		var actor = new simulator.actor(unit,location);
-		this.actors[unit.uuid] = actor;
+	for(var i in keys) {
+		var index = parseInt(i);
+		var key = keys[index];
+		var up = keys[index+1];
+		var down = keys[index-1];
+		this.battlefield[key] = locs[key];
+		this.battlefield[key].neighbors.up = locs[up];
+		this.battlefield[key].neighbors.down = locs[down];
+		console.log("Building battlefield location " + key);
 	}
-	else {
-		console.error("Unable to add actor to environment.  No UUID in unit object.")
-	}
-};
-
-simulator.environment.prototype.getActors = function() {
-	return this.actors;
 };
 
 // Simulator Engine ////////////////////////////////////////////////////////////////////////////////
@@ -169,6 +165,7 @@ simulator.engine = function(blob) {
 	console.log("Building the engine object...");
 	this.fleets = blob.fleets;
 	this.options = blob.options;
+	this.actors = {};
 	this.init();
 };
 simulator.engine.prototype.run = function() {
@@ -177,7 +174,7 @@ simulator.engine.prototype.run = function() {
 	var count = 1;
 	while(count <= 3) {
 		console.log("Tick: " + count);
-		var actors = this.environment.getActors();
+		var actors = this.actors;
 		for(var uuid in actors) {
 			var actor = actors[uuid];
 			actor.decide();
@@ -191,7 +188,11 @@ simulator.engine.prototype.run = function() {
 simulator.engine.prototype.init = function() {
 	console.log("Initializing the simulation...");
 	this.environment = new simulator.environment();
-	this.environment.addActor({uuid:"testActor"},"D1");
+	this.addActor(simulator.testActor,"D1");
+};
+simulator.engine.prototype.addActor = function(unit,location) {
+	console.log("Adding actor " + unit.uuid);
+	this.actors[unit.uuid] = new simulator.actor(unit,location,this.environment);
 };
 
 // Simulator Bootstrap and Message Passing Callback ////////////////////////////////////////////////
