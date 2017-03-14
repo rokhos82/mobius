@@ -21,12 +21,23 @@ mobiusEngine.simulator.controller = function($scope) {
 	$ctrl.state = undefined;
 
 	$ctrl.start = function() {
+		console.log("Starting simulator worker thread...");
 		$ctrl.alerts.unshift(new mobiusEngine.pageAlerts.alert("Starting the simulator!","success",3500));
 		$ctrl.state = mobiusEngine.simulator.states.start;
 		$ctrl.worker = new Worker('app/app.simulator.js');
 		$ctrl.worker.onmessage = function(event) {
 			var blob = event.data;
 		};
+		$ctrl.worker.postMessage({});
+	};
+
+	$ctrl.stop = function() {
+		console.log("Stoping the simulator worker thread...");
+		$ctrl.alerts.unshift(new mobiusEngine.pageAlerts.alert("Stoping the simulator!","danger"));
+		if($ctrl.worker) {
+			$ctrl.worker.terminate();
+			$ctrl.worker = undefined;
+		}
 	};
 
 	$ctrl.dump = function() {
