@@ -22,7 +22,7 @@ mobiusEngine.simulator.controller = function($scope) {
 
 	$ctrl.start = function() {
 		console.log("Starting simulator worker thread...");
-		$ctrl.alerts.unshift(new mobiusEngine.pageAlerts.alert("Starting the simulator!","success",3500));
+		$ctrl.alerts.unshift(new mobius.templates.alert("Starting the simulator!","success",3500));
 		$ctrl.state = mobiusEngine.simulator.states.start;
 		$ctrl.worker = new Worker('app/app.simulator.js');
 		$ctrl.worker.onmessage = function(event) {
@@ -33,7 +33,7 @@ mobiusEngine.simulator.controller = function($scope) {
 
 	$ctrl.stop = function() {
 		console.log("Stoping the simulator worker thread...");
-		$ctrl.alerts.unshift(new mobiusEngine.pageAlerts.alert("Stoping the simulator!","danger"));
+		$ctrl.alerts.unshift(new mobius.templates.alert("Stoping the simulator!","danger"));
 		if($ctrl.worker) {
 			$ctrl.worker.terminate();
 			$ctrl.worker = undefined;
@@ -41,7 +41,7 @@ mobiusEngine.simulator.controller = function($scope) {
 	};
 
 	$ctrl.dump = function() {
-		$ctrl.alerts.unshift(new mobiusEngine.pageAlerts.alert("Successfully dumped data to console log.","info",2000));
+		$ctrl.alerts.unshift(new mobius.templates.alert("Successfully dumped data to console log.","info",2000));
 	};
 
 	$ctrl.$onInit = function() {
