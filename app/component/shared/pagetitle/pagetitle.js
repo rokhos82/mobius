@@ -7,7 +7,7 @@ mobiusEngine.pageTitle.controller = function($scope) {
 };
 
 mobiusEngine.app.component("pageTitle",{
-	template: '<div class="jumbotron"><h3 class="mobius-title text-shadow-info">{{$ctrl.title}}</h3><p>{{$ctrl.message}}</p></div>',
+	templateUrl: 'app/component/shared/pagetitle/pagetitle.html',
 	controller: ["$scope",mobiusEngine.pageTitle.controller],
 	bindings: {
 		title: "@",
