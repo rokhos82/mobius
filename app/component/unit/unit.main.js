@@ -150,7 +150,7 @@ mobiusEngine.unit.controller = function($scope,_data,$uibModal,$state) {
 };
 
 mobiusEngine.app.component("unitMain",{
-	templateUrl: 'app/component/unit.main.html',
+	templateUrl: 'app/component/unit/unit.main.html',
 	controller: ["$scope","mobius.data.unit","$uibModal","$state",mobiusEngine.unit.controller],
 	bindings: {}
 });

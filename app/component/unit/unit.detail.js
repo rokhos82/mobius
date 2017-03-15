@@ -66,7 +66,7 @@ mobiusEngine.unit.dtlController = function($scope,_data) {
 };
 
 mobiusEngine.app.component("unitDetail",{
-	templateUrl: 'app/component/unit.detail.html',
+	templateUrl: 'app/component/unit/unit.detail.html',
 	controller: ["$scope","mobius.data.unit",mobiusEngine.unit.dtlController],
 	bindings: {
 		uuid: "<"
