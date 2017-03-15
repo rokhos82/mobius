@@ -50,7 +50,7 @@ mobiusEngine.simulator.controller = function($scope) {
 };
 
 mobiusEngine.app.component("simulatorMain",{
-	templateUrl: 'app/component/simulator.main.html',
+	templateUrl: 'app/component/simulator/simulator.main.html',
 	controller: ["$scope",mobiusEngine.simulator.controller],
 	bindings: {}
 });
