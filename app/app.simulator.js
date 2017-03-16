@@ -39,7 +39,7 @@ simulator.location = function(key,name) {
 	this.name = name;
 
 	// Apply defaults to the object.
-	_.defaults(this,simulator.defaults.location);
+	_.defaults(this,_.deep(simulator.defaults.location));
 };
 
 // Actor object for the simulator //////////////////////////////////////////////////////////////////
@@ -50,43 +50,60 @@ simulator.actor = function(unit,location,environment) {
 };
 
 simulator.actor.prototype.move = function(options) {
-	console.log("Actor is moving...");
-	var m = {
-		speed: 0,
-		direction: ""
-	};
-	if(options.flee) {
-		// move faster
-		m.speed = 2;
+	var $actor = this;
+	
+	var directions = ["up","down"];
+	var direction = _.sample(directions);
+	console.log($actor.unit.general.name + " is moving " + direction);
+
+	var speed = $actor.unit.general.speed;
+	console.log($actor.unit.general.name + " has a speed of " + speed);
+	for(var i = 0;i < speed;i++) {
+		var loc = $actor.location.neighbors[direction];
+		if(loc) {
+			var key = $actor.unit.uuid;
+			delete $actor.location.actors[key];
+			$actor.location = loc;
+			$actor.location.actors[key] = $actor;
+		}
 	}
-	else{
-		// otherwise, move slower
-		m.speed = 1;
-	}
-	m.direction = _.sample(["up","down"]);
-	console.log(m);
+
+	console.log($actor.unit.general.name + " is now at " + $actor.location.name);
 };
 
+simulator.actor.prototype.fire = function(options) {};
+
 simulator.actor.prototype.decide = function(options) {
-	console.log("Actor is deciding what to do...");
-	var actions = ["move","flee"];
+	var $actor = this;
+	console.log($actor.unit.general.name + " is deciding what to do...");
+	console.log($actor.unit.general.name + " is at " + $actor.location.name);
+
+	// Decide what optional action to make
+	var actions = ["move"];
 	var action = _.sample(actions);
 	if(action === "move") {
 		this.move({flee:false});
 	}
-	else if(action === "flee") {
-		this.move({flee:true});
-	}
-	else {
-		console.log("Actor can't decide what to do...");
-	}
+
+	// Perform the default move action
+	this.move({flee:false});
 };
 
 // testActor Unit Defintion ------------------------------------------------------------------------
-simulator.testActor = {
-	uuid: "testActor",
+simulator.testRed = {
+	uuid: "testRed",
 	general: {
-		name: "Test Actor",
+		name: "Test Red",
+		speed: 1,
+		type: "Starship",
+		size: 6
+	}
+};
+
+simulator.testBlue = {
+	uuid: "testBlue",
+	general: {
+		name: "Test Blue",
 		speed: 1,
 		type: "Starship",
 		size: 6
@@ -162,10 +179,14 @@ simulator.environment = function() {
 		var up = keys[index+1];
 		var down = keys[index-1];
 		this.battlefield[key] = locs[key];
-		this.battlefield[key].neighbors.up = locs[up];
-		this.battlefield[key].neighbors.down = locs[down];
-		console.log("Building battlefield location " + key);
+		this.battlefield[key].neighbors.up = _.isUndefined(up) ? undefined : locs[up];
+		this.battlefield[key].neighbors.down = _.isUndefined(down) ? undefined : locs[down];
+		console.log("Building battlefield location " + key + " up is " + up + " and down is " + down);
 	}
+};
+
+simulator.environment.prototype.getLocation = function(key) {
+	return this.battlefield[key];
 };
 
 // Simulator Engine ////////////////////////////////////////////////////////////////////////////////
@@ -183,16 +204,18 @@ simulator.engine = function(blob) {
 
 // run - Begin the simulation ----------------------------------------------------------------------
 simulator.engine.prototype.run = function() {
+	$engine = this;
 	console.log("Running the simulation...");
 
 	var count = 1;
-	while(count <= 3) {
+	while(count <= 5) {
 		console.log("Tick: " + count);
-		var actors = this.actors;
+		var actors = $engine.actors;
 		for(var uuid in actors) {
 			var actor = actors[uuid];
 			actor.decide();
 		}
+		self.postMessage($engine.environment);
 		count++;
 	}
 
@@ -206,13 +229,14 @@ simulator.engine.prototype.init = function() {
 
 	// Creat the environment and add the test actor.
 	this.environment = new simulator.environment();
-	this.addActor(simulator.testActor,"D1");
+	this.addActor(simulator.testRed,"D1");
+	this.addActor(simulator.testBlue,"A1");
 };
 
 // addActor - adds an actor to the simulation ------------------------------------------------------
 simulator.engine.prototype.addActor = function(unit,location) {
 	console.log("Adding actor " + unit.uuid);
-	this.actors[unit.uuid] = new simulator.actor(unit,location,this.environment);
+	this.actors[unit.uuid] = new simulator.actor(unit,this.environment.getLocation(location),this.environment);
 };
 
 // Simulator Bootstrap and Message Passing Callback ////////////////////////////////////////////////

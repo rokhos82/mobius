@@ -19,6 +19,7 @@ mobiusEngine.simulator.controller = function($scope) {
 
 	$ctrl.alerts = [];
 	$ctrl.state = undefined;
+	$ctrl.ticks = [];
 
 	$ctrl.start = function() {
 		console.log("Starting simulator worker thread...");
@@ -27,6 +28,8 @@ mobiusEngine.simulator.controller = function($scope) {
 		$ctrl.worker = new Worker('app/app.simulator.js');
 		$ctrl.worker.onmessage = function(event) {
 			var blob = event.data;
+			$ctrl.ticks.push(blob);
+			console.log(blob);
 		};
 		$ctrl.worker.postMessage({});
 	};
