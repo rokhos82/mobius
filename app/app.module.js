@@ -86,6 +86,13 @@ mobiusEngine.app.config(['$compileProvider','$stateProvider','$locationProvider'
             }
         };
 
+        var simulator = {
+            name: 'simulator',
+            url: '/simulator',
+            component: 'simulatorMain',
+            resolve: {}
+        };
+
         $stateProvider.state(defaultState);
         $stateProvider.state(combatState);
         $stateProvider.state(fleetState);
@@ -95,4 +102,5 @@ mobiusEngine.app.config(['$compileProvider','$stateProvider','$locationProvider'
         $stateProvider.state(unitDetail);
         $stateProvider.state(reportState);
         $stateProvider.state(reportDtlState);
+        $stateProvider.state(simulator);
 }]);

@@ -50,7 +50,7 @@ mobiusEngine.fleet.controller = function($scope,_data) {
 // Mobius Main Fleet Component
 ////////////////////////////////////////////////////////////////////////////////////////////////
 mobiusEngine.app.component("fleetMain",{
-	templateUrl: 'app/component/fleet.main.html',
+	templateUrl: 'app/component/fleet/fleet.main.html',
 	controller: ["$scope","mobius.data.fleet",mobiusEngine.fleet.controller],
 	bindings: {}
 });

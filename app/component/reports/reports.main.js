@@ -1,24 +1,27 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////
 // Mobius Main Reports Namespace
 ////////////////////////////////////////////////////////////////////////////////////////////////
-mobiusEngine.report.detail = {};
+mobiusEngine.report = {};
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
 // Mobius Main Reports Controller
 ////////////////////////////////////////////////////////////////////////////////////////////////
-mobiusEngine.report.detail.controller = function($scope,$log,_data) {
-	this.report = _data.getSimulation(this.uuid);
+mobiusEngine.report.controller = function($scope,$log,_data) {
+	this.simulations = _data.getSimulation();
 
-	this.keys = function(obj) {return _.keys(obj);};
+	this.getSimulation = _data.getSimulation;
+	
+	this.deleteSimulation = function(key) {
+		_data.deleteSimulation(key);
+		this.simulations = _data.getSimulation();
+	};
 };
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
 // Mobius Main Reports Component
 ////////////////////////////////////////////////////////////////////////////////////////////////
-mobiusEngine.app.component("reportsDetail",{
-	templateUrl: 'app/component/reports.detail.html',
-	controller: ["$scope","$log","mobius.data.simulation",mobiusEngine.report.detail.controller],
-	bindings: {
-		uuid: "<"
-	}
+mobiusEngine.app.component("reportsMain",{
+	templateUrl: 'app/component/reports/reports.main.html',
+	controller: ["$scope","$log","mobius.data.simulation",mobiusEngine.report.controller],
+	bindings: {}
 });

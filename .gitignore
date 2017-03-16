@@ -49,3 +49,5 @@ Temporary Items
 # Sublime Text
 *.sublime-project
 *.sublime-workspace
+
+debug.log
