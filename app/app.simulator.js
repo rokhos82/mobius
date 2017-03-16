@@ -1,6 +1,7 @@
 // Import any required library's ///////////////////////////////////////////////////////////////////
 self.importScripts("../js/underscore.js");
 
+// Add aditional functions to underscorejs ---------------------------------------------------------
 _.mixin({
 	"deep":function(object){
 		return JSON.parse(JSON.stringify(object));
@@ -22,6 +23,8 @@ var simulator = {};
 
 // Default objects for the simulator ///////////////////////////////////////////////////////////////
 simulator.defaults = {};
+
+// Default keys and values for a location object ---------------------------------------------------
 simulator.defaults.location = {
 	"name": "",
 	"key": "",
@@ -130,6 +133,7 @@ simulator.testActor = {
 simulator.environment = function() {
 	console.log("Building the environment object...");
 	
+	// Setup objects for the environment's battlefield.
 	var locs = {};
 	locs["A6"] = new simulator.location("A6","Attacker Flee");
 	locs["A5"] = new simulator.location("A5","Attacker 5");
@@ -146,8 +150,12 @@ simulator.environment = function() {
 
 	var keys = ["D6","D5","D4","D3","D2","D1","A1","A2","A3","A4","A5","A6"];
 
+	// Setup the battlefield location dictionary.
 	this.battlefield = {};
 
+	// Setup the links to the locations neighbor objects.
+	// Links are to objects rather than keys to facilitate easier
+	// walking of the environment structure by simulation actors.
 	for(var i in keys) {
 		var index = parseInt(i);
 		var key = keys[index];
@@ -163,11 +171,17 @@ simulator.environment = function() {
 // Simulator Engine ////////////////////////////////////////////////////////////////////////////////
 simulator.engine = function(blob) {
 	console.log("Building the engine object...");
+	
+	// Initlialize the fleets and simulation options from the passed object.
 	this.fleets = blob.fleets;
 	this.options = blob.options;
 	this.actors = {};
+
+	// Initialize any other items for the simulation engine.
 	this.init();
 };
+
+// run - Begin the simulation ----------------------------------------------------------------------
 simulator.engine.prototype.run = function() {
 	console.log("Running the simulation...");
 
@@ -185,11 +199,17 @@ simulator.engine.prototype.run = function() {
 	console.log("Simulation has eneded.  Terminating worker thread.");
 	self.close();
 };
+
+// init - Initialize the simulation engine ---------------------------------------------------------
 simulator.engine.prototype.init = function() {
 	console.log("Initializing the simulation...");
+
+	// Creat the environment and add the test actor.
 	this.environment = new simulator.environment();
 	this.addActor(simulator.testActor,"D1");
 };
+
+// addActor - adds an actor to the simulation ------------------------------------------------------
 simulator.engine.prototype.addActor = function(unit,location) {
 	console.log("Adding actor " + unit.uuid);
 	this.actors[unit.uuid] = new simulator.actor(unit,location,this.environment);
