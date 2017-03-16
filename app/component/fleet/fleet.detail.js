@@ -47,7 +47,7 @@ mobiusEngine.fleet.dtlController = function($scope,_fdata,_udata) {
 // Mobius Fleet Detail Component
 ////////////////////////////////////////////////////////////////////////////////////////////////
 mobiusEngine.app.component("fleetDetail",{
-	templateUrl: 'app/component/fleet.detail.html',
+	templateUrl: 'app/component/fleet/fleet.detail.html',
 	controller: ["$scope","mobius.data.fleet","mobius.data.unit",mobiusEngine.fleet.dtlController],
 	bindings: {
 		uuid: "<"

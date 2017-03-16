@@ -8,8 +8,12 @@ mobiusEngine.unit.dtlController = function($scope,_data) {
 	$ctrl.link = "http://rokhos82.github.io/mobius/#/unit/import/" + btoa(angular.toJson($ctrl.unit));
 	$ctrl.alerts = [];
 
+	$ctrl.$doCheck = function() {
+		console.log("Changes...");
+	};//*/
+
 	$ctrl.sectionFilter = function(value,index,arr) {
-		return _.omit($ctrl.unit,["direct-fire","packet-fire","uuid"]);
+		return _.omit($ctrl.unit,["direct-fire","packet-fire","uuid","combat"]);
 	};
 
 	$ctrl.addAttribute = function(section,attribute) {
@@ -40,10 +44,29 @@ mobiusEngine.unit.dtlController = function($scope,_data) {
 	$ctrl.removeSection = function(section) {
 		delete $ctrl.unit[section];
 	};
+
+	// Direct Fire Weapons Groups ------------------------------------------------------------------
+	$ctrl.hasDirectFire = function() {
+		return ($ctrl.unit["direct-fire"].length > 0);
+	};
+
+	$ctrl.directFireGroups = function() {
+		return $ctrl.unit["direct-fire"];
+	};
+
+	$ctrl.removeDirectFireGroup = function(group) {};
+
+	$ctrl.removeDirectFireAttribute = function(group,attr) {
+		console.log($ctrl.unit["direct-fire"][group],attr);
+	};
+
+	$ctrl.addDirectFireGroup = function() {
+		$ctrl.unit["direct-fire"].push(angular.copy(mobiusEngine.data.defaults.directFireGroup));
+	};
 };
 
 mobiusEngine.app.component("unitDetail",{
-	templateUrl: 'app/component/unit.detail.html',
+	templateUrl: 'app/component/unit/unit.detail.html',
 	controller: ["$scope","mobius.data.unit",mobiusEngine.unit.dtlController],
 	bindings: {
 		uuid: "<"
