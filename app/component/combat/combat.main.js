@@ -37,7 +37,7 @@ mobiusEngine.combat.messageTypes = {
 mobiusEngine.combat.controller = function($scope,$log,_data,_fleets) {
 	var $ctrl = this;
 	$ctrl.alerts = [];
-	this.combat = {
+	$ctrl.combat = {
 		logs: [],
 		state: mobiusEngine.combat.states.reset,
 		states: mobiusEngine.combat.states,
@@ -47,13 +47,13 @@ mobiusEngine.combat.controller = function($scope,$log,_data,_fleets) {
 	};
 
 	// Placeholder for the log file text download button
-	this.download = "";
+	$ctrl.download = "";
 
 	// Placeholder for the Web Worker object
-	this.worker = undefined;
+	$ctrl.worker = undefined;
 
 	// UI state variables
-	this.states = {
+	$ctrl.states = {
 		unitTables: {
 			attacker: false,
 			defender: false
@@ -62,13 +62,13 @@ mobiusEngine.combat.controller = function($scope,$log,_data,_fleets) {
 	};
 
 	// Data structure for imported fleets.
-	this.fleets = {
+	$ctrl.fleets = {
 		attacker: {},
 		defender: {}
 	};
 
 	// Alert Messages --------------------------------------------------------------------------
-	this.alerts = [
+	$ctrl.alerts = [
 		{type:"danger",msg:"Reserved keywords: skip"},
 		{type:"warning",msg:"Only the following tags currently work: short, sticky, reserve, ammo, long, deflect"},
 		{type:"info",msg:"short: expects a number of turns that the weapon cannot fire after the unit has entered combat."},
@@ -79,115 +79,114 @@ mobiusEngine.combat.controller = function($scope,$log,_data,_fleets) {
 	];
 
 	// Close an individual alert by removing if from the list
-	this.closeAlert = function(index) {
-		this.alerts.splice(index,1);
+	$ctrl.closeAlert = function(index) {
+		$ctrl.alerts.splice(index,1);
 	};
 
 	// onPrepare
-	this.onPrepare = function() {};
+	$ctrl.onPrepare = function() {};
 
 	// onReady
-	this.onReady = function() {};
+	$ctrl.onReady = function() {};
 
 	// onRun
-	this.onRun = function() {};
+	$ctrl.onRun = function() {};
 
 	// onFinished
-	this.onFinished = function() {};
+	$ctrl.onFinished = function() {};
 
 	// onSave
-	this.onSave = function() {
+	$ctrl.onSave = function() {
 		var sim = _data.newSimulation();
 
-		sim.name = this.combat.name;
-		sim.uuid = this.combat.uuid;
-		sim.logs = this.combat.logs;
-		sim.summary = this.combat.summary;
+		sim.name = $ctrl.combat.name;
+		sim.uuid = $ctrl.combat.uuid;
+		sim.logs = $ctrl.combat.logs;
+		sim.summary = $ctrl.combat.summary;
 
 		_data.addSimulation(sim);
 	};
 
 	// Create the web worker object and start the combat simulation.
-	this.startCombat = function() {
-		var self = this;
-		this.combat.state = mobiusEngine.combat.states.started;
-		this.worker = new Worker("app/app.worker.js");
-		this.worker.onmessage = function(event) {
+	$ctrl.startCombat = function() {
+		$ctrl.combat.state = mobiusEngine.combat.states.started;
+		$ctrl.worker = new Worker("app/app.worker.js");
+		$ctrl.worker.onmessage = function(event) {
 			var msg = event.data;
 			if(msg.type === "entry") {
-				self.combat.logs.push(msg.entry);
+				$ctrl.combat.logs.push(msg.entry);
 			}
 			else if(msg.type === "summary") {
-				self.combat.summary = msg.summary;
-				self.stopCombat();
+				$ctrl.combat.summary = msg.summary;
+				$ctrl.stopCombat();
 				$scope.$apply();
 			}
 		};
 		var critTable = localStorage.critTable ? localStorage.critTable : {};
-		this.worker.postMessage(this.fleets);
+		$ctrl.worker.postMessage($ctrl.fleets);
 		$log.log("Starting Combat!");
 	};
 
 	// Terminate the web worker thread.  This does not reset the combat engine.
-	this.stopCombat = function() {
-		this.combat.state = mobiusEngine.combat.states.stopped;
-		this.worker.terminate();
-		this.worker = undefined;
+	$ctrl.stopCombat = function() {
+		$ctrl.combat.state = mobiusEngine.combat.states.stopped;
+		$ctrl.worker.terminate();
+		$ctrl.worker = undefined;
 		$log.log("Stopping Combat!");
 	};
 
 	// Reset the combat engine to the "ready" state.
-	this.clearCombat = function() {
-		this.combat.state = mobiusEngine.combat.states.reset;
-		if(!_.isUndefined(this.worker)) {
-			this.stopCombat();
+	$ctrl.clearCombat = function() {
+		$ctrl.combat.state = mobiusEngine.combat.states.reset;
+		if(!_.isUndefined($ctrl.worker)) {
+			$ctrl.stopCombat();
 		}
-		this.combat.logs.length = 0;
-		this.combat.uuid = window.uuid.v4();
+		$ctrl.combat.logs.length = 0;
+		$ctrl.combat.uuid = window.uuid.v4();
 		$log.log("Clearing Combat!");
 	};
 
 	// Import attacking fleet
-	this.importAttacker = function() {
+	$ctrl.importAttacker = function() {
 		$log.log("Importing attacking fleet!");
-		var obj = JSON.parse(this.import.attacker);
-		this.fleets.attacker.name = obj.name;
-		this.fleets.attacker.faction = obj.faction;
-		this.fleets.attacker.breakoff = obj.breakoff;
-		this.fleets.attacker.units = obj.units;
-		this.fleets.attacker.combat = {};
-		this.fleets.attacker.combat.unitCount = _.keys(obj.units).length;
+		var obj = JSON.parse($ctrl.import.attacker);
+		$ctrl.fleets.attacker.name = obj.name;
+		$ctrl.fleets.attacker.faction = obj.faction;
+		$ctrl.fleets.attacker.breakoff = obj.breakoff;
+		$ctrl.fleets.attacker.units = obj.units;
+		$ctrl.fleets.attacker.combat = {};
+		$ctrl.fleets.attacker.combat.unitCount = _.keys(obj.units).length;
 	};
 
 	// Delete the attacking fleet
-	this.clearAttacker = function() {
+	$ctrl.clearAttacker = function() {
 		$log.log("Clearing attacking fleet!");
-		delete this.fleets.attacker;
-		this.fleets.attacker = {};
+		delete $ctrl.fleets.attacker;
+		$ctrl.fleets.attacker = {};
 	}
 
 	// Import defending fleet
-	this.importDefender = function() {
+	$ctrl.importDefender = function() {
 		$log.log("Importing defending fleet!");
-		var obj = JSON.parse(this.import.defender);
-		this.fleets.defender.name = obj.name;
-		this.fleets.defender.faction = obj.faction;
-		this.fleets.defender.breakoff = obj.breakoff;
-		this.fleets.defender.units = obj.units;
-		this.fleets.defender.combat = {};
-		this.fleets.defender.combat.unitCount = _.keys(obj.units).length;
+		var obj = JSON.parse($ctrl.import.defender);
+		$ctrl.fleets.defender.name = obj.name;
+		$ctrl.fleets.defender.faction = obj.faction;
+		$ctrl.fleets.defender.breakoff = obj.breakoff;
+		$ctrl.fleets.defender.units = obj.units;
+		$ctrl.fleets.defender.combat = {};
+		$ctrl.fleets.defender.combat.unitCount = _.keys(obj.units).length;
 	};
 
 	// Delete the defending fleet
-	this.clearDefender = function() {
+	$ctrl.clearDefender = function() {
 		$log.log("Clearing defending fleet!");
-		delete this.fleets.defender;
-		this.fleets.defender = {};
+		delete $ctrl.fleets.defender;
+		$ctrl.fleets.defender = {};
 	};
 
 	// Ready the UI state objects
-	this.initTurnState = function(turn) {
-		this.states.logs[turn] = {
+	$ctrl.initTurnState = function(turn) {
+		$ctrl.states.logs[turn] = {
 			fleets: {
 				attacker: {
 					units: []
@@ -200,31 +199,31 @@ mobiusEngine.combat.controller = function($scope,$log,_data,_fleets) {
 	};
 
 	// Initialize the view state of a log table
-	this.initLogTableState = function(turn,fleet,unit) {
-		this.states.logs[turn].fleets[fleet].units[unit] = false;
+	$ctrl.initLogTableState = function(turn,fleet,unit) {
+		$ctrl.states.logs[turn].fleets[fleet].units[unit] = false;
 	};
 
 	// Toggle the view state of a log table
-	this.toggleLogTableState = function(turn,fleet,unit) {
-		this.states.logs[turn].fleets[fleet].units[unit] = !this.states.logs[turn].fleets[fleet].units[unit];
+	$ctrl.toggleLogTableState = function(turn,fleet,unit) {
+		$ctrl.states.logs[turn].fleets[fleet].units[unit] = !$ctrl.states.logs[turn].fleets[fleet].units[unit];
 	};
 
 	// Return the view state of a log table
-	this.getLogTableState = function(turn,fleet,unit) {
-		return this.states.logs[turn].fleets[fleet].units[unit];
+	$ctrl.getLogTableState = function(turn,fleet,unit) {
+		return $ctrl.states.logs[turn].fleets[fleet].units[unit];
 	};
 
 	// Dump the log object to the console.
-	this.dumpLogs = function() {
-		console.log(this.combat.logs);
+	$ctrl.dumpLogs = function() {
+		console.log($ctrl.combat.logs);
 	}
 
 	// Download the JSON string of the logs as a text file.
-	this.downloadLogs = function() {
-		this.download = 'data:application/octet-stream;charset=utf-8;base64,' + btoa(JSON.stringify(this.combat.logs));
+	$ctrl.downloadLogs = function() {
+		$ctrl.download = 'data:application/octet-stream;charset=utf-8;base64,' + btoa(JSON.stringify($ctrl.combat.logs));
 	};
 
-	this.getAllFleets = function() {
+	$ctrl.getAllFleets = function() {
 		var keys = _fleets.getAllFleets();
 		var flts = {};
 		_.each(keys,function(key) {
