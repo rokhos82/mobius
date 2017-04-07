@@ -22,8 +22,9 @@ mobiusEngine.simulator.controller = function($scope) {
 	$ctrl.ticks = [];
 
 	$ctrl.start = function() {
-		console.log("Starting simulator worker thread...");
-		$ctrl.alerts.unshift(new mobius.templates.alert("Starting the simulator!","success",3500));
+		var uuid = window.uuid.v4();
+		console.log("Starting simulator worker thread for " + uuid);
+		$ctrl.alerts.unshift(new mobius.templates.alert("Starting the simulator!","success",1500));
 		$ctrl.state = mobiusEngine.simulator.states.start;
 		$ctrl.worker = new Worker('app/app.simulator.js');
 		$ctrl.worker.onmessage = function(event) {
@@ -31,7 +32,7 @@ mobiusEngine.simulator.controller = function($scope) {
 			$ctrl.ticks.push(blob);
 			console.log(blob);
 		};
-		$ctrl.worker.postMessage({});
+		$ctrl.worker.postMessage({"uuid":uuid});
 	};
 
 	$ctrl.stop = function() {

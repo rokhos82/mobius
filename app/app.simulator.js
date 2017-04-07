@@ -293,6 +293,7 @@ simulator.engine = function(blob) {
 	// Initlialize the fleets and simulation options from the passed object.
 	this.fleets = blob.fleets;
 	this.options = blob.options;
+	this.uuid = blob.uuid;
 	this.actors = {};
 
 	// Initialize any other items for the simulation engine.
