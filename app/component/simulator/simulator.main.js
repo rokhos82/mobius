@@ -43,6 +43,11 @@ mobiusEngine.simulator.controller = function($scope) {
 		}
 	};
 
+	$ctrl.reset = function() {
+		$ctrl.alerts.unshift(new mobius.templates.alert("Reseting the simulator!","warning",1500));
+		$ctrl.ticks.length = 0;
+	};
+
 	$ctrl.dump = function() {
 		$ctrl.alerts.unshift(new mobius.templates.alert("Successfully dumped data to console log.","info",2000));
 	};
