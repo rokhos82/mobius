@@ -37,7 +37,7 @@
 				<h4 class="mobius-title text-info">Simulator Log</h4>
 			</div>
 			<div class="panel-body">
-				<div class="well well-sm" ng-repeat="tick in $ctrl.ticks"><p ng-repeat="location in tick.battlefield">{{location.name}} -<span ng-repeat="actor in location.actors"> [{{actor.unit.general.name}}]</span></p></div>
+				<div class="well well-sm" ng-repeat="tick in $ctrl.ticks"><p ng-repeat="location in tick.battlefield">{{location.name}} [{{location.faction}}] -<span ng-repeat="actor in location.actors"> [{{actor.unit.general.name}}]</span></p></div>
 			</div>
 		</div>
 	</div>

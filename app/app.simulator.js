@@ -29,7 +29,7 @@ simulator.defaults.location = {
 	"name": "",
 	"key": "",
 	"neighbors": {"up":undefined,"down":undefined},
-	"actors": {}
+	"actors": []
 };
 
 // Location object for the simulator ///////////////////////////////////////////////////////////////
@@ -88,6 +88,10 @@ simulator.actor.prototype.decide = function(options) {
 // testActor Unit Defintion ------------------------------------------------------------------------
 simulator.testRed = {
 	uuid: "testRed",
+	simulator: {
+		faction: "Red",
+		location: "D3"
+	},
 	general: {
 		name: "Test Red",
 		speed: 1,
@@ -98,6 +102,10 @@ simulator.testRed = {
 
 simulator.testRed2 = {
 	uuid: "testRed2",
+	simulator: {
+		faction: "Red",
+		location: "D3"
+	},
 	general: {
 		name: "Test Red 2",
 		speed: 1,
@@ -108,6 +116,10 @@ simulator.testRed2 = {
 
 simulator.testRed3 = {
 	uuid: "testRed3",
+	simulator: {
+		faction: "Red",
+		location: "D3"
+	},
 	general: {
 		name: "Test Red 3",
 		speed: 1,
@@ -118,6 +130,10 @@ simulator.testRed3 = {
 
 simulator.testBlue = {
 	uuid: "testBlue",
+	simulator: {
+		faction: "Blue",
+		location: "A3"
+	},
 	general: {
 		name: "Test Blue",
 		speed: 1,
@@ -128,6 +144,10 @@ simulator.testBlue = {
 
 simulator.testBlue2 = {
 	uuid: "testBlue2",
+	simulator: {
+		faction: "Blue",
+		location: "A3"
+	},
 	general: {
 		name: "Test Blue 2",
 		speed: 1,
@@ -138,6 +158,10 @@ simulator.testBlue2 = {
 
 simulator.testBlue3 = {
 	uuid: "testBlue3",
+	simulator: {
+		faction: "Blue",
+		location: "A3"
+	},
 	general: {
 		name: "Test Blue 3",
 		speed: 1,
@@ -236,10 +260,10 @@ simulator.environment.prototype.move = function(actor,direction) {
 		var faction = newLoc.faction || actor.faction;
 		if(faction === actor.faction) {
 			// The location exists and matches the actor's faction.  Proceed with the move.
-			var key = actor.unit.uuid;
-			delete location.actors[key];
+			var index = location.actors.indexOf(actor);
+			location.actors.splice(index,1);
 			actor.location = newLoc;
-			newLoc.actors[key] = actor;
+			newLoc.actors.push(actor);
 
 			// Set the new location faction incase the faction is unset.
 			newLoc.faction = actor.faction;
@@ -257,9 +281,8 @@ simulator.environment.prototype.move = function(actor,direction) {
 // Initially place an actor in the environment.
 simulator.environment.prototype.placeActor = function(actor) {
 	var location = actor.location;
-	var key = actor.unit.uuid;
 	var faction = location.faction;
-	location.actors[key] = actor;
+	location.actors.push(actor);
 	location.faction = actor.faction;
 };
 
@@ -306,18 +329,20 @@ simulator.engine.prototype.init = function() {
 
 	// Creat the environment and add the test actor.
 	this.environment = new simulator.environment();
-	this.addActor(simulator.testRed,"D3","Red");
-	this.addActor(simulator.testRed2,"D3","Red");
-	this.addActor(simulator.testRed3,"D3","Red");
-	this.addActor(simulator.testBlue,"A3","Blue");
-	this.addActor(simulator.testBlue2,"A3","Blue");
-	this.addActor(simulator.testBlue3,"A3","Blue");
+	this.addActor(simulator.testRed);
+	this.addActor(simulator.testRed2);
+	this.addActor(simulator.testRed3);
+	this.addActor(simulator.testBlue);
+	this.addActor(simulator.testBlue2);
+	this.addActor(simulator.testBlue3);
 };
 
 // addActor - adds an actor to the simulation ------------------------------------------------------
-simulator.engine.prototype.addActor = function(unit,location,faction) {
+simulator.engine.prototype.addActor = function(unit) {
 	console.log("Adding actor " + unit.uuid);
 	$simulator = this;
+	var location = unit.simulator.location;
+	var faction = unit.simulator.faction;
 	var actor = new simulator.actor(unit,this.environment.getLocation(location),this.environment,faction);
 	var key = actor.unit.uuid;
 	$simulator.actors[key] = actor;
