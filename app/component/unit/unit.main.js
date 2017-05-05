@@ -3,6 +3,7 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////
 
 mobiusEngine.unit = {};
+mobius.unit = {};
 
 mobiusEngine.unit.calculateFirepower = function(unit) {
 	var fp = {
@@ -143,6 +144,20 @@ mobiusEngine.unit.controller = function($scope,_data,$uibModal,$state) {
 						unitlist.push(_data.getUnit(uuid));
 					});
 					return unitlist;
+				}
+			}
+		});
+	};
+
+	$ctrl.createUnit = function() {
+		var modal = $uibModal.open({
+			animation: true,
+			component: "unitWizard",
+			resolve: {
+				options: function() {
+					return {
+						title:"Unit Creation Wizard"
+					};
 				}
 			}
 		});
