@@ -2,9 +2,36 @@
 	<h3 class="modal-title mobius-title text-info">{{$ctrl.options.title}}</h3>
 </div>
 <div class="modal-body">
-	<uib-tabset active="$ctrl.activeStep" justified="true">
-		<uib-tab index="0" heading=""
-	</uib-tabset>
+	<uib-accordion close-others="true">
+		<div uib-accordion-group class="panel-primary" heading="General" is-open="true">
+			<div class="form-horizontal">
+				<div class="form-group">
+					<label for="unitWizName" class="col-lg-2 control-label">Name</label>
+					<div class="col-lg-10">
+						<input type="text" id="unitWizName" class="form-control" placeholder="USS Enterprise" />
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="unitWizID" class="col-lg-2 control-label">Designation</label>
+					<div class="col-lg-10">
+						<input type="text" id="unitWizName" class="form-control" placeholder="CVN-65" />
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="unitWizType" class="col-lg-2 control-label">Type</label>
+					<div class="col-lg-10">
+						<input type="text" id="unitWizType" class="form-control" placeholder="Starship" />
+					</div>
+				</div>
+			</div>
+		</div>
+		<div uib-accordion-group class="panel-primary" heading="Defenses">
+		</div>
+		<div uib-accordion-group class="panel-primary" heading="Weapons">
+		</div>
+		<div uib-accordion-group class="panel-primary" heading="Other Equipment">
+		</div>
+	</uib-accordion>
 </div>
 <div class="modal-footer">
 </div>

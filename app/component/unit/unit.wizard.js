@@ -2,6 +2,10 @@ mobius.unit.wizard = {};
 
 mobius.unit.wizard.ctrl = function($scope) {
 	var $ctrl = this;
+
+	$ctrl.$onInit = function() {
+		$ctrl.options = $ctrl.resolve.options;
+	};
 };
 
 mobius.app.component("unitWizard",{

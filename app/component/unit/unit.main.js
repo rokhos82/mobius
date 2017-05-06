@@ -13,21 +13,21 @@ mobiusEngine.unit.calculateFirepower = function(unit) {
 
 	var _map = function(weapon) {
 		var v = 0;
-		
+
 		if(_.isNumber(weapon.volley)) {
 			v = weapon.volley;
 		}
 		else {
 			_.each(weapon.volley,function(x){ v += x; });
 		}
-		
+
 		return weapon.batteries * weapon.guns * v;
 	};
 	var _pmap = function(weapon) {
 		return weapon.packets * weapon.volley;
 	};
 	var _reduce = function(memo,num) { return memo + num; };
-	
+
 	var direct = unit["direct-fire"];
 	fp.direct = _.chain(direct).map(_map).reduce(_reduce,0).value();
 
@@ -44,14 +44,14 @@ mobiusEngine.unit.validate = function(obj) {
 	// and size attribute.
 	if(!(obj.general && obj.general.name && obj.general.type && obj.general.size)) { valid = false; }
 
-	// Check 
+	// Check
 
 	return valid;
 };
 
 mobiusEngine.unit.controller = function($scope,_data,$uibModal,$state) {
 	var $ctrl = this;
-	
+
 	this.alerts = [];
 
 	this.units = _data.getAllUnits();
@@ -133,7 +133,7 @@ mobiusEngine.unit.controller = function($scope,_data,$uibModal,$state) {
 			component: "exportModal",
 			resolve: {
 				options: function(){
-					return { 
+					return {
 						title:"Unit Export",
 						msg:"Use the text field below to import a unit JSON string."
 					};
@@ -153,6 +153,7 @@ mobiusEngine.unit.controller = function($scope,_data,$uibModal,$state) {
 		var modal = $uibModal.open({
 			animation: true,
 			component: "unitWizard",
+			size: "lg",
 			resolve: {
 				options: function() {
 					return {
