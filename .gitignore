@@ -50,4 +50,7 @@ Temporary Items
 *.sublime-project
 *.sublime-workspace
 
+# Atom
+.remote-sync.json
+
 debug.log
