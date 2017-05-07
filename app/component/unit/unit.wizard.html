@@ -8,24 +8,39 @@
 				<div class="form-group">
 					<label for="unitWizName" class="col-lg-2 control-label">Name</label>
 					<div class="col-lg-10">
-						<input type="text" id="unitWizName" class="form-control" placeholder="USS Enterprise" />
+						<input type="text" id="unitWizName" ng-model="$ctrl.unit.general.name" class="form-control" placeholder="USS Enterprise" />
 					</div>
 				</div>
 				<div class="form-group">
 					<label for="unitWizID" class="col-lg-2 control-label">Designation</label>
 					<div class="col-lg-10">
-						<input type="text" id="unitWizName" class="form-control" placeholder="CVN-65" />
+						<input type="text" id="unitWizName" ng-model="$ctrl.unit.general.id" class="form-control" placeholder="CVN-65" />
 					</div>
 				</div>
 				<div class="form-group">
 					<label for="unitWizType" class="col-lg-2 control-label">Type</label>
 					<div class="col-lg-10">
-						<input type="text" id="unitWizType" class="form-control" placeholder="Starship" />
+						<select ng-model="$ctrl.unit.general.type" ng-options="type for type in $ctrl.options.types" id="unitWizType" class="form-control"></select>
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="unitWizSize" class="col-lg-2 control-label">Size</label>
+					<div class="col-lg-10">
+						<input type="number" id="unitWizSize" ng-model="$ctrl.general.size" class="form-control" placeholder="6" />
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="unitWizDescription" class="col-lg-2 control-label">Description</label>
+					<div class="col-lg-10">
+						<textarea id="unitWizDescription" class="form-control"></textarea>
 					</div>
 				</div>
 			</div>
 		</div>
 		<div uib-accordion-group class="panel-primary" heading="Defenses">
+			<div class="form-group">
+				<label for="unitWizArmor" class="col-lg-2 control-label">Armor</label>
+			</div>
 		</div>
 		<div uib-accordion-group class="panel-primary" heading="Weapons">
 		</div>

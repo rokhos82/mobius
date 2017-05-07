@@ -3,6 +3,13 @@ mobius.unit.wizard = {};
 mobius.unit.wizard.ctrl = function($scope) {
 	var $ctrl = this;
 
+	$ctrl.unit = {
+		general: {},
+		defenses: {},
+		weapons: {},
+		other: {}
+	};
+
 	$ctrl.$onInit = function() {
 		$ctrl.options = $ctrl.resolve.options;
 	};

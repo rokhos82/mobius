@@ -157,7 +157,8 @@ mobiusEngine.unit.controller = function($scope,_data,$uibModal,$state) {
 			resolve: {
 				options: function() {
 					return {
-						title:"Unit Creation Wizard"
+						title:"Unit Creation Wizard",
+						types: ["Starship","Gunboat","Fighter","Base","Mecha"]
 					};
 				}
 			}
