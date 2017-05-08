@@ -35,6 +35,11 @@ mobius.unit.wizard.ctrl = function($scope) {
 		$ctrl.constraints.defenses.armor.max = $ctrl.unit.general.size * 0.5;
 	};
 
+	$ctrl.validateUnit = function() {
+		// Check the unit size
+		
+	};
+
 	$ctrl.updateArmor = function() {
 		var defenses = $ctrl.unit.defenses;
 		var max = $ctrl.constraints.defenses.armor.max;
