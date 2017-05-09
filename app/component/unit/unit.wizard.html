@@ -5,17 +5,17 @@
 	<uib-accordion close-others="true">
 		<!-- General Unit Information -->
 		<div uib-accordion-group class="panel-primary" heading="General" is-open="true">
-			<div class="form-horizontal">
+			<form name="unitWizGeneralForm" class="form-horizontal">
 				<div class="form-group">
 					<label for="unitWizName" class="col-lg-2 control-label">Name</label>
 					<div class="col-lg-10">
-						<input type="text" id="unitWizName" ng-model="$ctrl.unit.general.name" class="form-control" placeholder="USS Enterprise" />
+						<input type="text" id="unitWizName" ng-model="$ctrl.unit.general.name" class="form-control" placeholder="USS Enterprise" required />
 					</div>
 				</div>
 				<div class="form-group">
 					<label for="unitWizID" class="col-lg-2 control-label">Designation</label>
 					<div class="col-lg-10">
-						<input type="text" id="unitWizName" ng-model="$ctrl.unit.general.id" class="form-control" placeholder="CVN-65" />
+						<input type="text" id="unitWizName" ng-model="$ctrl.unit.general.id" class="form-control" placeholder="CVN-65" required />
 					</div>
 				</div>
 				<div class="form-group">
@@ -27,7 +27,7 @@
 				<div class="form-group">
 					<label for="unitWizSize" class="col-lg-2 control-label">Size</label>
 					<div class="col-lg-10">
-						<input type="number" id="unitWizSize" ng-model="$ctrl.unit.general.size" class="form-control" placeholder="6" uib-popover="Max unit size is {{$ctrl.constraints.general.size.max}}." popover-trigger="'focus'" popover-class="text-warning" />
+						<input type="number" id="unitWizSize" ng-model="$ctrl.unit.general.size" class="form-control" placeholder="6" uib-popover="Max unit size is {{$ctrl.constraints.general.size.max}}." popover-trigger="'focus'" popover-class="text-warning" ng-blur="$ctrl.validateSize();" required />
 					</div>
 				</div>
 				<div class="form-group">
@@ -36,14 +36,15 @@
 						<textarea id="unitWizDescription" class="form-control"></textarea>
 					</div>
 				</div>
-			</div>
+				<div class="col-lg-12 text-danger" role="alert">{{unitWizGeneralForm.$error | json}}</div>
+			</form>
 		</div>
 		<!-- Unit Defense Information -->
 		<div uib-accordion-group class="panel-primary" heading="Defenses">
 			<div class="form-group">
 				<label for="unitWizArmor" class="col-lg-2 control-label">Armor</label>
 				<div class="col-lg-10">
-					<input type="number" id="unitWizArmor" ng-model="$ctrl.unit.defenses.armor" class="form-control" placeholder="{{$ctrl.constraints.defenses.armor.placeholder}}" uib-popover="Max unit armor is {{$ctrl.constraints.defenses.armor.max}}." popover-tigger="'focus'" popover-class="text-warning" ng-change="$ctrl.updateArmor()" />
+					<input type="number" id="unitWizArmor" ng-model="$ctrl.unit.defenses.armor" class="form-control" placeholder="{{$ctrl.constraints.defenses.armor.placeholder}}" uib-popover="Max unit armor is {{$ctrl.constraints.defenses.armor.max}}." popover-tigger="'focus'" popover-class="text-warning" ng-blur="$ctrl.validateArmor()" />
 				</div>
 			</div>
 			<div class="form-group">
