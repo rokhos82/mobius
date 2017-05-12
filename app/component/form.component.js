@@ -16,8 +16,9 @@ mobius.app.component("mobiusInput"),{
   templateUrl: "app/component/form.component.html",
   controller: ["$scope",mobiusInputCtrl],
   bindings: {
-    type: "&",
-    id: "&",
-    label: "&"
+    model: "=",
+    type: "@",
+    id: "@",
+    label: "@"
   }
 });
