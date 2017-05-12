@@ -1,6 +1,7 @@
 <div class="form-group">
-  <label class="control-label col-lg-2" for="test">Test</label>
+  <label class="control-label col-lg-2" for="{{$ctrl.placeholder}}">{{$ctrl.label}}</label>
   <div class="col-lg-10">
-    <input type="text" id="test" placeholder="Test" />
+    <input ng-if="$ctrl.type == $ctrl.types.text" type="text" id="{{$ctrl.id}}" placeholder="{{$ctrl.placceholder}}" />
+    <input ng-if="$ctrl.type == $ctrl.types.number" type="number" id="{{$ctrl.id}}" placeholder="{{$ctrl.placceholder}}" />
   </div>
 </div>
