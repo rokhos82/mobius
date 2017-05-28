@@ -4,6 +4,7 @@ handlers:
 - url: /(.*)
   static_files: (.*)
   upload: (.*)
+  script: index.php
 
 #- url: /js/(.+)$
 #  static_files: js/\1
