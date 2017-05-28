@@ -10,9 +10,9 @@ handlers:
   static_files: app/\1
   upload: app/(.+)
 
-- url: /css/(.+\.css)$
+- url: /css/(.+)$
   static_files: css/\1
-  upload: css/(.+\.css)
+  upload: css/(.+)$
 
 - url: /.*
   script: index.php
