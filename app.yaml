@@ -1,0 +1,18 @@
+runtime: php55
+
+handlers:
+- url: /js/(.+\.js)$
+  mime_type: text/javascript
+  static_files: js/\1
+  upload: js/(.+\.js)
+
+- url: /app/(.+)
+  static_files: app/\1
+  upload: app/(.+)
+
+- url: /css/(.+)$
+  static_files: css/\1
+  upload: css/(.+)$
+
+- url: /.*
+  script: index.php
