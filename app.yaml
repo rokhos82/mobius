@@ -1,24 +1,28 @@
 runtime: php55
 
 handlers:
-- url: /(.*)
-  static_files: (.*)
-  upload: (.*)
+- url: /js/(.+)$
+  static_files: js/\1
+  upload: js/(.+)$
 
-- url: /
+- url: /app/(.+)$
+  static_files: app/\1
+  upload: app/(.+)$
+
+- url: /css/(.+)$
+  static_files: css/\1
+  upload: css/(.+)$
+
+- url: /img/(.+)$
+  static_files: img/\1
+  upload: img/(.+)$
+
+- url: /uib/(.+)$
+  static_files: uib/\1
+  upload: uib/(.+)$
+
+- url: /rest/(.+)$
+  script: rest/\1
+
+- url: /.*
   script: index.php
-
-#- url: /js/(.+)$
-#  static_files: js/\1
-#  upload: js/(.+)
-
-#- url: /app/(.+)
-#  static_files: app/\1
-#  upload: app/(.+)
-
-#- url: /css/(.+)$
-#  static_files: css/\1
-#  upload: css/(.+)$
-
-#- url: /.*
-#  script: index.php
