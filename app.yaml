@@ -1,5 +1,10 @@
 runtime: php55
 
+env_variables:
+  MYSQL_DSN: mysql:unix_socket=/cloudsql/mobius-db;dbname=mobius
+  MYSQL_USER: mobius
+  MYSQL_PASSWORD: ''
+
 handlers:
 - url: /js/(.+\.js)$
   mime_type: text/javascript
