@@ -16,4 +16,4 @@ handlers:
   upload: css/(.+\.css)
 
 - url: /.*
-  script: index.php/#
+  script: index.php
