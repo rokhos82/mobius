@@ -2,9 +2,9 @@ runtime: php55
 
 handlers:
 - url: /(.+)
-  static_files: /\1
-  upload: /.*
+  static_files: \1
+  upload: .*
 
 - url: /
-  static_files: /index.html
-  upload: /index.html
+  static_files: index.html
+  upload: index.html
