@@ -3,7 +3,12 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 mobius.input = {};
 mobius.input.types = {
-  text: "text"
+  text: "text",
+  number: "number",
+  select: "select",
+  radio: "radio",
+  checkbox: "chekbox",
+  textarea: "textarea"
 };
 
 var mobiusInputCtrl = function($scope) {

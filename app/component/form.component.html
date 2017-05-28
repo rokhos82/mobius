@@ -3,5 +3,7 @@
   <div class="col-lg-10">
     <input ng-if="$ctrl.type == $ctrl.types.text" type="text" id="{{$ctrl.id}}" placeholder="{{$ctrl.placceholder}}" ng-model="$ctrl.model" />
     <input ng-if="$ctrl.type == $ctrl.types.number" type="number" id="{{$ctrl.id}}" placeholder="{{$ctrl.placceholder}}" ng-model="$ctrl.model" />
+    <textarea ng-if="$ctrl.type == $ctrl.types.textarea"></textarea>
+    <select ng-if="$ctrl.type == $ctrl.types.select"></textarea>
   </div>
 </div>
