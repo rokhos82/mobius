@@ -1,17 +1,21 @@
 runtime: php55
 
 handlers:
-- url: /js/(.+)$
-  static_files: js/\1
-  upload: js/(.+)
+- url: /(.*)
+  static_files: (.*)
+  upload: (.*)
 
-- url: /app/(.+)
-  static_files: app/\1
-  upload: app/(.+)
+#- url: /js/(.+)$
+#  static_files: js/\1
+#  upload: js/(.+)
 
-- url: /css/(.+)$
-  static_files: css/\1
-  upload: css/(.+)$
+#- url: /app/(.+)
+#  static_files: app/\1
+#  upload: app/(.+)
 
-- url: /.*
-  script: index.php
+#- url: /css/(.+)$
+#  static_files: css/\1
+#  upload: css/(.+)$
+
+#- url: /.*
+#  script: index.php
