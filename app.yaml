@@ -1,0 +1,5 @@
+runtime: php55
+api_version: 2
+handlers:
+  - url: /
+  script: index.html
