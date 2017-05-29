@@ -6,18 +6,28 @@ env_variables:
   MYSQL_PASSWORD: ''
 
 handlers:
-- url: /js/(.+\.js)$
-  mime_type: text/javascript
+- url: /js/(.+)$
   static_files: js/\1
-  upload: js/(.+\.js)
+  upload: js/(.+)$
 
-- url: /app/(.+)
+- url: /app/(.+)$
   static_files: app/\1
-  upload: app/(.+)
+  upload: app/(.+)$
 
 - url: /css/(.+)$
   static_files: css/\1
   upload: css/(.+)$
+
+- url: /img/(.+)$
+  static_files: img/\1
+  upload: img/(.+)$
+
+- url: /uib/(.+)$
+  static_files: uib/\1
+  upload: uib/(.+)$
+
+- url: /rest/(.+)$
+  script: rest/\1
 
 - url: /.*
   script: index.php
