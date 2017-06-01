@@ -9,7 +9,7 @@
 		<link rel="stylesheet" type="text/css" href="css\angular-editable-text.css" />
 		<link rel="stylesheet" type="text/css" href="css\mobius.css" />
 	</head>
-	<body ng-controller="mobiusCtl as ctl">
+	<body ng-controller="mobiusCtl as $ctrl">
 		<nav class="navbar navbar-inverse navbar-fixed-top">
 			<div class="container">
 				<div class="navbar-header">
@@ -44,6 +44,8 @@
 								<li class="divider"></li>
 								<li><a href="#">Load Example</a></li>
 								<li><a href="#">Data Dump</a></li>
+								<li class="divider"></li>
+								<li><a role="button" href ng-click="$ctrl.rest()">REST Test</a></li>
 							</ul>
 						</li>
 					</ul>
@@ -61,6 +63,7 @@
 		<script type="text/javascript" src="js/angular-ui-router.js"></script>
 		<script type="text/javascript" src="js/ui-bootstrap-2.1.3.js"></script>
 		<script type="text/javascript" src="js/angular-editable-text.js"></script>
+		<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular-sanitize.js"
 		<script type="text/javascript" src="app/mobius.js"></script>
 		<script type="text/javascript" src="app/app.module.js"></script>
 		<script type="text/javascript" src="app/app.control.js"></script>

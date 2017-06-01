@@ -7,5 +7,5 @@ $app = new Application();
 $app->register(new TwigServiceProvider());
 $app['twig-path'] = [ __DIR__ ];
 
-$app->get('/rest/template/get/{}',function($uuid) {});
+$app->get('/rest/template/get/',function($uuid) {});
 ?>
