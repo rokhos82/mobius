@@ -9,4 +9,3 @@ $app['twig-path'] = [ __DIR__ ];
 
 $app->get('/rest/template/get/{}',function($uuid) {});
 ?>
- 

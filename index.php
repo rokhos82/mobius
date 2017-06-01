@@ -30,9 +30,11 @@
 						<!--<li ui-serf-active="active"><a ui-sref="simulator"><span class="glyphicon glyphicon-expand"></span> Simulator</a></li>-->
 					</ul>
 					<ul class="nav navbar-nav navbar-right">
-						<li class="dropdown">
-							<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> <span class="caret"></span></a>
-							<ul class="dropdown-menu" role="menu">
+						<li class="dropdown" uib-dropdown>
+							<a id="gear-dropdown" href="#" uib-dropdown-toggle>
+								<span class="glyphicon glyphicon-cog" aria-hidden="true" ></span> <span class="caret"></span>
+							</a>
+							<ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="gear-dropdown">
 								<li><a href="#">Save Data</a></li>
 								<li><a href="#">Load Data</a></li>
 								<li><a href="#">Purge Data</a></li>
