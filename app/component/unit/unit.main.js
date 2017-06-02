@@ -52,14 +52,23 @@ mobiusEngine.unit.validate = function(obj) {
 mobiusEngine.unit.controller = function($scope,_data,$uibModal,$state) {
 	var $ctrl = this;
 
-	this.alerts = [];
+	$ctrl.alerts = [];
+	$ctrl.welcome = ["Loading please wait..."];
 
-	this.units = _data.getAllUnits();
+	$ctrl.units = _data.getAllUnits();
 
-	this.getUnit = _data.getUnit;
-	this.firepower = mobiusEngine.unit.calculateFirepower;
+	$ctrl.getUnit = _data.getUnit;
+	$ctrl.firepower = mobiusEngine.unit.calculateFirepower;
 
-	this.toggleState = function(key) { this.states[key] = !this.states[key]; };
+	$ctrl.toggleState = function(key) { this.states[key] = !this.states[key]; };
+
+	$http({
+		method: "GET",
+		url: "rest/settings.php"
+	}).then(
+		function s(response) {},
+		function f(response) {}
+	);
 
 	$ctrl.onImport = function(importJSON) {
 		var imp = JSON.parse(importJSON);
@@ -168,6 +177,6 @@ mobiusEngine.unit.controller = function($scope,_data,$uibModal,$state) {
 
 mobiusEngine.app.component("unitMain",{
 	templateUrl: 'app/component/unit/unit.main.html',
-	controller: ["$scope","mobius.data.unit","$uibModal","$state",mobiusEngine.unit.controller],
+	controller: ["$scope","mobius.data.unit","$uibModal","$state","$http","$sanitize",mobiusEngine.unit.controller],
 	bindings: {}
 });

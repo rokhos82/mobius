@@ -13,10 +13,10 @@ mobiusEngine.app.component("mainWelcome",{
 			url: "rest/settings.php"
 		}).then(
 			function s(response) {
-				var general = response.data.general;
+				var main = response.data.general.main;
 				$ctrl.welcome = [];
-				for(var i in general.welcome) {
-					var m = general.welcome[i];
+				for(var i in main.welcome) {
+					var m = main.welcome[i];
 					$ctrl.welcome.push($sanitize(m));
 				}
 			},
