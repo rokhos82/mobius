@@ -49,11 +49,11 @@ mobiusEngine.unit.validate = function(obj) {
 	return valid;
 };
 
-mobiusEngine.unit.controller = function($scope,_data,$uibModal,$state) {
+mobiusEngine.unit.controller = function($scope,_data,$uibModal,$state,$rest,$sanitize) {
 	var $ctrl = this;
 
 	$ctrl.alerts = [];
-	$ctrl.welcome = ["Loading please wait..."];
+	$ctrl.welcome = "<p>Loading please wait...</p>";
 
 	$ctrl.units = _data.getAllUnits();
 
@@ -62,12 +62,22 @@ mobiusEngine.unit.controller = function($scope,_data,$uibModal,$state) {
 
 	$ctrl.toggleState = function(key) { this.states[key] = !this.states[key]; };
 
+	// Get component settings from the backend
 	$http({
 		method: "GET",
 		url: "rest/settings.php"
 	}).then(
-		function s(response) {},
-		function f(response) {}
+		function s(response) {
+			var messages = response.data.general.units.welcome;
+			var html = "";
+			for(var i in messages) {
+				html += messages[i];
+			}
+			$ctrl.welcome = "<p>" + $sanitize(html) + "</p>";
+		},
+		function f(response) {
+			$ctrl.welcome = "<p class='text-danger'>Unable to load welcome message</p>";
+		}
 	);
 
 	$ctrl.onImport = function(importJSON) {
@@ -177,6 +187,6 @@ mobiusEngine.unit.controller = function($scope,_data,$uibModal,$state) {
 
 mobiusEngine.app.component("unitMain",{
 	templateUrl: 'app/component/unit/unit.main.html',
-	controller: ["$scope","mobius.data.unit","$uibModal","$state","$http","$sanitize",mobiusEngine.unit.controller],
+	controller: ["$scope","mobius.data.unit","$uibModal","$state","mobius.rest","$sanitize",mobiusEngine.unit.controller],
 	bindings: {}
 });
