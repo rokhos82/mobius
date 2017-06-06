@@ -10,7 +10,7 @@ $settings_data = array(
         "Work has begun on the Unit Creation Wizard!",
         "Please enjoy and report any problems to the GitHub project page <a class='text-warning' href='https://github.com/rokhos82/mobius/issues' target='_blank'>here</a>."
       )
-    )
+    ),
     "units" => array(
       "welcome" => array(
         "Welcome to the unit management feature of Mobius Engine. Here you can create new unit templates, import other unit templates, and export existing unit templates."

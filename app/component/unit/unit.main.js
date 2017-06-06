@@ -62,8 +62,10 @@ mobiusEngine.unit.controller = function($scope,_data,$uibModal,$state,$rest,$san
 
 	$ctrl.toggleState = function(key) { this.states[key] = !this.states[key]; };
 
+	$rest.
+
 	// Get component settings from the backend
-	$http({
+	/*$http({
 		method: "GET",
 		url: "rest/settings.php"
 	}).then(
@@ -78,7 +80,7 @@ mobiusEngine.unit.controller = function($scope,_data,$uibModal,$state,$rest,$san
 		function f(response) {
 			$ctrl.welcome = "<p class='text-danger'>Unable to load welcome message</p>";
 		}
-	);
+	);//*/
 
 	$ctrl.onImport = function(importJSON) {
 		var imp = JSON.parse(importJSON);
