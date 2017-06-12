@@ -50,7 +50,7 @@ mobiusEngine.unit.validate = function(obj) {
 };
 
 mobiusEngine.unit.controller = function($scope,_data,$uibModal,$state,$rest,$sanitize) {
-	var $ctrl = this;
+	const $ctrl = this;
 
 	$ctrl.alerts = [];
 	$ctrl.welcome = "<p>Loading please wait...</p>";
@@ -62,7 +62,13 @@ mobiusEngine.unit.controller = function($scope,_data,$uibModal,$state,$rest,$san
 
 	$ctrl.toggleState = function(key) { this.states[key] = !this.states[key]; };
 
-	$rest.
+	$rest.getSettings().then(function s(response){
+		const _data = response.data.general.units;
+		$ctrl.welcome = mobius.functions.arrayToString(_data,"p");
+	},function f(error){
+		console.log(error);
+		$ctrl.welcome = "<p class=\"text-warning\">" + error + "</p>"
+	});
 
 	// Get component settings from the backend
 	/*$http({
