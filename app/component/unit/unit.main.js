@@ -49,17 +49,26 @@ mobiusEngine.unit.validate = function(obj) {
 	return valid;
 };
 
-mobiusEngine.unit.controller = function($scope,_data,$uibModal,$state) {
-	var $ctrl = this;
+mobiusEngine.unit.controller = function($scope,_data,$uibModal,$state,$rest,$sanitize) {
+	const $ctrl = this;
 
-	this.alerts = [];
+	$ctrl.alerts = [];
+	$ctrl.welcome = "<p>Loading please wait...</p>";
 
-	this.units = _data.getAllUnits();
+	$ctrl.units = _data.getAllUnits();
 
-	this.getUnit = _data.getUnit;
-	this.firepower = mobiusEngine.unit.calculateFirepower;
+	$ctrl.getUnit = _data.getUnit;
+	$ctrl.firepower = mobiusEngine.unit.calculateFirepower;
 
-	this.toggleState = function(key) { this.states[key] = !this.states[key]; };
+	$ctrl.toggleState = function(key) { this.states[key] = !this.states[key]; };
+
+	$rest.getSettings().then(function s(response){
+		const _data = response.data.general.units;
+		$ctrl.welcome = mobius.functions.arrayToString(_data,"p");
+	},function f(error){
+		console.log(error);
+		$ctrl.welcome = "<p class=\"text-warning\">" + error + "</p>"
+	});
 
 	$ctrl.onImport = function(importJSON) {
 		var imp = JSON.parse(importJSON);
@@ -168,6 +177,6 @@ mobiusEngine.unit.controller = function($scope,_data,$uibModal,$state) {
 
 mobiusEngine.app.component("unitMain",{
 	templateUrl: 'app/component/unit/unit.main.html',
-	controller: ["$scope","mobius.data.unit","$uibModal","$state",mobiusEngine.unit.controller],
+	controller: ["$scope","mobius.data.unit","$uibModal","$state","mobius.rest","$sanitize",mobiusEngine.unit.controller],
 	bindings: {}
 });

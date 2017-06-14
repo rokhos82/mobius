@@ -26,3 +26,21 @@ mobius.templates.alert = function(msg,type,timeout) {
 	alert.timeout = timeout;
 	_.defaults(alert,mobius.defaults.alert);
 };
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+// Mobius Helper Functions
+////////////////////////////////////////////////////////////////////////////////////////////////////
+mobius.functions = {};
+mobius.functions.arrayToString = function(arr,html) {
+	let result = "";
+	for(let i in arr) {
+		const str = arr[i].toString();
+		if(typeof html ==="string") {
+			result += "<" + html + ">" + str + "</" + html + ">";
+		}
+		else {
+			result += str;
+		}
+	}
+	return result;
+};
