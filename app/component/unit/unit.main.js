@@ -70,24 +70,6 @@ mobiusEngine.unit.controller = function($scope,_data,$uibModal,$state,$rest,$san
 		$ctrl.welcome = "<p class=\"text-warning\">" + error + "</p>"
 	});
 
-	// Get component settings from the backend
-	/*$http({
-		method: "GET",
-		url: "rest/settings.php"
-	}).then(
-		function s(response) {
-			var messages = response.data.general.units.welcome;
-			var html = "";
-			for(var i in messages) {
-				html += messages[i];
-			}
-			$ctrl.welcome = "<p>" + $sanitize(html) + "</p>";
-		},
-		function f(response) {
-			$ctrl.welcome = "<p class='text-danger'>Unable to load welcome message</p>";
-		}
-	);//*/
-
 	$ctrl.onImport = function(importJSON) {
 		var imp = JSON.parse(importJSON);
 		if(_.isArray(imp)) {
