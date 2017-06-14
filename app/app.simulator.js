@@ -29,7 +29,7 @@ simulator.defaults.location = {
 	"name": "",
 	"key": "",
 	"neighbors": {"up":undefined,"down":undefined},
-	"actors": {}
+	"actors": []
 };
 
 // Location object for the simulator ///////////////////////////////////////////////////////////////
@@ -37,16 +37,18 @@ simulator.location = function(key,name) {
 	// Setup the new object given the parameters.
 	this.key = key;
 	this.name = name;
+	this.faction = undefined;
 
 	// Apply defaults to the object.
 	_.defaults(this,_.deep(simulator.defaults.location));
 };
 
 // Actor object for the simulator //////////////////////////////////////////////////////////////////
-simulator.actor = function(unit,location,environment) {
+simulator.actor = function(unit,location,environment,faction) {
 	this.unit = unit;
 	this.location = location;
 	this.environment = environment;
+	this.faction = faction;
 };
 
 simulator.actor.prototype.move = function(options) {
@@ -59,13 +61,7 @@ simulator.actor.prototype.move = function(options) {
 	var speed = $actor.unit.general.speed;
 	console.log($actor.unit.general.name + " has a speed of " + speed);
 	for(var i = 0;i < speed;i++) {
-		var loc = $actor.location.neighbors[direction];
-		if(loc) {
-			var key = $actor.unit.uuid;
-			delete $actor.location.actors[key];
-			$actor.location = loc;
-			$actor.location.actors[key] = $actor;
-		}
+		$actor.environment.move($actor,direction);
 	}
 
 	console.log($actor.unit.general.name + " is now at " + $actor.location.name);
@@ -92,6 +88,10 @@ simulator.actor.prototype.decide = function(options) {
 // testActor Unit Defintion ------------------------------------------------------------------------
 simulator.testRed = {
 	uuid: "testRed",
+	simulator: {
+		faction: "Red",
+		location: "D3"
+	},
 	general: {
 		name: "Test Red",
 		speed: 1,
@@ -100,10 +100,70 @@ simulator.testRed = {
 	}
 };
 
+simulator.testRed2 = {
+	uuid: "testRed2",
+	simulator: {
+		faction: "Red",
+		location: "D3"
+	},
+	general: {
+		name: "Test Red 2",
+		speed: 1,
+		type: "Starship",
+		size: 6
+	}
+};
+
+simulator.testRed3 = {
+	uuid: "testRed3",
+	simulator: {
+		faction: "Red",
+		location: "D3"
+	},
+	general: {
+		name: "Test Red 3",
+		speed: 1,
+		type: "Starship",
+		size: 6
+	}
+};
+
 simulator.testBlue = {
 	uuid: "testBlue",
+	simulator: {
+		faction: "Blue",
+		location: "A3"
+	},
 	general: {
 		name: "Test Blue",
+		speed: 1,
+		type: "Starship",
+		size: 6
+	}
+};
+
+simulator.testBlue2 = {
+	uuid: "testBlue2",
+	simulator: {
+		faction: "Blue",
+		location: "A3"
+	},
+	general: {
+		name: "Test Blue 2",
+		speed: 1,
+		type: "Starship",
+		size: 6
+	}
+};
+
+simulator.testBlue3 = {
+	uuid: "testBlue3",
+	simulator: {
+		faction: "Blue",
+		location: "A3"
+	},
+	general: {
+		name: "Test Blue 3",
 		speed: 1,
 		type: "Starship",
 		size: 6
@@ -189,6 +249,43 @@ simulator.environment.prototype.getLocation = function(key) {
 	return this.battlefield[key];
 };
 
+// Move an actor in a given direction in the environment.
+simulator.environment.prototype.move = function(actor,direction) {
+	var newLoc = actor.location.neighbors[direction];
+	var location = actor.location;
+
+	// Does the new location exist?
+	if(!!newLoc) {
+		// Does the new location have either no faction control or the same as the actor?
+		var faction = newLoc.faction || actor.faction;
+		if(faction === actor.faction) {
+			// The location exists and matches the actor's faction.  Proceed with the move.
+			var index = location.actors.indexOf(actor);
+			location.actors.splice(index,1);
+			actor.location = newLoc;
+			newLoc.actors.push(actor);
+
+			// Set the new location faction incase the faction is unset.
+			newLoc.faction = actor.faction;
+
+			// Change or clear the faction control on the old location.
+			// If the actor count is 0 then clear.  Otherwise, leave alone.
+			if(location.actors.length == 0) {
+				// Clear the location controlling faction.
+				location.faction = undefined;
+			}
+		}
+	}
+};
+
+// Initially place an actor in the environment.
+simulator.environment.prototype.placeActor = function(actor) {
+	var location = actor.location;
+	var faction = location.faction;
+	location.actors.push(actor);
+	location.faction = actor.faction;
+};
+
 // Simulator Engine ////////////////////////////////////////////////////////////////////////////////
 simulator.engine = function(blob) {
 	console.log("Building the engine object...");
@@ -196,6 +293,7 @@ simulator.engine = function(blob) {
 	// Initlialize the fleets and simulation options from the passed object.
 	this.fleets = blob.fleets;
 	this.options = blob.options;
+	this.uuid = blob.uuid;
 	this.actors = {};
 
 	// Initialize any other items for the simulation engine.
@@ -206,6 +304,9 @@ simulator.engine = function(blob) {
 simulator.engine.prototype.run = function() {
 	$engine = this;
 	console.log("Running the simulation...");
+
+	// Send the initial state of the environment.
+	self.postMessage($engine.environment);
 
 	var count = 1;
 	while(count <= 5) {
@@ -229,14 +330,24 @@ simulator.engine.prototype.init = function() {
 
 	// Creat the environment and add the test actor.
 	this.environment = new simulator.environment();
-	this.addActor(simulator.testRed,"D1");
-	this.addActor(simulator.testBlue,"A1");
+	this.addActor(simulator.testRed);
+	this.addActor(simulator.testRed2);
+	this.addActor(simulator.testRed3);
+	this.addActor(simulator.testBlue);
+	this.addActor(simulator.testBlue2);
+	this.addActor(simulator.testBlue3);
 };
 
 // addActor - adds an actor to the simulation ------------------------------------------------------
-simulator.engine.prototype.addActor = function(unit,location) {
+simulator.engine.prototype.addActor = function(unit) {
 	console.log("Adding actor " + unit.uuid);
-	this.actors[unit.uuid] = new simulator.actor(unit,this.environment.getLocation(location),this.environment);
+	$simulator = this;
+	var location = unit.simulator.location;
+	var faction = unit.simulator.faction;
+	var actor = new simulator.actor(unit,this.environment.getLocation(location),this.environment,faction);
+	var key = actor.unit.uuid;
+	$simulator.actors[key] = actor;
+	$simulator.environment.placeActor(actor);
 };
 
 // Simulator Bootstrap and Message Passing Callback ////////////////////////////////////////////////
