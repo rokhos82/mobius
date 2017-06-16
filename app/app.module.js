@@ -94,6 +94,13 @@ mobiusEngine.app.config(['$compileProvider','$stateProvider','$locationProvider'
             resolve: {}
         };
 
+        var scinece = {
+          name: 'science',
+          url: '/science',
+          component: 'scienceMain',
+          resolve: {}
+        };
+
         $stateProvider.state(defaultState);
         $stateProvider.state(combatState);
         $stateProvider.state(fleetState);
@@ -104,4 +111,5 @@ mobiusEngine.app.config(['$compileProvider','$stateProvider','$locationProvider'
         $stateProvider.state(reportState);
         $stateProvider.state(reportDtlState);
         $stateProvider.state(simulator);
+        $stateProvider.state(scinece);
 }]);

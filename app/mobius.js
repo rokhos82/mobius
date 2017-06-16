@@ -44,3 +44,17 @@ mobius.functions.arrayToString = function(arr,html) {
 	}
 	return result;
 };
+
+mobius.functions.randBetween = function(low,high,round) {
+	var random = Math.random() * (high - low) + low;
+	random = round ? Math.floor(random) : random;
+	return random;
+};
+
+mobius.functions.dieRoll = function(quantity,size) {
+	var total = 0;
+	for(let i = 0;i < quantity;i++) {
+		total += mobius.functions.randBetween(1,size);
+	}
+	return total;
+};

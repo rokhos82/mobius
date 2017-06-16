@@ -27,7 +27,8 @@
 						<li ui-sref-active="active"><a ui-sref="fleet"><span class="glyphicon glyphicon-tower"></span> Fleets</a></li>
 						<li ui-sref-active="active"><a ui-sref="combat"><span class="glyphicon glyphicon-fire"></span> Combat</a></li>
 						<li ui-sref-active="active"><a ui-sref="reports"><span class="glyphicon glyphicon-briefcase"></span> Reports</a></li>
-						<li ui-serf-active="active"><a ui-sref="simulator"><span class="glyphicon glyphicon-expand"></span> Simulator</a></li>
+						<!--<li ui-serf-active="active"><a ui-sref="simulator"><span class="glyphicon glyphicon-expand"></span> Simulator</a></li>-->
+						<li ui-sref-active="active"><a ui-sref="science"><span class="glyphicon glyphicon-education"></span> Science</a></li>
 					</ul>
 					<ul class="nav navbar-nav navbar-right">
 						<li class="dropdown" uib-dropdown>
@@ -82,6 +83,9 @@
 		<script type="text/javascript" src="app/component/reports/reports.main.js"></script>
 		<script type="text/javascript" src="app/component/reports/reports.detail.js"></script>
 		<script type="text/javascript" src="app/component/simulator/simulator.main.js"></script>
+		<script type="text/javascript" src="app/component/science/science.mobius.js"></script>
+		<script type="text/javascript" src="app/component/science/science.data.js"></script>
+		<script type="text/javascript" src="app/component/science/science.main.js"></script>
 		<script type="text/javascript" src="app/component/card.components.js"></script>
 		<script type="text/javascript" src="app/component/modal.components.js"></script>
 	</body>

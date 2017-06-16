@@ -4,17 +4,72 @@
   <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
     <div class="panel panel-default">
       <div class="panel-body">
-        Controls go here.
+        <div class="well well-sm"
+          <form class="form-horizontal" ng-init="newProject={}">
+            <fieldset>
+              <legend class="text-info">New Project</legend>
+              <div class="form-group">
+                <label for="projectName" class="control-label col-lg-2">Project Name</label>
+                <div class="col-lg-10">
+                  <input id="projectName" class="form-control" type="text" ng-model="newProject.name" />
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="projectStage" class="col-lg-2 control-label">Project Stage</label>
+                <div class="col-lg-10">
+                  <select class="form-control" id="projectStage" ng-options="stage.name disable when stage.fin for stage in $ctrl.stages" ng-model="newProject.stage"></select>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="projectBonus" class="col-lg-2 control-label">Project Bonus</label>
+                <div class="col-lg-10">
+                  <input type="number" class="form-control" id="projectBonus" ng-model="newProject.bonus" />
+                </div>
+              </div>
+              <div class="form-group">
+                <button class="btn btn-default" type="button" ng-click="$ctrl.addProject(newProject); newProject={};">Create Project</button>
+              </div>
+            </fieldset>
+          </form>
+        </div>
+        <div class="well well-sm">
+          <div class="form-horizontal">
+            <div class="form-group">
+              <label for="globalBonus" class="control-label col-lg-2">Global Research Bonus</label>
+              <span class="col-lg-10">
+                <input type="number" class="form-control" ng-model="$ctrl.globalBonus" />
+              </span>
+            </div>
+          </div>
+        </div>
+        <div class="btn-toolbar">
+          <div class="btn-group" uib-dropdown>
+            <button href class="btn btn-default" uib-dropdown-toggle>Apply to Checked <span class="caret"></span></button>
+            <ul class="dropdown-menu" uib-dropdown-menu role="menu">
+              <li role="menuitme"><a href>Update</a></li>
+              <li role="menuitem"><a href>Reroll</a></li>
+            </ul>
+          </div>
+          <div class="btn-group">
+            <button class="btn btn-default" type="button">Update Projects</button>
+            <button class="btn btn-default" type="button">Clear Projects</button>
+          </div>
+        </div>
       </div>
-      <div class="panel-body">
-        Active projects will go here. This will be a table.
-      </div>
+      <table class="table table-stripe table-hover">
+        <thead>
+          <tr><th>Project</th><th>Stage</th><th>Turn Funding</th><th>Total Funding</th><th>Bonus</th></tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="project in $ctrl.projects track by $index"><td><input type="checkbox"> {{project.name}}</td><td>{{project.stage.name}}</td><td>{{project.funding}}</td><td>{{project.totalFunding}}</td><td>{{project.bonus}}</td></tr>
+        </tbody>
+      </table>
     </div>
   </div>
   <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
     <div class="panel panel-default">
       <div class="panel-body">
-        Log of events will here.
+        Log of events will go here.
       </div>
     </div>
   </div>
