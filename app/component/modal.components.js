@@ -66,7 +66,6 @@ mobiusEngine.app.component("confirmModal",{
 		const $ctrl = this;
 
 		$ctrl.confirm = function() {
-			console.log("Close the confirmation modal");
 			$ctrl.close({$value:'confirm'});
 		};
 
@@ -75,7 +74,6 @@ mobiusEngine.app.component("confirmModal",{
 		};
 
 		$ctrl.$onInit = function() {
-			console.log("Modal $onIinit");
 			$ctrl.options = $ctrl.resolve.options;
 		};
 	}],

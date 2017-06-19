@@ -31,9 +31,7 @@ mobius.science.modal.confirm = function($uibModal,title,message) {
     component: 'confirmModal',
     resolve: {
       options: function() {
-        opt = {ttl: title,msg: message};
-        console.log(opt);
-        return opt;
+        return {ttl: title,msg: message};
       }
     }
   });

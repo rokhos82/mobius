@@ -42,17 +42,22 @@ mobius.science.controller = function($scope,_data,$uibModal) {
 
   // Remove those projects with checked checkboxes /////////////////////////////////////////////////
   $ctrl.removeSelectedProjects = function() {
-    let selected = $ctrl.ui.selectedProjects;
-    for(var i = 0;i < selected.length;i++) {
-      let checked = selected[i];
-      // Is the checkbox checked?
-      if(checked) {
-        // Yes, then remove that project.
-        $ctrl.projects.splice(i,1);
+    mobius.science.modal.confirm($uibModal,'Science Manager','Are you sure you want to remove the selected projects?').result.then(
+      // The modal was confirmed.  Remove the selected projects.
+      function () {
+        let selected = $ctrl.ui.selectedProjects;
+        for(var i = 0;i < selected.length;i++) {
+          let checked = selected[i];
+          // Is the checkbox checked?
+          if(checked) {
+            // Yes, then remove that project.
+            $ctrl.projects.splice(i,1);
+          }
+        }
+        $ctrl.ui.selectedProjects = [];
+        _data.save();
       }
-    }
-    $ctrl.ui.selectedProjects = [];
-    _data.save();
+    );
   };
 };
 
