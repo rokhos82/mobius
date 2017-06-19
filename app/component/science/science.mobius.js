@@ -23,3 +23,18 @@ mobius.science.project.stages = [
   {name:"Development",index:2,next:3},
   {name:"Completed",index:3,fin:true}
 ];
+
+mobius.science.modal = {};
+mobius.science.modal.confirm = function($uibModal,title,message) {
+  return $uibModal.open({
+    animation: true,
+    component: 'confirmModal',
+    resolve: {
+      options: function() {
+        opt = {ttl: title,msg: message};
+        console.log(opt);
+        return opt;
+      }
+    }
+  });
+};

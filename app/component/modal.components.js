@@ -58,3 +58,30 @@ mobiusEngine.app.component("exportModal",{
 		close: "&"
 	}
 });
+
+// Confirmation Modal //////////////////////////////////////////////////////////////////////////////
+mobiusEngine.app.component("confirmModal",{
+	template: '<div class="modal-header"><h3 class="modal-title mobius-title text-info">{{$ctrl.options.ttl}}</h3></div><div class="modal-body"><div class="well well-sm">{{$ctrl.options.msg}}</div></div><div class="modal-footer"><button class="btn btn-danger" type="button" ng-click="$ctrl.confirm()">Yes</button><button class="btn btn-default" type="button" ng-click="$ctrl.cancel()">No</button></div>',
+	controller: ["$scope","$location",function($scope,$location){
+		const $ctrl = this;
+
+		$ctrl.confirm = function() {
+			console.log("Close the confirmation modal");
+			$ctrl.close({$value:'confirm'});
+		};
+
+		$ctrl.cancel = function() {
+			$ctrl.dismiss({$value:'cancel'});
+		};
+
+		$ctrl.$onInit = function() {
+			console.log("Modal $onIinit");
+			$ctrl.options = $ctrl.resolve.options;
+		};
+	}],
+	bindings: {
+		resolve: "<",
+		dismiss: "&",
+		close: "&"
+	}
+});

@@ -48,6 +48,7 @@
             <ul class="dropdown-menu" uib-dropdown-menu role="menu">
               <li role="menuitme"><a href>Update</a></li>
               <li role="menuitem"><a href>Reroll</a></li>
+              <li role="menuitem"><a href ng-click="$ctrl.removeSelectedProjects()">Remove</a></li>
             </ul>
           </div>
           <div class="btn-group">
@@ -61,7 +62,7 @@
           <tr><th>Project</th><th>Stage</th><th>Turn Funding</th><th>Total Funding</th><th>Bonus</th></tr>
         </thead>
         <tbody>
-          <tr ng-repeat="project in $ctrl.projects track by $index"><td><input type="checkbox"> {{project.name}}</td><td>{{project.stage.name}}</td><td>{{project.funding}}</td><td>{{project.totalFunding}}</td><td>{{project.bonus}}</td></tr>
+          <tr ng-repeat="project in $ctrl.projects track by $index"><td><input type="checkbox" id="{{'project'+$index}}" ng-model="$ctrl.ui.selectedProjects[$index]"> {{project.name}}</td><td>{{project.stage.name}}</td><td>{{project.funding}}</td><td>{{project.totalFunding}}</td><td>{{project.bonus}}</td></tr>
         </tbody>
       </table>
     </div>
