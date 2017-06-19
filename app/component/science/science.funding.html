@@ -1,0 +1,33 @@
+<div class="modal-header">
+  <h3 class="modal-title mobius-title text-info">Project Funding</h3>
+</div>
+<div class="modal-body">
+  <div class="well well-sm text-success">Please choose a funding level for the science projects below.</div>
+  <div class="form-horizontal" ng-repeat="project in $ctrl.options.projects">
+    <fieldset>
+      <legend>{{project.name}}</legend>
+      <div class="form-group">
+        <label for="{{project.name}}" class="control-label col-lg-2">Funding</label>
+        <div class="col-lg-10">
+          <input type="number" id="{{project.name}}" class="form-control" ng-model="project.funding" />
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="funding" class="control-label col-lg-2">Previous Funding</label>
+        <div class="col-lg-10">
+          <input type="number" id="funding" class="form-control" ng-model="" readonly />
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="funding" class="control-label col-lg-2">Total Funding</label>
+        <div class="col-lg-10">
+          <input type="number" id="funding" class="form-control" ng-model="" readonly />
+        </div>
+      </div>
+    </fieldset>
+  </div>
+</div>
+<div class="modal-footer">
+  <button class="btn btn-success disabled" type="button" ng-click="$ctrl.confirm()">Fund Projects</button>
+  <button class="btn btn-default" type="button" ng-click="$ctrl.cancel()">Cancel</button>
+</div>

@@ -36,3 +36,37 @@ mobius.science.modal.confirm = function($uibModal,title,message) {
     }
   });
 };
+
+mobius.science.modal.funding = function($uibModal,projects) {
+  return $uibModal.open({
+    animation: true,
+    component: 'mobius.modal.science.funding',
+    resolve: {
+      options: function() {
+        return {
+          'projects': projects
+        };
+      }
+    }
+  });
+};
+
+// Science Funding Modal ///////////////////////////////////////////////////////////////////////////
+mobius.app.component("mobius.modal.science.funding",{
+  templateUrl: 'app/component/science/science.funding.html',
+  controller: ["$scope","$location",function($scope,$location) {
+    const $ctrl = this;
+
+    $ctrl.confirm = function() {};
+    $ctrl.cancel = function() { $ctrl.dismiss(); };
+
+    $ctrl.$onInit = function() {
+      $ctrl.options = $ctrl.resolve.options;
+    };
+  }],
+  bindings: {
+    resolve: "<",
+    dismiss: "&",
+    close: "&"
+  }
+});

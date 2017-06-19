@@ -29,7 +29,9 @@ mobius.science.controller = function($scope,_data,$uibModal) {
     _data.save();
   };
 
-  $ctrl.updateProjects = function() {};
+  $ctrl.updateProjects = function() {
+    mobius.science.modal.funding($uibModal,$ctrl.projects);
+  };
 
   $ctrl.clearProjects = function() {
     mobius.science.modal.confirm($uibModal,'Science Manager','Are you sure you want to clear all of the projects?').result.then(
