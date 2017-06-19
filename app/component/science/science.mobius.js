@@ -19,7 +19,7 @@ mobius.science.project = function(name,description,stage,bonus) {
 
 mobius.science.project.stages = [
   {name:"Discovery",index:0,next:1},
-  {name:"Reserach",index:1,next:2},
+  {name:"Research",index:1,next:2},
   {name:"Development",index:2,next:3},
   {name:"Completed",index:3,fin:true}
 ];

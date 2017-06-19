@@ -26,6 +26,11 @@ mobius.science.controller = function($scope,_data) {
   };
 
   $ctrl.updateProjects = function() {};
+
+  $ctrl.clearProjects = function() {
+    $ctrl.projects = _data.clearProjects();
+    _data.save();
+  };
 };
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////

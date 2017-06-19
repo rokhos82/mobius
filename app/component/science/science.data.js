@@ -36,5 +36,11 @@ mobius.science.data = mobius.app.factory("mobius.science.data",["$rootScope",fun
     return _data.events;
   };
 
+  _service.clearProjects = function() {
+    delete _data.projects;
+    _data.projects = [];
+    return _data.projects;
+  };
+
   return _service;
 }]);
