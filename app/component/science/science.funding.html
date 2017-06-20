@@ -7,6 +7,12 @@
     <fieldset>
       <legend>{{project.name}}</legend>
       <div class="form-group">
+        <label for="stage" class="control-label col-lg-2">Stage</label>
+        <div class="col-lg-10">
+          <select id="stage" class="form-control"></select>
+        </div>
+      </div>
+      <div class="form-group">
         <label for="{{project.name}}" class="control-label col-lg-2">Funding</label>
         <div class="col-lg-10">
           <input type="number" id="{{project.name}}" class="form-control" ng-model="project.funding" />

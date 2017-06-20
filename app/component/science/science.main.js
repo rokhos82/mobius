@@ -35,8 +35,8 @@ mobius.science.controller = function($scope,_data,$uibModal) {
     _data.save();
   };
 
-  $ctrl.updateProjects = function() {
-    mobius.science.modal.funding($uibModal,$ctrl.projects).result.then(
+  $ctrl.updateProjects = function(projects) {
+    mobius.science.modal.funding($uibModal,projects).result.then(
       // The projects have been funded.
       function(options) {
         let funding = options.projects;

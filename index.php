@@ -69,6 +69,7 @@
 		<script type="text/javascript" src="app/app.module.js"></script>
 		<script type="text/javascript" src="app/app.control.js"></script>
 		<script type="text/javascript" src="app/app.data.js"></script>
+		<script type="text/javascript" src="app/component/ui/mobius.ui.js"></script>
 		<script type="text/javascript" src="app/component/shared/rest/app.rest.js"></script>
 		<script type="text/javascript" src="app/component/shared/pagetitle/pagetitle.js"></script>
 		<script type="text/javascript" src="app/component/shared/pagealerts/pagealerts.js"></script>

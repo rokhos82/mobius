@@ -4,22 +4,17 @@
   <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
     <div class="panel panel-default">
       <div class="panel-body">
-        <div class="well well-sm"
+        <div class="well well-sm">
           <form class="form-horizontal" ng-init="newProject={}">
             <fieldset>
-              <legend class="text-info">New Project</legend>
+              <legend class="text-info">New Research Project</legend>
               <div class="form-group">
                 <label for="projectName" class="control-label col-lg-2">Project Name</label>
                 <div class="col-lg-10">
                   <input id="projectName" class="form-control" type="text" ng-model="newProject.name" />
                 </div>
               </div>
-              <div class="form-group">
-                <label for="projectStage" class="col-lg-2 control-label">Project Stage</label>
-                <div class="col-lg-10">
-                  <select class="form-control" id="projectStage" ng-options="stage.name disable when stage.fin for stage in $ctrl.stages" ng-model="newProject.stage"></select>
-                </div>
-              </div>
+              <mobius-select mobius-options="$ctrl.stages" mobius-selector="stage.name disable when stage.fin for stage" mobius-label="Project Stage" mobius-selected="newProject.stage"></mobius-select>
               <div class="form-group">
                 <label for="projectBonus" class="col-lg-2 control-label">Project Bonus</label>
                 <div class="col-lg-10">
@@ -27,7 +22,9 @@
                 </div>
               </div>
               <div class="form-group">
-                <button class="btn btn-default" type="button" ng-click="$ctrl.addProject(newProject); newProject={};">Create Project</button>
+                <div class="col-lg-12">
+                  <button class="btn btn-success btn-block" type="button" ng-click="$ctrl.addProject(newProject);">Create Project</button>
+                </div>
               </div>
             </fieldset>
           </form>
@@ -52,8 +49,8 @@
             </ul>
           </div>
           <div class="btn-group">
-            <button class="btn btn-default" type="button" ng-click="$ctrl.updateProjects()">Update Projects</button>
-            <button class="btn btn-default" type="button" ng-click="$ctrl.clearProjects()">Clear Projects</button>
+            <button class="btn btn-success" type="button" ng-click="$ctrl.updateProjects($ctrl.projects)">Update Projects</button>
+            <button class="btn btn-danger" type="button" ng-click="$ctrl.clearProjects()">Clear Projects</button>
           </div>
         </div>
       </div>
@@ -62,7 +59,7 @@
           <tr><th>Project</th><th>Stage</th><th>Turn Funding</th><th>Total Funding</th><th>Project Bonus</th><th>Total Bonus</th><th>Roll</th></tr>
         </thead>
         <tbody>
-          <tr ng-repeat="project in $ctrl.projects track by $index"><td><input type="checkbox" id="{{'project'+$index}}" ng-model="$ctrl.ui.selectedProjects[$index]"> {{project.name}}</td><td>{{project.stage.name}}</td><td>{{project.funding}}</td><td>{{project.totalFunding}}</td><td>{{project.bonus}}</td><td>{{project.bonus + $ctrl.bonus.global}}</td><td>{{project.roll}}</td></tr>
+          <tr ng-repeat="project in $ctrl.projects track by $index" ng-click="$ctrl.updateProjects([project])"><td><input type="checkbox" id="{{'project'+$index}}" ng-model="$ctrl.ui.selectedProjects[$index]"> {{project.name}}</td><td>{{project.stage.name}}</td><td>{{project.funding}}</td><td>{{project.totalFunding}}</td><td>{{project.bonus}}</td><td>{{project.bonus + $ctrl.bonus.global}}</td><td>{{project.roll}}</td></tr>
         </tbody>
       </table>
     </div>
