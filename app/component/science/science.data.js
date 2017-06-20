@@ -9,7 +9,9 @@ mobius.science.data = mobius.app.factory("mobius.science.data",["$rootScope",fun
     loaded: false
   };
   let _default = {
-    bonus: {},
+    bonus: {
+      global: 0
+    },
     projects: [],
     events: []
   };
@@ -24,7 +26,12 @@ mobius.science.data = mobius.app.factory("mobius.science.data",["$rootScope",fun
   $rootScope.$on(mobius.science.events.dirty,_service.save);
 
   _service.save = function() {
+    console.log("Saving science data.");
     localStorage.setItem(_key,JSON.stringify(_data));
+  };
+
+  _service.listBonuses = function() {
+    return _data.bonus;
   };
 
   _service.listProjects = function() {

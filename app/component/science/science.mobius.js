@@ -8,6 +8,7 @@ mobius.science.events = {};
 mobius.science.events.dirty = "mobius.science.events.dirty";
 
 mobius.science.project = function(name,description,stage,bonus) {
+  this.uuid = window.uuid.v4();
   this.name = name;
   this.description = description;
   this.stage = stage;
@@ -15,6 +16,7 @@ mobius.science.project = function(name,description,stage,bonus) {
   this.funding = 0;
   this.prevFunding = 0;
   this.totalFunding = 0;
+  this.roll = undefined;
 };
 
 mobius.science.project.stages = [
@@ -54,14 +56,16 @@ mobius.science.modal.funding = function($uibModal,projects) {
 // Science Funding Modal ///////////////////////////////////////////////////////////////////////////
 mobius.app.component("mobius.modal.science.funding",{
   templateUrl: 'app/component/science/science.funding.html',
-  controller: ["$scope","$location",function($scope,$location) {
+  controller: ["$scope","$location","$window",function($scope,$location,$window) {
     const $ctrl = this;
 
-    $ctrl.confirm = function() {};
+    $ctrl.confirm = function() {
+      $ctrl.close({$value:$ctrl.options});
+    };
     $ctrl.cancel = function() { $ctrl.dismiss(); };
 
     $ctrl.$onInit = function() {
-      $ctrl.options = $ctrl.resolve.options;
+      $ctrl.options = $window.angular.copy($ctrl.resolve.options);
     };
   }],
   bindings: {

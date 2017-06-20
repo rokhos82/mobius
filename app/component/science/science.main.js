@@ -15,12 +15,18 @@ mobius.science.controller = function($scope,_data,$uibModal) {
 
   $ctrl.data = {};
 
+  $ctrl.bonus = _data.listBonuses();
+
   $ctrl.events = _data.listEvents();
 
   $ctrl.projects = _data.listProjects();
 
   $ctrl.ui = {
     selectedProjects: []
+  };
+
+  $ctrl.saveChanges = function() {
+    _data.save();
   };
 
   $ctrl.addProject = function(proj) {
@@ -30,7 +36,27 @@ mobius.science.controller = function($scope,_data,$uibModal) {
   };
 
   $ctrl.updateProjects = function() {
-    mobius.science.modal.funding($uibModal,$ctrl.projects);
+    mobius.science.modal.funding($uibModal,$ctrl.projects).result.then(
+      // The projects have been funded.
+      function(options) {
+        let funding = options.projects;
+        let projects = $ctrl.projects;
+        for(var i in funding) {
+          let funded = funding[i];
+          let project = projects[i];
+          // Ensure that the projects are the same
+          if(funded.uuid === project.uuid) {
+            // Apply updates from the funding modal.
+            project.funding = funded.funding;
+            project.bonus = funded.bonus;
+          }
+          else {
+            console.error("Project mistach in funding update.");
+          }
+        }
+        _data.save();
+      }
+    );
   };
 
   $ctrl.clearProjects = function() {

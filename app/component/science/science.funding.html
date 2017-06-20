@@ -15,19 +15,25 @@
       <div class="form-group">
         <label for="funding" class="control-label col-lg-2">Previous Funding</label>
         <div class="col-lg-10">
-          <input type="number" id="funding" class="form-control" ng-model="" readonly />
+          <input type="number" id="funding" class="form-control" ng-model="project.prevFunding" readonly />
         </div>
       </div>
       <div class="form-group">
         <label for="funding" class="control-label col-lg-2">Total Funding</label>
         <div class="col-lg-10">
-          <input type="number" id="funding" class="form-control" ng-model="" readonly />
+          <input type="number" id="funding" class="form-control" ng-model="project.totalFunding" readonly />
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="bonus" class="control-label col-lg-2">Research Bonus</label>
+        <div class="col-lg-10">
+          <input type="number" id="bonus" class="form-control" ng-model="project.bonus"
         </div>
       </div>
     </fieldset>
   </div>
 </div>
 <div class="modal-footer">
-  <button class="btn btn-success disabled" type="button" ng-click="$ctrl.confirm()">Fund Projects</button>
+  <button class="btn btn-success" type="button" ng-click="$ctrl.confirm()">Fund Projects</button>
   <button class="btn btn-default" type="button" ng-click="$ctrl.cancel()">Cancel</button>
 </div>
