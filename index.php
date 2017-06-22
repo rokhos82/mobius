@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html ng-app="mobiusEngine">
 	<head>
-		<title>Mobius Engine</title>
+		<title>Mobius</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<meta charset="utf-8">
 		<link href="https://fonts.googleapis.com/css?family=Iceberg|Revalia|Stalinist+One|VT323" rel="stylesheet">
@@ -19,7 +19,7 @@
 						<span class="icon-bar"></span>
 						<span class="icon-bar"></span>
 					</button>
-					<a class="navbar-brand mobius-title" ui-sref="main">Mobius Engine</a>
+					<a class="navbar-brand mobius-title" ui-sref="main">Mobius</a>
 				</div>
 				<div id="navbar" class="collapse navbar-collapse">
 					<ul class="nav navbar-nav">
@@ -27,7 +27,7 @@
 						<li ui-sref-active="active"><a ui-sref="fleet"><span class="glyphicon glyphicon-tower"></span> Fleets</a></li>
 						<li ui-sref-active="active"><a ui-sref="combat"><span class="glyphicon glyphicon-fire"></span> Combat</a></li>
 						<li ui-sref-active="active"><a ui-sref="reports"><span class="glyphicon glyphicon-briefcase"></span> Reports</a></li>
-						<!--<li ui-serf-active="active"><a ui-sref="simulator"><span class="glyphicon glyphicon-expand"></span> Simulator</a></li>-->
+						<li ui-serf-active="active"><a ui-sref="simulator"><span class="glyphicon glyphicon-expand"></span> Simulator</a></li>
 						<li ui-sref-active="active"><a ui-sref="science"><span class="glyphicon glyphicon-education"></span> Science</a></li>
 					</ul>
 					<ul class="nav navbar-nav navbar-right">

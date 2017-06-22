@@ -8,19 +8,9 @@
           <form class="form-horizontal" ng-init="newProject={}">
             <fieldset>
               <legend class="text-info">New Research Project</legend>
-              <div class="form-group">
-                <label for="projectName" class="control-label col-lg-2">Project Name</label>
-                <div class="col-lg-10">
-                  <input id="projectName" class="form-control" type="text" ng-model="newProject.name" />
-                </div>
-              </div>
+              <mobius-text label="Project Name" value="newProject.name"></mobius-text>
               <mobius-select mobius-options="$ctrl.stages" mobius-selector="stage.name disable when stage.fin for stage" mobius-label="Project Stage" mobius-selected="newProject.stage"></mobius-select>
-              <div class="form-group">
-                <label for="projectBonus" class="col-lg-2 control-label">Project Bonus</label>
-                <div class="col-lg-10">
-                  <input type="number" class="form-control" id="projectBonus" ng-model="newProject.bonus" />
-                </div>
-              </div>
+              <mobius-number label="Project Bonus" placeholder="10" value="newProject.bonus"></mobius-number>
               <div class="form-group">
                 <div class="col-lg-12">
                   <button class="btn btn-success btn-block" type="button" ng-click="$ctrl.addProject(newProject);">Create Project</button>

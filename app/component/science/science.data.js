@@ -12,7 +12,7 @@ mobius.science.data = mobius.app.factory("mobius.science.data",["$rootScope",fun
     bonus: {
       global: 0
     },
-    projects: [],
+    projects: {},
     events: []
   };
 
@@ -36,6 +36,10 @@ mobius.science.data = mobius.app.factory("mobius.science.data",["$rootScope",fun
 
   _service.listProjects = function() {
     return _data.projects;
+  };
+
+  _service.updateProject = funciton(updates) {
+
   };
 
   _service.listEvents = function() {
