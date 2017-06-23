@@ -31,8 +31,7 @@ mobius.science.controller = function($scope,_data,$uibModal) {
 
   $ctrl.addProject = function(proj) {
     let project = new mobius.science.project(proj.name,"",proj.stage,proj.bonus);
-    $ctrl.projects.push(project);
-    _data.save();
+    $ctrl.projects = _data.createProject(project);
   };
 
   $ctrl.updateProjects = function(projects) {
@@ -44,17 +43,9 @@ mobius.science.controller = function($scope,_data,$uibModal) {
         for(var i in funding) {
           let funded = funding[i];
           let project = projects[i];
-          // Ensure that the projects are the same
-          if(funded.uuid === project.uuid) {
-            // Apply updates from the funding modal.
-            project.funding = funded.funding;
-            project.bonus = funded.bonus;
-          }
-          else {
-            console.error("Project mistach in funding update.");
-          }
+          _data.updateProject(funded);
         }
-        _data.save();
+        $ctrl.projects = _data.listProjects();
       }
     );
   };

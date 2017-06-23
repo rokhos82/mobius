@@ -31,6 +31,7 @@
 						<li ui-sref-active="active"><a ui-sref="science"><span class="glyphicon glyphicon-education"></span> Science</a></li>
 					</ul>
 					<ul class="nav navbar-nav navbar-right">
+						<li><a href><span class="glyphicon glyphicon-log-in"></span></a></li>
 						<li class="dropdown" uib-dropdown>
 							<a id="gear-dropdown" href="#" uib-dropdown-toggle>
 								<span class="glyphicon glyphicon-cog" aria-hidden="true" ></span> <span class="caret"></span>
