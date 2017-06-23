@@ -32,6 +32,7 @@ mobius.science.controller = function($scope,_data,$uibModal) {
   $ctrl.addProject = function(proj) {
     let project = new mobius.science.project(proj.name,"",proj.stage,proj.bonus);
     $ctrl.projects = _data.createProject(project);
+    return {};
   };
 
   $ctrl.updateProjects = function(projects) {
