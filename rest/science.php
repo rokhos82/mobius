@@ -1,4 +1,7 @@
 <?php
+print(json_encode([
+  "uuid" => $_POST['uuid']
+]));
 
 $projects = [
   "categories" => [[
@@ -45,6 +48,6 @@ $projects = [
   ]
 ];
 
-print(json_encode($projects));
+//print(json_encode($projects));
 
 ?>

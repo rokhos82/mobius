@@ -19,10 +19,11 @@ mobius.science.controller = function($scope,_data,$uibModal) {
 
   $ctrl.events = _data.listEvents();
 
+  // Get the array of projects from the science data service.
   $ctrl.projects = _data.listProjects();
 
   $ctrl.ui = {
-    selectedProjects: []
+    selectedProjects: {}
   };
 
   $ctrl.saveChanges = function() {
@@ -65,16 +66,16 @@ mobius.science.controller = function($scope,_data,$uibModal) {
     mobius.science.modal.confirm($uibModal,'Science Manager','Are you sure you want to remove the selected projects?').result.then(
       // The modal was confirmed.  Remove the selected projects.
       function () {
-        let selected = $ctrl.ui.selectedProjects;
-        for(var i = 0;i < selected.length;i++) {
-          let checked = selected[i];
-          // Is the checkbox checked?
+        // FOr each project look to see if the project has been checked and then remove that project
+        // via the science data service.  Then get the new list of projects and save to
+        // localStorage.  Lastly, reset the checkboxes.
+        _.each($ctrl.ui.selectedProjects,function(checked,uuid) {
           if(checked) {
-            // Yes, then remove that project.
-            $ctrl.projects.splice(i,1);
+            _data.deleteProject(uuid);
           }
-        }
-        $ctrl.ui.selectedProjects = [];
+        });
+        $ctrl.projects = _data.listProjects();
+        $ctrl.ui.selectedProjects = {};
         _data.save();
       }
     );

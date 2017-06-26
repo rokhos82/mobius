@@ -6,7 +6,7 @@ var mobiusEngine = {};
 ////////////////////////////////////////////////////////////////////////////////////////////////
 // BattleEngine2 angular module
 ////////////////////////////////////////////////////////////////////////////////////////////////
-mobiusEngine.app = angular.module('mobiusEngine',['ui.bootstrap','ui.router','ngSanitize']);
+mobiusEngine.app = angular.module('mobiusEngine',['ui.bootstrap','ui.router','ngSanitize','ngResource']);
 mobius.app = mobiusEngine.app;
 
 mobiusEngine.app.config(['$compileProvider','$stateProvider','$locationProvider',

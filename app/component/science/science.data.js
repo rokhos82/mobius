@@ -1,7 +1,14 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // Mobius Science Data Service
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-mobius.science.data = mobius.app.factory("mobius.science.data",["$rootScope","$window",function($rootScope,$window){
+mobius.science.data = mobius.app.factory("mobius.science.data",["$rootScope","$window","$resource",function($rootScope,$window,$resource){
+  var _resource = $resource("rest/science.php",{},{
+    query: { method: "GET",isArray:true },
+    create: { method: "POST" },
+    get: { method: "GET" },
+    remove: { method: "DELETE" },
+    update: { method: "PUT" }
+  })
   const _key = "mobius.data.science";
   var _service = {};
   var _data = undefined;
@@ -26,6 +33,7 @@ mobius.science.data = mobius.app.factory("mobius.science.data",["$rootScope","$w
   $rootScope.$on(mobius.science.events.dirty,_service.save);
 
   _service.save = function() {
+    // Saves the local data objects to localStorage.
     console.log("Saving science data.");
     localStorage.setItem(_key,$window.angular.toJson(_data));
   };
@@ -35,12 +43,17 @@ mobius.science.data = mobius.app.factory("mobius.science.data",["$rootScope","$w
   };
 
   _service.listProjects = function() {
+    // Convert the dictionary to an array and return.  I am doing this because
+    // AngularJS works best given arrays rather than dictionaries.
     return _.toArray(_data.projects);
   };
 
   _service.createProject = function(project) {
     _data.projects[project.uuid] = project;
     _service.save();
+    _resource.create(project,function(data) {
+      console.log(data);
+    });
     return _service.listProjects();
   };
 
@@ -58,6 +71,11 @@ mobius.science.data = mobius.app.factory("mobius.science.data",["$rootScope","$w
     delete _data.projects;
     _data.projects = {};
     return _service.listProjects();
+  };
+
+  _service.deleteProject = function(uuid) {
+    console.log(`Removing project ${uuid}`);
+    delete _data.projects[uuid];
   };
 
   _service.listEvents = function() {
