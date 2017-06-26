@@ -11,7 +11,7 @@ mobius.science.controller = function($scope,_data,$uibModal) {
 
   $ctrl.stages = mobius.science.project.stages;
 
-  $ctrl.welcome = "<p>Welcome to the science manager."
+  $ctrl.welcome = "<p>Welcome to the science manager.</p>"
 
   $ctrl.data = {};
 
@@ -41,15 +41,19 @@ mobius.science.controller = function($scope,_data,$uibModal) {
       // The projects have been funded.
       function(options) {
         let funding = options.projects;
-        let projects = $ctrl.projects;
         for(var i in funding) {
-          let funded = funding[i];
-          let project = projects[i];
-          _data.updateProject(funded);
+          _data.updateProject(funding[i]);
         }
         $ctrl.projects = _data.listProjects();
       }
     );
+  };
+
+  $ctrl.rollProjects = function() {
+    // Roll a d100 for each project.
+    // On a 1, the project is an instant success.
+    // On a 100, the project is an instant CATASTROPHIC failure.
+    // For other results, consult the success table and see if the project succeeded.
   };
 
   $ctrl.clearProjects = function() {
