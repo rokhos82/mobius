@@ -49,7 +49,7 @@
           <tr><th>Project</th><th>Stage</th><th>Turn Funding</th><th>Total Funding</th><th>Project Bonus</th><th>Total Bonus</th><th>Roll</th></tr>
         </thead>
         <tbody>
-          <tr ng-repeat="project in $ctrl.projects track by $index" ng-click="$ctrl.updateProjects([project])"><td><input type="checkbox" id="{{'project'+$index}}" ng-model="$ctrl.ui.selectedProjects[project.uuid]"> {{project.name}}</td><td>{{project.stage.name}}</td><td>{{project.funding}}</td><td>{{project.totalFunding}}</td><td>{{project.bonus}}</td><td>{{project.bonus + $ctrl.bonus.global}}</td><td>{{project.roll}}</td></tr>
+          <tr ng-repeat="project in $ctrl.projects track by $index" ng-click="$ctrl.updateProjects([project])"><td><input type="checkbox" id="{{'project'+$index}}" ng-click="$event.stopPropagation();" ng-model="$ctrl.ui.selectedProjects[project.uuid]"> {{project.name}}</td><td>{{project.stage.name}}</td><td>{{project.funding}}</td><td>{{project.totalFunding}}</td><td>{{project.bonus}}</td><td>{{project.bonus + $ctrl.bonus.global}}</td><td>{{project.roll}}</td></tr>
         </tbody>
       </table>
     </div>

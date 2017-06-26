@@ -52,7 +52,8 @@ mobius.science.data = mobius.app.factory("mobius.science.data",["$rootScope","$w
     _data.projects[project.uuid] = project;
     _service.save();
     _resource.create(project,function(data) {
-      console.log(data);
+      let uuid = data.uuid;
+      console.log(`New project ${uuid} pushed to backend.`);
     });
     return _service.listProjects();
   };

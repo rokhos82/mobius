@@ -1,7 +1,6 @@
 <?php
-print(json_encode([
-  "uuid" => $_POST['uuid']
-]));
+$request_body = file_get_contents('php://input');
+$payload = json_decode($request_body);
 
 $projects = [
   "categories" => [[
