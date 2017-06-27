@@ -47,8 +47,7 @@ mobius.functions.arrayToString = function(arr,html) {
 
 mobius.functions.randBetween = function(low,high,round) {
 	var random = Math.random() * (high - low) + low;
-	random = round ? Math.floor(random) : random;
-	return random;
+	return Math.round(random);
 };
 
 mobius.functions.dieRoll = function(quantity,size) {

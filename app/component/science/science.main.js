@@ -6,7 +6,7 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // Science Component Controller
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-mobius.science.controller = function($scope,_data,$uibModal) {
+mobius.science.controller = function($scope,_data,$uibModal,$window) {
   const $ctrl = this;
 
   $ctrl.stages = mobius.science.project.stages;
@@ -54,6 +54,37 @@ mobius.science.controller = function($scope,_data,$uibModal) {
     // On a 1, the project is an instant success.
     // On a 100, the project is an instant CATASTROPHIC failure.
     // For other results, consult the success table and see if the project succeeded.
+    _.each($ctrl.projects,function(project){
+      $ctrl.rollProject(project);
+    });
+  };
+
+  $ctrl.rollProject = function(project) {
+    if(project.funding > 0 && !project.stage.finis) {
+      // Calculate the success of the project.  Roll a d100 and if the result in the
+      // success table is less than the effective funding then the project was a
+      // success.  Otherwise, no, try again next turn.
+      let effectiveFunding = Math.round(project.totalFunding * (100 + project.bonus + $ctrl.bonus.global) / 100);
+      project.roll = mobius.functions.dieRoll(1,100);
+      let success = (effectiveFunding >= mobius.science.tables.success[project.roll])
+      let message = success ? "was successful" : "failed";
+      project.success = success;
+      $ctrl.events.push(new mobius.science.event(project.uuid,`${project.name} was effectively funded at ${effectiveFunding} and rolled a ${project.roll} and ${message}.`));
+      if(success && !project.stage.finis) {
+        project.stage = mobius.science.project.stages[project.stage.next];
+        $ctrl.events.push(new mobius.science.event(project.uuid,`${project.name} has moved to the ${project.stage.name} stage.`))
+        project.totalFunding = 0;
+      }
+
+      // Update project funding for the next turn.
+      project.prevFunding = project.totalFunding;
+      project.funding = 0;
+
+      _data.save();
+    }
+    else {
+      $ctrl.events.push(new mobius.science.event(project.uuid,`${project.name} was not funded this turn.  No roll.`));
+    }
   };
 
   $ctrl.clearProjects = function() {
@@ -84,6 +115,12 @@ mobius.science.controller = function($scope,_data,$uibModal) {
       }
     );
   };
+
+  // Command-line Execution
+  $ctrl.execute = function(cmd) {
+    console.log(cmd);
+    return eval(cmd);
+  };
 };
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -91,6 +128,33 @@ mobius.science.controller = function($scope,_data,$uibModal) {
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 mobius.app.component("scienceMain",{
 	templateUrl: 'app/component/science/science.main.html',
-	controller: ["$scope","mobius.science.data","$uibModal",mobius.science.controller],
+	controller: ["$scope","mobius.science.data","$uibModal","$window",mobius.science.controller],
 	bindings: {}
 });
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+////////////////////////////////////////////////////////////////////////////////////////////////////
+mobius.app.filter("completedResearch",["$window",function($window){
+  return function(projects) {
+    var filtered = [];
+    $window.angular.forEach(projects,function(project){
+      if(project.stage && project.stage.finis === true) {
+        filtered.push(project);
+      }
+    });
+    return filtered;
+  };
+}]);
+
+mobius.app.filter("activeResearch",["$window",function($window){
+  return function(projects) {
+    var filtered = [];
+    $window.angular.forEach(projects,function(project,index){
+      if(project.stage && project.stage.finis !== true) {
+        filtered.push(project);
+      }
+    });
+    return filtered;
+  };
+}]);

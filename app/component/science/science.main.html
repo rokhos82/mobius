@@ -9,7 +9,7 @@
             <fieldset>
               <legend class="text-info">New Research Project</legend>
               <mobius-text label="Project Name" value="newProject.name"></mobius-text>
-              <mobius-select mobius-options="$ctrl.stages" mobius-selector="stage.name disable when stage.fin for stage" mobius-label="Project Stage" mobius-selected="newProject.stage"></mobius-select>
+              <mobius-select mobius-options="$ctrl.stages" mobius-selector="stage.name disable when stage.finis for stage" mobius-label="Project Stage" mobius-selected="newProject.stage"></mobius-select>
               <mobius-number label="Project Bonus" placeholder="10" value="newProject.bonus"></mobius-number>
               <div class="form-group">
                 <div class="col-lg-12">
@@ -39,17 +39,26 @@
             </ul>
           </div>
           <div class="btn-group">
-            <button class="btn btn-success" type="button" ng-click="$ctrl.updateProjects($ctrl.projects)">Update Projects</button>
+            <button class="btn btn-success" type="button" ng-click="$ctrl.rollProjects()">Roll Projects</button>
             <button class="btn btn-danger" type="button" ng-click="$ctrl.clearProjects()">Clear Projects</button>
           </div>
         </div>
       </div>
       <table class="table table-stripe table-hover">
         <thead>
-          <tr><th>Project</th><th>Stage</th><th>Turn Funding</th><th>Total Funding</th><th>Project Bonus</th><th>Total Bonus</th><th>Roll</th></tr>
+          <tr><th></th><th>Project</th><th>Stage</th><th>Turn Funding</th><th>Total Funding</th><th>Project Bonus</th><th>Total Bonus</th><th>Roll</th></tr>
         </thead>
         <tbody>
-          <tr ng-repeat="project in $ctrl.projects track by $index" ng-click="$ctrl.updateProjects([project])"><td><input type="checkbox" id="{{'project'+$index}}" ng-click="$event.stopPropagation();" ng-model="$ctrl.ui.selectedProjects[project.uuid]"> {{project.name}}</td><td>{{project.stage.name}}</td><td>{{project.funding}}</td><td>{{project.totalFunding}}</td><td>{{project.bonus}}</td><td>{{project.bonus + $ctrl.bonus.global}}</td><td>{{project.roll}}</td></tr>
+          <tr class="mobius-table-row" ng-repeat="project in $ctrl.projects | activeResearch track by $index" ng-click="$ctrl.updateProjects([project])">
+            <td><input type="checkbox" class="mob-checkbox-lg" id="{{'project'+$index}}" ng-click="$event.stopPropagation();" ng-model="$ctrl.ui.selectedProjects[project.uuid]" /></td>
+            <td>{{project.name}}</td>
+            <td>{{project.stage.name}}</td>
+            <td>{{project.funding}}</td>
+            <td>{{project.totalFunding}}</td>
+            <td>{{project.bonus}}</td>
+            <td>{{project.bonus + $ctrl.bonus.global}}</td>
+            <td>{{project.roll}}</td>
+          </tr>
         </tbody>
       </table>
     </div>
@@ -57,7 +66,46 @@
   <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
     <div class="panel panel-default">
       <div class="panel-body">
-        Log of events will go here.
+        <div ng-repeat="event in $ctrl.events track by $index">{{event.text}}</div>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+    <div class="panel panel-default">
+      <div class="panel-body">
+        <h3 class="text-info">Completed Research Projects</h3>
+      </div>
+      <table class="table table-stripe table-hover">
+        <thead>
+          <tr><th>Project</th><th>Stage</th><th>Turn Funding</th><th>Total Funding</th><th>Project Bonus</th><th>Total Bonus</th><th>Roll</th></tr>
+        </thead>
+        <tbody>
+          <tr class="mobius-table-row" ng-repeat="project in $ctrl.projects | completedResearch track by $index">
+            <td>{{project.name}}</td>
+            <td>{{project.stage.name}}</td>
+            <td>{{project.funding}}</td>
+            <td>{{project.totalFunding}}</td>
+            <td>{{project.bonus}}</td>
+            <td>{{project.bonus + $ctrl.bonus.global}}</td>
+            <td>{{project.roll}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+    <div class="panel panel-default">
+      <div class="panel-body">
+        <div class="well well-sm">
+          <div class="input-group has-warning">
+            <input type="text" class="form-control" ng-model="commandText" />
+            <spann class="input-group-btn">
+              <button class="btn btn-warning" type="button" ng-click="commandOutput = $ctrl.execute(commandText); commandText=''">Execute</button>
+            </span>
+          </div>
+          <hr />
+          <div class="text-warning" style="text-warp: normal;">{{commandOutput}}</div>
+        </div>
       </div>
     </div>
   </div>

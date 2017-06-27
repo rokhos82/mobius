@@ -83,5 +83,10 @@ mobius.science.data = mobius.app.factory("mobius.science.data",["$rootScope","$w
     return _data.events;
   };
 
+  _service.clearEvents = function() {
+    _data.events = [];
+    return _data.events;
+  };
+
   return _service;
 }]);

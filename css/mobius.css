@@ -150,3 +150,8 @@ a.mobius-bookmark {
 	padding: 2px 0px 2px 10px !important;
 	margin: 0px;
 }
+
+.mob-checkbox-lg {
+	height: 20px;
+	width: 20px;
+}

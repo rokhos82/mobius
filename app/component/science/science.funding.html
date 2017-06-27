@@ -15,7 +15,7 @@
       <div class="form-group">
         <label for="{{project.name}}" class="control-label col-lg-2">Funding</label>
         <div class="col-lg-10">
-          <input type="number" id="{{project.name}}" class="form-control" ng-model="project.funding" />
+          <input type="number" id="{{project.name}}" class="form-control" ng-model="project.funding" ng-change="$ctrl.updateFunding(project);" />
         </div>
       </div>
       <div class="form-group">
@@ -40,6 +40,6 @@
   </div>
 </div>
 <div class="modal-footer">
-  <button class="btn btn-success" type="button" ng-click="$ctrl.confirm()">Fund Projects</button>
+  <button class="btn btn-success" type="button" ng-click="$ctrl.confirm()">Fund Project(s)</button>
   <button class="btn btn-default" type="button" ng-click="$ctrl.cancel()">Cancel</button>
 </div>
