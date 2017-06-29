@@ -72,7 +72,9 @@
     <div class="panel panel-default">
       <div class="panel-body">
         <h3 class="mobius-title text-info">Event Log</h3>
-        <div ng-repeat="event in $ctrl.events track by $index">{{event.text}}</div>
+        <div class="well well-sm">
+          <div ng-repeat="event in $ctrl.events track by $index" ng-class="{'text-success': event.success, 'text-danger': event.fail, 'text-warning': !event.success}">{{event.text}}</div>
+        </div>
       </div>
     </div>
   </div>

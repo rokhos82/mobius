@@ -73,12 +73,16 @@ mobius.science.controller = function($scope,_data,$uibModal,$window) {
       let effectiveFunding = Math.round(project.totalFunding * (100 + project.bonus + $ctrl.bonus.global) / 100);
       project.roll = mobius.functions.dieRoll(1,100);
       let success = (effectiveFunding >= mobius.science.tables.success[project.roll])
-      let message = success ? "was successful" : "failed";
+      let message = success ? "was successful" : "did not succeed";
       project.success = success;
-      $ctrl.events.push(new mobius.science.event(project.uuid,`${project.name} was effectively funded at ${effectiveFunding} and rolled a ${project.roll} and ${message}.`));
+      let options = {
+        'success': success,
+        'fail': project.roll == 1 ? true : false
+      };
+      $ctrl.events.push(new mobius.science.event(project.uuid,`${project.name} was effectively funded at ${effectiveFunding} and rolled a ${project.roll} and ${message}.`,options));
       if(success && !project.stage.finis) {
         project.stage = mobius.science.project.stages[project.stage.next];
-        $ctrl.events.push(new mobius.science.event(project.uuid,`${project.name} has moved to the ${project.stage.name} stage.`))
+        $ctrl.events.push(new mobius.science.event(project.uuid,`${project.name} has moved to the ${project.stage.name} stage.`,options));
         project.totalFunding = 0;
       }
 

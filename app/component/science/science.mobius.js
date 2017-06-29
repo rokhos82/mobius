@@ -20,9 +20,10 @@ mobius.science.project = function(name,description,stage,bonus) {
   this.success = false;
 };
 
-mobius.science.event = function(project,text) {
+mobius.science.event = function(project,text,options) {
   this.project = project;
   this.text = text;
+  _.defaults(this,options);
 };
 
 mobius.science.project.stages = [
