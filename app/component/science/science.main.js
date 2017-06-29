@@ -36,10 +36,10 @@ mobius.science.controller = function($scope,_data,$uibModal,$window) {
     let project = new mobius.science.project(proj.name,"",proj.stage,proj.bonus);
     $ctrl.projects = _data.createProject(project);
 
-    // Reset the new project object.
+    // Reset the new project object and return it.
     proj.name = undefined;
     proj.bonus = undefined;
-    proj.stage = mobius.science.project.stages[0];
+    $scope.$broadcast("mobius.reset");
   };
 
   $ctrl.updateProjects = function(projects) {

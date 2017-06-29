@@ -16,12 +16,18 @@ mobius.ui.select = mobius.app.component('mobiusSelect',{
     };
 
     $ctrl.$onInit = function() {
-      $ctrl.options = $window.angular.copy($ctrl.mobiusOptions);
+      $ctrl.options = $ctrl.mobiusOptions;
+      //$ctrl.options = $window.angular.copy($ctrl.mobiusOptions);
       $ctrl.selector = $window.angular.copy($ctrl.mobiusSelector);
       $ctrl.label = $window.angular.copy($ctrl.mobiusLabel);
       $ctrl.selected = $ctrl.options[0];
       $ctrl.mobiusSelected = $ctrl.selected;
     };
+
+    $scope.$on("mobius.reset",function(){
+      $ctrl.selected = $ctrl.options[0];
+      $ctrl.change();
+    });
   }],
   bindings: {
     mobiusOptions: "<",
