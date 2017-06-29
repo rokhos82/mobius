@@ -30,10 +30,15 @@ mobius.science.controller = function($scope,_data,$uibModal,$window) {
     _data.save();
   };
 
+  // Add a new research project /////////////////////////////////////////////////////////
   $ctrl.addProject = function(proj) {
     let project = new mobius.science.project(proj.name,"",proj.stage,proj.bonus);
     $ctrl.projects = _data.createProject(project);
-    return {};
+
+    // Reset the new project object.
+    proj.name = undefined;
+    proj.bonus = undefined;
+    proj.stage = mobius.science.project.stages[0];
   };
 
   $ctrl.updateProjects = function(projects) {
@@ -87,16 +92,18 @@ mobius.science.controller = function($scope,_data,$uibModal,$window) {
     }
   };
 
+  // Remove all projects and events from the manager ////////////////////////////////////
   $ctrl.clearProjects = function() {
-    mobius.science.modal.confirm($uibModal,'Science Manager','Are you sure you want to clear all of the projects?').result.then(
+    mobius.science.modal.confirm($uibModal,'Science Manager','Are you sure you want to clear all of the projects? This action cannot be undone.').result.then(
       // The modal was confirmed.  Clear the projects.
       function () {
       $ctrl.projects = _data.clearProjects();
+      $ctrl.events = _data.clearEvents();
       _data.save();
     });
   };
 
-  // Remove those projects with checked checkboxes /////////////////////////////////////////////////
+  // Remove those projects with checked checkboxes //////////////////////////////////////
   $ctrl.removeSelectedProjects = function() {
     mobius.science.modal.confirm($uibModal,'Science Manager','Are you sure you want to remove the selected projects?').result.then(
       // The modal was confirmed.  Remove the selected projects.
