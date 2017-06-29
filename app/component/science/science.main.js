@@ -22,6 +22,7 @@ mobius.science.controller = function($scope,_data,$uibModal,$window) {
   // Get the array of projects from the science data service.
   $ctrl.projects = _data.listProjects();
 
+  // UI state object.
   $ctrl.ui = {
     selectedProjects: {}
   };
