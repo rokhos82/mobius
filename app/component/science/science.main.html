@@ -49,12 +49,12 @@
           </div>
         </div>
       </div>
-      <table class="table table-stripe table-hover">
+      <table class="table table-striped table-hover">
         <thead>
           <tr><th></th><th>Project</th><th>Stage</th><th>Turn Funding</th><th>Total Funding</th><th>Project Bonus</th><th>Total Bonus</th><th>Roll</th></tr>
         </thead>
         <tbody>
-          <tr class="mobius-table-row" ng-repeat="project in $ctrl.projects | activeResearch track by $index" ng-click="$ctrl.updateProjects([project])">
+          <tr class="mobius-table-row" ng-repeat="project in $ctrl.projects | activeResearch track by $index" ng-click="$ctrl.updateProjects([project])" ng-class="{'text-warning':project.stage.index == 0,'text-info':project.stage.index == 1,'text-success':project.stage.index == 2}">
             <td><input type="checkbox" class="mob-checkbox-lg" id="{{'project'+$index}}" ng-click="$event.stopPropagation();" ng-model="$ctrl.ui.selectedProjects[project.uuid]" /></td>
             <td>{{project.name}}</td>
             <td>{{project.stage.name}}</td>
@@ -72,10 +72,12 @@
     <div class="panel panel-default">
       <div class="panel-body">
         <h3 class="mobius-title text-info">Event Log</h3>
-        <div class="well well-sm">
-          <div ng-repeat="event in $ctrl.events track by $index" ng-class="{'text-success': event.success, 'text-danger': event.fail, 'text-warning': !event.success}">{{event.text}}</div>
-        </div>
       </div>
+      <table class="table table-striped table-hover">
+        <tbody>
+          <tr ng-repeat="event in $ctrl.events track by $index" ng-class="['mobius-table-row',{'text-success': event.success, 'text-danger': event.fail, 'text-warning': !event.success}]"><td>{{event.text}}</td></tr>
+        </tbody>
+      </table>
     </div>
   </div>
   <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -83,19 +85,16 @@
       <div class="panel-body">
         <h3 class="mobius-title text-info">Completed Research Projects</h3>
       </div>
-      <table class="table table-stripe table-hover">
+      <table class="table table-striped table-hover">
         <thead>
-          <tr><th>Project</th><th>Stage</th><th>Turn Funding</th><th>Total Funding</th><th>Project Bonus</th><th>Total Bonus</th><th>Roll</th></tr>
+          <tr><th>Project</th><th>Stage</th><th>Total Funding</th><th>Project Bonus</th></tr>
         </thead>
         <tbody>
           <tr class="mobius-table-row" ng-repeat="project in $ctrl.projects | completedResearch track by $index">
             <td>{{project.name}}</td>
             <td>{{project.stage.name}}</td>
-            <td>{{project.funding}}</td>
             <td>{{project.totalFunding}}</td>
             <td>{{project.bonus}}</td>
-            <td>{{project.bonus + $ctrl.bonus.global}}</td>
-            <td>{{project.roll}}</td>
           </tr>
         </tbody>
       </table>
