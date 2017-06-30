@@ -7,7 +7,7 @@ mobius.science = {};
 mobius.science.events = {};
 mobius.science.events.dirty = "mobius.science.events.dirty";
 
-mobius.science.project = function(name,description,stage,bonus) {
+mobius.science.project = function(name,description,stage,bonus,fail) {
   this.uuid = window.uuid.v4();
   this.name = name;
   this.description = description;
@@ -18,6 +18,7 @@ mobius.science.project = function(name,description,stage,bonus) {
   this.totalFunding = 0;
   this.roll = undefined;
   this.success = false;
+  this.failChance = fail || 1;
 };
 
 mobius.science.event = function(project,text,options) {

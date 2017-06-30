@@ -6,7 +6,7 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // Science Component Controller
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-mobius.science.controller = function($scope,_data,$uibModal,$window) {
+mobius.science.controller = function($scope,_data,$uibModal,$window,$filter) {
   const $ctrl = this;
 
   $ctrl.stages = mobius.science.project.stages;
@@ -33,12 +33,13 @@ mobius.science.controller = function($scope,_data,$uibModal,$window) {
 
   // Add a new research project /////////////////////////////////////////////////////////
   $ctrl.addProject = function(proj) {
-    let project = new mobius.science.project(proj.name,"",proj.stage,proj.bonus);
+    let project = new mobius.science.project(proj.name,"",proj.stage,proj.bonus,proj.fail);
     $ctrl.projects = _data.createProject(project);
 
     // Reset the new project object and return it.
     proj.name = undefined;
     proj.bonus = undefined;
+    proj.fail = undefined;
     $scope.$broadcast("mobius.reset");
   };
 
@@ -60,30 +61,45 @@ mobius.science.controller = function($scope,_data,$uibModal,$window) {
     // On a 1, the project is an instant success.
     // On a 100, the project is an instant CATASTROPHIC failure.
     // For other results, consult the success table and see if the project succeeded.
-    _.each($ctrl.projects,function(project){
+
+    // Filter out the completed projects.
+    let projects = $filter('activeResearch')($ctrl.projects);
+
+    _.each(projects,function(project){
       $ctrl.rollProject(project);
     });
   };
 
   $ctrl.rollProject = function(project) {
+    // Make sure the project is funded and not completed.
     if(project.funding > 0 && !project.stage.finis) {
       // Calculate the success of the project.  Roll a d100 and if the result in the
       // success table is less than the effective funding then the project was a
       // success.  Otherwise, no, try again next turn.
       let effectiveFunding = Math.round(project.totalFunding * (100 + project.bonus + $ctrl.bonus.global) / 100);
       project.roll = mobius.functions.dieRoll(1,100);
-      let success = (effectiveFunding >= mobius.science.tables.success[project.roll])
-      let message = success ? "was successful" : "did not succeed";
-      project.success = success;
       let options = {
-        'success': success,
+        'success': undefined,
         'fail': project.roll == 1 ? true : false
       };
-      $ctrl.events.push(new mobius.science.event(project.uuid,`${project.name} was effectively funded at ${effectiveFunding} and rolled a ${project.roll} and ${message}.`,options));
-      if(success && !project.stage.finis) {
-        project.stage = mobius.science.project.stages[project.stage.next];
-        $ctrl.events.push(new mobius.science.event(project.uuid,`${project.name} has moved to the ${project.stage.name} stage.`,options));
-        project.totalFunding = 0;
+
+      // Did the project fail?
+      if(project.roll <= project.failChance) {
+        // Yes, log the event
+        $ctrl.events.push(new mobius.science.event(project.uuid,`${project.name} rolled a ${project.roll} and had a catastrophic failure.`,options));
+      }
+      else {
+        // No, see if the project succeeded.
+        let success = (effectiveFunding >= mobius.science.tables.success[project.roll])
+        let message = success ? "was successful" : "did not succeed";
+        project.success = success;
+        options.success = success;
+        $ctrl.events.push(new mobius.science.event(project.uuid,`${project.name} was effectively funded at ${effectiveFunding} and rolled a ${project.roll} and ${message}.`,options));
+        if(success && !project.stage.finis) {
+          project.stage = mobius.science.project.stages[project.stage.next];
+          $ctrl.events.push(new mobius.science.event(project.uuid,`${project.name} has moved to the ${project.stage.name} stage.`,options));
+          project.totalFunding = 0;
+        }
       }
 
       // Update project funding for the next turn.
@@ -140,7 +156,7 @@ mobius.science.controller = function($scope,_data,$uibModal,$window) {
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 mobius.app.component("scienceMain",{
 	templateUrl: 'app/component/science/science.main.html',
-	controller: ["$scope","mobius.science.data","$uibModal","$window",mobius.science.controller],
+	controller: ["$scope","mobius.science.data","$uibModal","$window","$filter",mobius.science.controller],
 	bindings: {}
 });
 
