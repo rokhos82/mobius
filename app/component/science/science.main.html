@@ -45,15 +45,30 @@
             </ul>
           </div>
           <div class="btn-group">
-            <button class="btn btn-success" type="button" ng-click="$ctrl.rollProjects()">Roll Projects</button>
+            <button class="btn btn-success" type="button" ng-click="">Fund Projects</button>
+            <button class="btn btn-info" type="button" ng-click="$ctrl.rollProjects()">Update Projects</button>
+          </div>
+          <div class="btn-group">
             <button class="btn btn-danger" type="button" ng-click="$ctrl.clearProjects()">Clear Projects</button>
           </div>
         </div>
       </div>
       <table class="table table-striped table-hover">
         <thead>
-          <tr><th></th><th>Project</th><th>Stage</th><th>Turn Funding</th><th>Total Funding</th><th>Project Bonus</th><th>Total Bonus</th><th>Roll</th></tr>
+          <tr>
+            <th><input type="checkbox" class="mob-checkbox-lg" id="checkAll" ng-model="$ctrl.ui.selectAllProjects" ng-click="$ctrl.checkAllProjects();" /></th>
+            <th>Project</th>
+            <th>Stage</th>
+            <th>Turn Funding</th>
+            <th>Total Funding</th>
+            <th>Project Bonus</th>
+            <th>Total Bonus</th>
+            <th>Roll</th>
+          </tr>
         </thead>
+        <tfoot>
+          <tr><th colspan="8" class="text-warning">Total Funding: {{$ctrl.totalFunding()}}</th></tr>
+        </tfoot>
         <tbody>
           <tr class="mobius-table-row" ng-repeat="project in $ctrl.projects | activeResearch track by $index" ng-click="$ctrl.updateProjects([project])" ng-class="{'text-warning':project.stage.index == 0,'text-info':project.stage.index == 1,'text-success':project.stage.index == 2}">
             <td><input type="checkbox" class="mob-checkbox-lg" id="{{'project'+$index}}" ng-click="$event.stopPropagation();" ng-model="$ctrl.ui.selectedProjects[project.uuid]" /></td>

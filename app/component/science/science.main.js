@@ -24,7 +24,8 @@ mobius.science.controller = function($scope,_data,$uibModal,$window,$filter) {
 
   // UI state object.
   $ctrl.ui = {
-    selectedProjects: {}
+    selectedProjects: {},
+    selectAllProjects: false
   };
 
   $ctrl.saveChanges = function() {
@@ -142,6 +143,19 @@ mobius.science.controller = function($scope,_data,$uibModal,$window,$filter) {
         _data.save();
       }
     );
+  };
+
+  // Total Funding caluclation //////////////////////////////////////////////////////////
+  $ctrl.totalFunding = function() {
+    return _.reduce($filter('activeResearch')($ctrl.projects),function(total,project){return total + project.funding;},0);
+  };
+
+  // Apply the check to all check boxes on the active projects //////////////////////////
+  $ctrl.checkAllProjects = function() {
+    console.log($ctrl.ui.selectAllProjects);
+    _.each($filter('activeResearch')($ctrl.projects),function(project){
+      $ctrl.ui.selectedProjects[project.uuid] = $ctrl.ui.selectAllProjects;
+    });
   };
 
   // Command-line Execution
