@@ -158,6 +158,49 @@ mobius.science.controller = function($scope,_data,$uibModal,$window,$filter) {
     });
   };
 
+  // Open the project export modal //////////////////////////////////////////////////////
+  $ctrl.exportProjects = function() {
+    let modal = $uibModal.open({
+      animation: true,
+      component: "exportModal",
+      resolve: {
+        options: function() {
+          return {
+            title: "Research Project Export",
+            msg: "Use the text field below to export a group of research projects."
+          };
+        },
+        output: function() {
+          let projects = $window.angular.copy($ctrl.projects);
+          return projects;
+        }
+      }
+    });
+  };
+
+  // Open the project import modal //////////////////////////////////////////////////////
+  $ctrl.onImportProjects = function() {
+    let modal = $uibModal.open({
+      animation: true,
+      component: "importModal",
+      resolve: {
+        options: function() { return {title:"Research Project Import",msg:"Enter a JSON string below to import a reseach project."}; }
+      }
+    });
+
+    modal.result.then(function(projectsJson) {
+      $ctrl.importProjects($window.angular.fromJson(projectsJson));
+    });
+  };
+
+  // Import the provided projects to the science manager ////////////////////////////////
+  $ctrl.importProjects = function(projects) {
+    console.log(typeof projects);
+    _.each(projects,function(project){
+      $ctrl.projects = _data.createProject(project);
+    });
+  };
+
   // Command-line Execution
   $ctrl.execute = function(cmd) {
     console.log(cmd);

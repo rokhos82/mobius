@@ -49,12 +49,19 @@ mobius.science.data = mobius.app.factory("mobius.science.data",["$rootScope","$w
   };
 
   _service.createProject = function(project) {
-    _data.projects[project.uuid] = project;
-    _service.save();
-    _resource.create(project,function(data) {
-      let uuid = data.uuid;
-      console.log(`New project ${uuid} pushed to backend.`);
-    });
+    let uuid = project.uuid;
+    if(!_data.projects[uuid]) {
+      _data.projects[project.uuid] = project;
+      _service.save();
+      _resource.create(project,function(data) {
+        let _uuid = data.uuid;
+        console.log(`New project ${_uuid} pushed to backend.`);
+      });
+    }
+    else {
+      console.warn(`Attempted to create new project ${uuid} but that ID already exists!`);
+    }
+
     return _service.listProjects();
   };
 

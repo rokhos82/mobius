@@ -50,7 +50,7 @@ mobius.science.modal.confirm = function($uibModal,title,message) {
 mobius.science.modal.funding = function($uibModal,projects) {
   return $uibModal.open({
     animation: true,
-    component: 'mobius.modal.science.funding',
+    component: 'mobius.modal.science.detail',
     resolve: {
       options: function() {
         return {
@@ -62,8 +62,8 @@ mobius.science.modal.funding = function($uibModal,projects) {
 };
 
 // Science Funding Modal ///////////////////////////////////////////////////////////////////////////
-mobius.app.component("mobius.modal.science.funding",{
-  templateUrl: 'app/component/science/science.funding.html',
+mobius.app.component("mobius.modal.science.detail",{
+  templateUrl: 'app/component/science/science.detail.html',
   controller: ["$scope","$location","$window",function($scope,$location,$window) {
     const $ctrl = this;
 
