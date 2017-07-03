@@ -43,7 +43,7 @@ mobius.ui.select = mobius.app.component('mobiusSelect',{
 // Mobius Number Input Form Element
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 mobius.ui.number = mobius.app.component('mobiusNumber',{
-  template: '<div class="form-group"><label for="number" class="control-label col-lg-2">{{$ctrl.label}}</label><div class="col-lg-10"><input id="number" type="number" class="form-control" ng-model="$ctrl.value" placeholder="{{$ctrl.placeholder}}" /></div></div>',
+  template: '<div class="form-group"><label for="{{$ctrl.mobiusId}}" class="control-label col-lg-2">{{$ctrl.label}}</label><div class="col-lg-10"><input id="{{$ctrl.mobiusId}}" type="number" class="form-control" ng-model="$ctrl.value" placeholder="{{$ctrl.placeholder}}" /></div></div>',
   controller: ["$scope","$window",function($scope,$window){
     const $ctrl = this;
 
@@ -52,7 +52,8 @@ mobius.ui.number = mobius.app.component('mobiusNumber',{
   bindings: {
     label: "@",
     value: "=",
-    placeholder: "@"
+    placeholder: "@",
+    mobiusId: "@"
   }
 });
 
