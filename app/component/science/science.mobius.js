@@ -67,6 +67,8 @@ mobius.app.component("mobius.modal.science.detail",{
   controller: ["$scope","$location","$window",function($scope,$location,$window) {
     const $ctrl = this;
 
+    $ctrl.stages = mobius.science.project.stages;
+
     $ctrl.confirm = function() {
       $ctrl.close({$value:$ctrl.options});
     };

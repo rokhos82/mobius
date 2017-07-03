@@ -20,7 +20,9 @@ mobius.ui.select = mobius.app.component('mobiusSelect',{
       //$ctrl.options = $window.angular.copy($ctrl.mobiusOptions);
       $ctrl.selector = $window.angular.copy($ctrl.mobiusSelector);
       $ctrl.label = $window.angular.copy($ctrl.mobiusLabel);
-      $ctrl.selected = $ctrl.options[0];
+
+      let selected = $ctrl.mobiusSelected ? $ctrl.mobiusSelected.index : 0;
+      $ctrl.selected = $ctrl.options[selected] || $ctrl.options[0];
       $ctrl.mobiusSelected = $ctrl.selected;
     };
 

@@ -5,12 +5,7 @@
   <div class="form-horizontal" ng-repeat="project in $ctrl.options.projects">
     <fieldset>
       <legend>{{project.name}}</legend>
-      <div class="form-group">
-        <label for="stage" class="control-label col-lg-2">Stage</label>
-        <div class="col-lg-10">
-          <select id="stage" class="form-control"></select>
-        </div>
-      </div>
+      <mobius-select mobius-options="$ctrl.stages" mobius-selector="stage.name disable when stage.finis for stage" mobius-label="Stage" mobius-selected="project.stage"></mobius-select>
       <div class="form-group">
         <label for="{{project.name}}" class="control-label col-lg-2">Funding</label>
         <div class="col-lg-10">
