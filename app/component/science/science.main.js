@@ -10,7 +10,7 @@ mobius.science.controller = function($scope,_data,$uibModal,$window,$filter) {
   const $ctrl = this;
 
   $ctrl.user = {
-    level: 5
+    level: 0
   };
 
   $ctrl.stages = mobius.science.project.stages;
@@ -62,7 +62,8 @@ mobius.science.controller = function($scope,_data,$uibModal,$window,$filter) {
   };
 
   $ctrl.fundProjects = function(projects) {
-    mobius.science.modal.funding($uibModal,projects).result.then(
+    let filtered = $filter('activeResearch')(projects);
+    mobius.science.modal.funding($uibModal,filtered).result.then(
       // The projects have been funded.  Update the project information.
       function(output) {
         let fundedProjects = output.projects;

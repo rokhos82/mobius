@@ -107,7 +107,7 @@ mobius.app.component("mobius.modal.science.detail",{
 // Science Funding Modal ///////////////////////////////////////////////////////////////////////////
 mobius.app.component("mobius.modal.science.funding",{
   templateUrl: 'app/component/science/science.funding.html',
-  controller: ["$scope","$location","$window",function($scope,$location,$window) {
+  controller: ["$scope","$location","$window","$timeout",function($scope,$location,$window,$timeout) {
     const $ctrl = this;
 
     $ctrl.stages = mobius.science.project.stages;
@@ -124,6 +124,7 @@ mobius.app.component("mobius.modal.science.funding",{
     $ctrl.applyFunding = function(funding) {
       _.each($ctrl.options.projects,function(project){
         project.funding = funding;
+        $ctrl.updateFunding(project);
       });
     };
 
@@ -131,9 +132,12 @@ mobius.app.component("mobius.modal.science.funding",{
       $ctrl.options = {};
       $ctrl.options.projects = [];
       _.each($ctrl.resolve.options.projects,function(project) {
-        $ctrl.options.projects.push(_.pick(project,['uuid','name','funding']));
+        $ctrl.options.projects.push(_.pick(project,['uuid','name','funding','prevFunding','totalFunding','success','stage']));
       });
       //$ctrl.options = $window.angular.copy($ctrl.resolve.options);
+      $timeout(function(){
+        $window.document.getElementById('fundingLevel').focus();
+      });
     };
   }],
   bindings: {
