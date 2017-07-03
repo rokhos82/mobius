@@ -11,7 +11,7 @@ mobius.science.controller = function($scope,_data,$uibModal,$window,$filter) {
 
   $ctrl.stages = mobius.science.project.stages;
 
-  $ctrl.welcome = "<p>Welcome to the science manager.</p>"
+  $ctrl.welcome = "<p>Welcome to the science manager. Here you will manage your research projects and related information.</p><p class='text-warning'>Currently, funding must be applied to each project individually.</p>"
 
   $ctrl.data = {};
 
