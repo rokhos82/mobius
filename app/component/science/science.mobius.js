@@ -38,6 +38,7 @@ mobius.science.modal = {};
 mobius.science.modal.confirm = function($uibModal,title,message) {
   return $uibModal.open({
     animation: true,
+    backdrop: 'static',
     component: 'confirmModal',
     resolve: {
       options: function() {
@@ -47,7 +48,7 @@ mobius.science.modal.confirm = function($uibModal,title,message) {
   });
 };
 
-mobius.science.modal.funding = function($uibModal,projects) {
+mobius.science.modal.detail = function($uibModal,projects) {
   return $uibModal.open({
     animation: true,
     component: 'mobius.modal.science.detail',
@@ -61,7 +62,21 @@ mobius.science.modal.funding = function($uibModal,projects) {
   });
 };
 
-// Science Funding Modal ///////////////////////////////////////////////////////////////////////////
+mobius.science.modal.funding = function($uibModal,projects) {
+  return $uibModal.open({
+    animation: true,
+    component: 'mobius.modal.science.funding',
+    resolve: {
+      options: function() {
+        return {
+          'projects': projects
+        };
+      }
+    }
+  });
+};
+
+// Project Detail Modal ///////////////////////////////////////////////////////////////////////////
 mobius.app.component("mobius.modal.science.detail",{
   templateUrl: 'app/component/science/science.detail.html',
   controller: ["$scope","$location","$window",function($scope,$location,$window) {
@@ -80,6 +95,45 @@ mobius.app.component("mobius.modal.science.detail",{
 
     $ctrl.$onInit = function() {
       $ctrl.options = $window.angular.copy($ctrl.resolve.options);
+    };
+  }],
+  bindings: {
+    resolve: "<",
+    dismiss: "&",
+    close: "&"
+  }
+});
+
+// Science Funding Modal ///////////////////////////////////////////////////////////////////////////
+mobius.app.component("mobius.modal.science.funding",{
+  templateUrl: 'app/component/science/science.funding.html',
+  controller: ["$scope","$location","$window",function($scope,$location,$window) {
+    const $ctrl = this;
+
+    $ctrl.stages = mobius.science.project.stages;
+
+    $ctrl.confirm = function() {
+      $ctrl.close({$value:$ctrl.options});
+    };
+    $ctrl.cancel = function() { $ctrl.dismiss(); };
+
+    $ctrl.updateFunding = function(project) {
+      project.totalFunding = project.prevFunding + project.funding;
+    };
+
+    $ctrl.applyFunding = function(funding) {
+      _.each($ctrl.options.projects,function(project){
+        project.funding = funding;
+      });
+    };
+
+    $ctrl.$onInit = function() {
+      $ctrl.options = {};
+      $ctrl.options.projects = [];
+      _.each($ctrl.resolve.options.projects,function(project) {
+        $ctrl.options.projects.push(_.pick(project,['uuid','name','funding']));
+      });
+      //$ctrl.options = $window.angular.copy($ctrl.resolve.options);
     };
   }],
   bindings: {

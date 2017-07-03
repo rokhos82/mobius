@@ -9,6 +9,10 @@
 mobius.science.controller = function($scope,_data,$uibModal,$window,$filter) {
   const $ctrl = this;
 
+  $ctrl.user = {
+    level: 5
+  };
+
   $ctrl.stages = mobius.science.project.stages;
 
   $ctrl.welcome = "<p>Welcome to the science manager. Here you will manage your research projects and related information.</p><p class='text-warning'>Currently, funding must be applied to each project individually.</p>"
@@ -45,13 +49,26 @@ mobius.science.controller = function($scope,_data,$uibModal,$window,$filter) {
   };
 
   $ctrl.updateProjects = function(projects) {
-    mobius.science.modal.funding($uibModal,projects).result.then(
-      // The projects have been funded.
+    mobius.science.modal.detail($uibModal,projects).result.then(
+      // Project details have been changed.
       function(options) {
         let funding = options.projects;
         for(var i in funding) {
           _data.updateProject(funding[i]);
         }
+        $ctrl.projects = _data.listProjects();
+      }
+    );
+  };
+
+  $ctrl.fundProjects = function(projects) {
+    mobius.science.modal.funding($uibModal,projects).result.then(
+      // The projects have been funded.  Update the project information.
+      function(output) {
+        let fundedProjects = output.projects;
+        _.each(fundedProjects,function(fundedProject){
+          _data.updateProject(fundedProject);
+        });
         $ctrl.projects = _data.listProjects();
       }
     );
