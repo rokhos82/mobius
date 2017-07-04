@@ -11,13 +11,18 @@
     </div>
   </div>
   <table class="table table-hover table-stripe">
-    <tr class="mobius-table-row" ng-repeat="project in $ctrl.options.projects track by project.uuid">
-      <td>{{project.name}}</td>
-      <td>{{project.stage.name}}</td>
-      <td>{{project.success}}</td>
-      <td><input type="number" ng-model="project.funding" ng-value="project.prevFunding" ng-change="$ctrl.updateFunding(project)" class="form-control" /></td>
-      <td>{{project.totalFunding}}</td>
-    </tr>
+    <tfoot>
+      <tr class="mobius-table-row text-warning"><td colspan="5">Total Funding: {{$ctrl.totalFunding()}}</td></tr>
+    </tfoot>
+    <tbody>
+      <tr class="mobius-table-row" ng-repeat="project in $ctrl.options.projects track by project.uuid">
+        <td>{{project.name}}</td>
+        <td>{{project.stage.name}}</td>
+        <td>{{project.success}}</td>
+        <td><input type="number" ng-model="project.funding" ng-change="$ctrl.updateFunding(project)" class="form-control" /></td>
+        <td>{{project.totalFunding}}</td>
+      </tr>
+    </tbody>
   </table>
 </div>
 <div class="modal-footer">

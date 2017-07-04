@@ -10,8 +10,9 @@
               <legend class="text-info">New Research Project</legend>
               <mobius-text label="Project Name" value="newProject.name"></mobius-text>
               <mobius-select mobius-options="$ctrl.stages" mobius-selector="stage.name disable when stage.finis for stage" mobius-label="Project Stage" mobius-selected="newProject.stage"></mobius-select>
+              <mobius-number label="Level" placeholder="If the project can have multiple levels enter that here." value="newProject.level" checkbox="Use level in name" checkbox-model="newProject.useLevel"></mobius-number>
               <mobius-number label="Project Bonus" placeholder="10" value="newProject.bonus"></mobius-number>
-              <mobius-number label="Chance of Failure" placeholder="1" value="newProject.fail"></mobius-number>
+              <mobius-number label="Chance of Failure" placeholder="1" value="newProject.failChance"></mobius-number>
               <div class="form-group">
                 <div class="col-lg-12">
                   <button class="btn btn-success btn-block" type="button" ng-click="$ctrl.addProject(newProject);">Create Project</button>
@@ -80,7 +81,7 @@
         <tbody>
           <tr class="mobius-table-row" ng-repeat="project in $ctrl.projects | activeResearch track by $index" ng-click="$ctrl.updateProjects([project])" ng-class="{'text-warning':project.stage.index == 0,'text-info':project.stage.index == 1,'text-success':project.stage.index == 2}">
             <td><input type="checkbox" class="mob-checkbox-lg" id="{{'project'+$index}}" ng-click="$event.stopPropagation();" ng-model="$ctrl.ui.selectedProjects[project.uuid]" /></td>
-            <td>{{project.name}}</td>
+            <td>{{project.name}}<span ng-if="project.useLevel"> (Level {{project.level}})</span></td>
             <td>{{project.stage.name}}</td>
             <td>{{project.funding}}</td>
             <td>{{project.totalFunding}}</td>
@@ -115,7 +116,7 @@
         </thead>
         <tbody>
           <tr class="mobius-table-row" ng-repeat="project in $ctrl.projects | completedResearch track by $index">
-            <td>{{project.name}}</td>
+            <td>{{project.name}}<span ng-if="project.useLevel"> (Level {{project.level}}) </span><span class="glyphicon glyphicon-open text-info" ng-if="project.level"></span></td>
             <td>{{project.stage.name}}</td>
             <td>{{project.totalFunding}}</td>
             <td>{{project.bonus}}</td>

@@ -7,18 +7,12 @@ mobius.science = {};
 mobius.science.events = {};
 mobius.science.events.dirty = "mobius.science.events.dirty";
 
-mobius.science.project = function(name,description,stage,bonus,fail) {
+mobius.science.project = function(options) {
+  // Generate a unique ID for the research project.  Then copy in any options
+  // passed and then set any defaults that remain.
   this.uuid = window.uuid.v4();
-  this.name = name;
-  this.description = description;
-  this.stage = stage;
-  this.bonus = bonus;
-  this.funding = 0;
-  this.prevFunding = 0;
-  this.totalFunding = 0;
-  this.roll = undefined;
-  this.success = false;
-  this.failChance = fail || 1;
+  _.defaults(this,options);
+  _.defaults(this,mobius.science.project.default);
 };
 
 mobius.science.event = function(project,text,options) {
@@ -33,6 +27,18 @@ mobius.science.project.stages = [
   {name:"Development",index:2,next:3},
   {name:"Completed",index:3,finis:true}
 ];
+
+mobius.science.project.default = {
+  name: "default",
+  description: "this should be replaced",
+  stage: mobius.science.project.stages[0],
+  bonus: 0,
+  failChance: 1,
+  funding: 0,
+  prevFunding: 0,
+  totalFunding: 0,
+  level: false
+};
 
 mobius.science.modal = {};
 mobius.science.modal.confirm = function($uibModal,title,message) {
@@ -126,6 +132,10 @@ mobius.app.component("mobius.modal.science.funding",{
         project.funding = funding;
         $ctrl.updateFunding(project);
       });
+    };
+
+    $ctrl.totalFunding = function() {
+      return _.reduce($ctrl.options.projects,function(total,project) { return total + project.funding },0);
     };
 
     $ctrl.$onInit = function() {
