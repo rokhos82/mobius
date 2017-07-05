@@ -23,6 +23,11 @@ mobius.science.controller = function($scope,_data,$uibModal,$window,$filter) {
 
   $ctrl.events = _data.listEvents();
 
+  $ctrl.alerts = {
+    general: [],
+    research: []
+  };
+
   // Get the array of projects from the science data service.
   $ctrl.projects = _data.listProjects();
 
@@ -107,6 +112,7 @@ mobius.science.controller = function($scope,_data,$uibModal,$window,$filter) {
       // Did the project fail?
       if(project.roll <= project.failChance) {
         // Yes, log the event
+        $ctrl.alerts.research.push(new mobius.pageAlerts.alert(`${project.name} failed this turn!`,"danger"));
         $ctrl.events.push(new mobius.science.event(project.uuid,`${project.name} rolled a ${project.roll} and had a catastrophic failure.`,options));
       }
       else {
@@ -115,6 +121,7 @@ mobius.science.controller = function($scope,_data,$uibModal,$window,$filter) {
         let message = success ? "was successful" : "did not succeed";
         project.success = success;
         options.success = success;
+        $ctrl.alerts.research.push(new mobius.pageAlerts.alert(`${project.name} was successful this turn.`,"success"));
         $ctrl.events.push(new mobius.science.event(project.uuid,`${project.name} was effectively funded at ${effectiveFunding} and rolled a ${project.roll} and ${message}.`,options));
         if(success && !project.stage.finis) {
           project.stage = mobius.science.project.stages[project.stage.next];

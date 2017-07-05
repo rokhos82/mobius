@@ -2,6 +2,7 @@
 // Mobius Page Alerts Component
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 mobiusEngine.pageAlerts = {};
+mobius.pageAlerts = mobiusEngine.pageAlerts;
 mobiusEngine.pageAlerts.alert = function(msg,type,timeout) {
 	this.type = type || "warning";
 	this.msg = msg || "";
