@@ -4,10 +4,10 @@
 <div class="modal-body">
   <div class="form-horizontal">
     <fieldset>
-      <mobius-text label="Name" value="$ctrl.project.name" checkbox="Tech has levels" checkbox-model="$ctrl.project.hasLevels"></mobius-text>
+      <mobius-text mobius-id="projectName" label="Name" value="$ctrl.project.name" checkbox="Tech has levels" checkbox-model="$ctrl.project.hasLevels"></mobius-text>
       <mobius-select mobius-options="$ctrl.stages" mobius-selector="stage.name disable when stage.finis for stage" mobius-label="Stage" mobius-selected="$ctrl.project.stage"></mobius-select>
-      <mobius-number label="Research Bonus" value="$ctrl.project.bonus"></mobius-number>
-      <mobius-number label="Chane of Failure" value="$ctrl.project.failChance"></mobius-number>
+      <mobius-number label="Research Bonus" placeholder="0" value="$ctrl.project.bonus"></mobius-number>
+      <mobius-number label="Chane of Failure" placeholder="1" value="$ctrl.project.failChance"></mobius-number>
     </fieldset>
   </div>
 </div>

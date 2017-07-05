@@ -47,7 +47,10 @@ mobius.ui.number = mobius.app.component('mobiusNumber',{
   controller: ["$scope","$window",function($scope,$window){
     const $ctrl = this;
 
-    $ctrl.$onInit = function() {};
+    $ctrl.$onInit = function() {
+      let id = _.uniqueId();
+      $ctrl.mobiusId = $ctrl.mobiusId || `number${id}`;
+    };
   }],
   bindings: {
     label: "@",
@@ -63,16 +66,20 @@ mobius.ui.number = mobius.app.component('mobiusNumber',{
 // Mobius Number Input Form Element
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 mobius.ui.text = mobius.app.component('mobiusText',{
-  template: '<div class="form-group"><label for="text" class="control-label col-lg-2">{{$ctrl.label}}</label><div class="col-lg-10"><input id="text" type="text" class="form-control" ng-model="$ctrl.value" placeholder="{{$ctrl.placeholder}}" /><div class="checkbox" ng-if="$ctrl.checkbox"><label><input type="checkbox" ng-model="$ctrl.checkboxModel" />{{$ctrl.checkbox}}</label></div></div></div>',
+  template: '<div class="form-group"><label for="{{$ctrl.mobiusId}}" class="control-label col-lg-2">{{$ctrl.label}}</label><div class="col-lg-10"><input id="{{$ctrl.mobiusId}}" type="text" class="form-control" ng-model="$ctrl.value" placeholder="{{$ctrl.placeholder}}" /><div class="checkbox" ng-if="$ctrl.checkbox"><label><input type="checkbox" ng-model="$ctrl.checkboxModel" />{{$ctrl.checkbox}}</label></div></div></div>',
   controller: ["$scope","$window",function($scope,$window){
     const $ctrl = this;
 
-    $ctrl.$onInit = function() {};
+    $ctrl.$onInit = function() {
+      let id = _.uniqueId();
+      $ctrl.mobiusId = $ctrl.mobiusId || `text${id}`;
+    };
   }],
   bindings: {
     label: "@",
     value: "=",
     placeholder: "@",
+    mobiusId: "@",
     checkbox: "@",
     checkboxModel: "="
   }

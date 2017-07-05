@@ -48,6 +48,10 @@ mobius.science.data = mobius.app.factory("mobius.science.data",["$rootScope","$w
     return _.toArray(_data.projects);
   };
 
+  _service.getProject = function(uuid) {
+    return _data.projects[uuid] || `Error: Unknown project ID: ${uuid}`;
+  };
+
   _service.createProject = function(project) {
     let uuid = project.uuid;
     if(!_data.projects[uuid]) {

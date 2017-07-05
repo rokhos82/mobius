@@ -98,6 +98,23 @@ mobius.science.controller = function($scope,_data,$uibModal,$window,$filter) {
     });
   };
 
+  $ctrl.rollSelectedProjects = function() {
+    _.chain($ctrl.ui.selectedProjects).map(function(selected,uuid){
+      if(selected) {
+        return uuid;
+      }
+    }).each(function(uuid) {
+      let project = _data.getProject(uuid);
+      if(typeof project === "object") {
+        console.log(project);
+        $ctrl.rollProject(project);
+      }
+      else {
+        console.warn(project);
+      }
+    });
+  };
+
   $ctrl.rollProject = function(project) {
     // Make sure the project is funded and not completed.
     if(project.funding > 0 && !project.stage.finis) {

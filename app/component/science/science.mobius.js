@@ -157,7 +157,7 @@ mobius.app.component("mobius.modal.science.funding",{
       _.each($ctrl.resolve.options.projects,function(project) {
         $ctrl.options.projects.push(_.pick(project,['uuid','name','funding','prevFunding','totalFunding','success','stage']));
       });
-      //$ctrl.options = $window.angular.copy($ctrl.resolve.options);
+
       $timeout(function(){
         $window.document.getElementById('fundingLevel').focus();
       });
@@ -197,9 +197,9 @@ mobius.app.component("mobius.modal.science.new",{
       }
       delete $ctrl.project.uuid;
 
-      /*$timeout(function(){
-        $window.document.getElementById('fundingLevel').focus();
-      });//*/
+      $timeout(function(){
+        $window.document.getElementById('projectName').focus();
+      });
     };
   }],
   bindings: {

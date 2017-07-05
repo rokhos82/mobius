@@ -25,8 +25,6 @@
           <div class="btn-group" uib-dropdown>
             <button class="btn btn-primary" uib-dropdown-toggle>Apply to Checked <span class="caret"></span></button>
             <ul class="dropdown-menu" uib-dropdown-menu role="menu">
-              <!--<li role="menuitme"><a href>Update</a></li>
-              <li role="menuitem"><a href>Reroll</a></li>-->
               <li role="menuitem"><a href ng-click="$ctrl.removeSelectedProjects()">Remove</a></li>
             </ul>
           </div>
@@ -44,6 +42,8 @@
             <ul class="dropdown-menu" uib-dropdown-menu role="menu">
               <li role="menuitem"><a href>Mass Add Projects</a></li>
               <li role="menuitem"><a href ng-click="$ctrl.clearProjects()">Clear Projects</a></li>
+              <li class="divider"></li>
+              <li role="menuitem"><a href ng-click="$ctrl.rollSelectedProjects()">Roll Selected</a></li>
             </ul>
           </div>
         </div>
@@ -120,12 +120,14 @@
     <div class="panel panel-default">
       <div class="panel-body">
         <div class="well well-sm">
-          <div class="input-group has-warning">
-            <input type="text" class="form-control" ng-model="commandText" />
-            <spann class="input-group-btn">
-              <button class="btn btn-warning" type="button" ng-click="commandOutput = $ctrl.execute(commandText); commandText=''">Execute</button>
-            </span>
-          </div>
+          <form class="form-horizontal">
+            <div class="input-group has-warning">
+              <input type="text" class="form-control" ng-model="commandText" />
+              <span class="input-group-btn">
+                <button class="btn btn-warning" type="submit" ng-click="commandOutput = $ctrl.execute(commandText); commandText=''">Execute</button>
+              </span>
+            </div>
+          </form>
           <hr />
           <div class="text-warning" style="text-warp: normal;">{{commandOutput}}</div>
         </div>
