@@ -36,8 +36,7 @@ mobius.science.project.default = {
   failChance: 1,
   funding: 0,
   prevFunding: 0,
-  totalFunding: 0,
-  level: false
+  totalFunding: 0
 };
 
 mobius.science.modal = {};
@@ -77,6 +76,20 @@ mobius.science.modal.funding = function($uibModal,projects) {
         return {
           'projects': projects
         };
+      }
+    }
+  });
+};
+
+mobius.science.modal.new = function($uibModal,project) {
+  return $uibModal.open({
+    animation: true,
+    component: 'mobius.modal.science.new',
+    resolve: {
+      options: function() {
+        return {
+          'project': project
+        }
       }
     }
   });
@@ -148,6 +161,45 @@ mobius.app.component("mobius.modal.science.funding",{
       $timeout(function(){
         $window.document.getElementById('fundingLevel').focus();
       });
+    };
+  }],
+  bindings: {
+    resolve: "<",
+    dismiss: "&",
+    close: "&"
+  }
+});
+
+// New Project Modal ////////////////////////////////////////////////////////////////////
+mobius.app.component("mobius.modal.science.new",{
+  templateUrl: 'app/component/science/science.new.html',
+  controller: ["$scope","$location","$window","$timeout",function($scope,$location,$window,$timeout) {
+    const $ctrl = this;
+
+    $ctrl.stages = mobius.science.project.stages;
+
+    $ctrl.confirm = function() {
+      $ctrl.close({$value:$ctrl.options});
+    };
+    $ctrl.cancel = function() { $ctrl.dismiss(); };
+
+    $ctrl.$onInit = function() {
+      $ctrl.options = $window.angular.copy($ctrl.resolve.options);
+
+      $ctrl.options.project = $ctrl.options.project || {};
+      $ctrl.project = $ctrl.options.project;
+
+      if($ctrl.project.stage) {
+        $ctrl.project.stage = $ctrl.stages[1];
+      }
+      else {
+        $ctrl.project.stage = $ctrl.stages[0];
+      }
+      delete $ctrl.project.uuid;
+
+      /*$timeout(function(){
+        $window.document.getElementById('fundingLevel').focus();
+      });//*/
     };
   }],
   bindings: {

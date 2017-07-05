@@ -45,14 +45,16 @@ mobius.science.controller = function($scope,_data,$uibModal,$window,$filter) {
   $ctrl.addProject = function(proj) {
     let project = new mobius.science.project(proj);
     $ctrl.projects = _data.createProject(project);
-
-    // Reset the new project object and return it.
-    proj.name = undefined;
-    proj.bonus = undefined;
-    proj.fail = undefined;
-    proj.level = undefined;
-    proj.useLevel = undefined;
     $scope.$broadcast("mobius.reset");
+  };
+
+  // Open the new project modal /////////////////////////////////////////////////////////
+  $ctrl.onNewProject = function(proj) {
+    mobius.science.modal.new($uibModal,proj).result.then(
+      function(output) {
+        $ctrl.addProject(output.project);
+      }
+    );
   };
 
   $ctrl.updateProjects = function(projects) {
