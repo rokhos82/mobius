@@ -155,3 +155,16 @@ a.mobius-bookmark {
 	height: 20px;
 	width: 20px;
 }
+
+.mob-div-fixed {
+	max-height: 300px;
+	overflow-y: scroll;
+}
+
+.mob-text-special {
+	color: /*#bc38d3;*/#c262d3;
+}
+
+.mob-text-special:hover {
+	color: #c262d3;
+}

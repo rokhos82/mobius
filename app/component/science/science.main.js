@@ -144,6 +144,7 @@ mobius.science.controller = function($scope,_data,$uibModal,$window,$filter) {
         if(success && !project.stage.finis) {
           $ctrl.alerts.research.push(new mobius.pageAlerts.alert(`${project.name} was successful this turn.`,"success"));
           project.stage = mobius.science.project.stages[project.stage.next];
+          options.advance = true;
           $ctrl.events.push(new mobius.science.event(project.uuid,`${project.name} has moved to the ${project.stage.name} stage.`,options));
           project.totalFunding = 0;
         }
