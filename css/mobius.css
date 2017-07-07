@@ -181,3 +181,13 @@ a.mobius-bookmark {
 	background-color: #c262d3;
 	border-color: #c262d3;
 }
+
+.mob-turn-tile {
+	display: block;
+	height: 300px;
+	text-align: center;
+	vertical-align: middle;
+	border-top-left-radius: 75px;
+	border-bottom-right-radius: 75px;
+	background-color: #000000;
+}
