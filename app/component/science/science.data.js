@@ -20,12 +20,14 @@ mobius.science.data = mobius.app.factory("mobius.science.data",["$rootScope","$w
       global: 0
     },
     projects: {},
-    events: []
+    events: [],
+    alerts: []
   };
 
   // Restore the data object from localStorage if not loaded
   if(!_state.loaded) {
     _data = $window.angular.fromJson(localStorage.getItem(_key)) || _default;
+    _.defaults(_data,_default);
     _state.loaded = true;
   }
 
@@ -97,6 +99,10 @@ mobius.science.data = mobius.app.factory("mobius.science.data",["$rootScope","$w
   _service.clearEvents = function() {
     _data.events = [];
     return _data.events;
+  };
+
+  _service.listAlerts = function() {
+    return _data.alerts;
   };
 
   return _service;

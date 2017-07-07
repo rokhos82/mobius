@@ -162,9 +162,22 @@ a.mobius-bookmark {
 }
 
 .mob-text-special {
-	color: /*#bc38d3;*/#c262d3;
+	color: #ad66d5;
 }
 
 .mob-text-special:hover {
-	color: #c262d3;
+	color: #ad66d5;
+}
+
+.alert-special {
+	background-color: #ad66d5;
+	color: #ffffff;
+	border-color: #602580;
+}
+
+.btn-special {
+	background-image: -webkit-linear-gradient(#);
+	color: #ffffff;
+	background-color: #c262d3;
+	border-color: #c262d3;
 }

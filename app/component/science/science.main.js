@@ -25,7 +25,7 @@ mobius.science.controller = function($scope,_data,$uibModal,$window,$filter) {
 
   $ctrl.alerts = {
     general: [],
-    research: []
+    research: _data.listAlerts()
   };
 
   // Get the array of projects from the science data service.
@@ -142,11 +142,16 @@ mobius.science.controller = function($scope,_data,$uibModal,$window,$filter) {
         options.success = success;
         $ctrl.events.push(new mobius.science.event(project.uuid,`${project.name} was effectively funded at ${effectiveFunding} and rolled a ${project.roll} and ${message}.`,options));
         if(success && !project.stage.finis) {
-          $ctrl.alerts.research.push(new mobius.pageAlerts.alert(`${project.name} was successful this turn.`,"success"));
           project.stage = mobius.science.project.stages[project.stage.next];
           options.advance = true;
           $ctrl.events.push(new mobius.science.event(project.uuid,`${project.name} has moved to the ${project.stage.name} stage.`,options));
           project.totalFunding = 0;
+          if(project.stage.finis) {
+            $ctrl.alerts.research.push(new mobius.pageAlerts.alert(`Research into ${project.name} is now finished!`,"special"));
+          }
+          else {
+            $ctrl.alerts.research.push(new mobius.pageAlerts.alert(`${project.name} was successful this turn.`,"success"));
+          }
         }
       }
 
