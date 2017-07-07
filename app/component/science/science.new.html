@@ -2,16 +2,43 @@
   <h4 class="modal-title mobius-title text-info">New Research Project</h4>
 </div>
 <div class="modal-body">
-  <div class="form-horizontal">
+  <form class="form-horizontal" name="newProject" novalidate>
     <fieldset>
-      <mobius-text mobius-id="projectName" label="Name" value="$ctrl.project.name" checkbox="Tech has levels" checkbox-model="$ctrl.project.hasLevels"></mobius-text>
-      <mobius-select mobius-options="$ctrl.stages" mobius-selector="stage.name disable when stage.finis for stage" mobius-label="Stage" mobius-selected="$ctrl.project.stage"></mobius-select>
-      <mobius-number label="Research Bonus" placeholder="0" value="$ctrl.project.bonus"></mobius-number>
-      <mobius-number label="Chane of Failure" placeholder="1" value="$ctrl.project.failChance"></mobius-number>
+      <div ng-class="['form-group',{'has-error':newProject.name.$invalid}]">
+        <label for="name" class="control-label col-lg-3">Name</label>
+        <div class="col-lg-9">
+          <input id="name" name="name" type="text" class="form-control" required ng-required="true" ng-model="$ctrl.project.name" />
+          <div class="checkbox">
+            <label><input type="checkbox" ng-model="$ctrl.project.hasLevels" />Tech has levels</label>
+          </div>
+          <p ng-show="newProject.name.$invalid" class="help-block">Please enter a project name.</p>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="stage" class="control-label col-lg-3">Stage</label>
+        <div class="col-lg-9">
+          <select class="form-control" id="stage" ng-model="$ctrl.project.stage" ng-options="stage.name disable when stage.finis for stage in $ctrl.stages" required ng-required="true"></select>
+        </div>
+      </div>
+      <div ng-class="['form-group',{'has-error':newProject.bonus.$invalid}]">
+        <label for="bonus" class="control-label col-lg-3">Research Bonus</label>
+        <div class="col-lg-9">
+          <input id="bonus" name="bonus" class="form-control" type="number" required ng-required="true" ng-model="$ctrl.project.bonus" placeholder="0" />
+          <p ng-show="newProject.bonus.$invalid" class="help-block text-danger">Please enter a research bonus.</p>
+        </div>
+      </div>
+      <div ng-class="['form-group',{'has-error':newProject.failChance.$invalid}]">
+        <label for="failChance" class="control-label col-lg-3">Chance of Failure</label>
+        <div class="col-lg-9">
+          <input id="failChance" name="failChance" class="form-control" type="number" min="1" max="99" required ng-required="true" ng-model="$ctrl.project.failChance" placeholder="1" />
+          <p ng-show="newProject.failChance.$invalid" class="help-block text-danger">Please enter a chance of failure.</p>
+        </div>
+      </div>
+      <button type="submit" ng-disabled="newProject.$invalid" ng-show="false" tabindex="-1"></button>
     </fieldset>
-  </div>
+  </form>
 </div>
 <div class="modal-footer">
-  <button class="btn btn-success" type="button" ng-click="$ctrl.confirm()">Save Project</button>
+  <button class="btn btn-success" type="button" ng-disabled="newProject.$invalid" ng-click="$ctrl.confirm()">Save Project</button>
   <button class="btn btn-default" type="button" ng-click="$ctrl.cancel()">Cancel</button>
 </div>

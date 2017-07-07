@@ -198,7 +198,7 @@ mobius.app.component("mobius.modal.science.new",{
       delete $ctrl.project.uuid;
 
       $timeout(function(){
-        $window.document.getElementById('projectName').focus();
+        $window.document.getElementById('name').focus();
       });
     };
   }],
