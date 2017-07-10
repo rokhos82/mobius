@@ -15,10 +15,9 @@ mobius.science.project = function(options) {
   _.defaults(this,mobius.science.project.default);
 };
 
-mobius.science.event = function(project,text,options) {
-  this.project = project;
-  this.text = text;
+mobius.science.event = function(options) {
   _.defaults(this,options);
+  _.defaults(this,mobius.science.event.default);
 };
 
 mobius.science.project.stages = [
@@ -37,6 +36,12 @@ mobius.science.project.default = {
   funding: 0,
   prevFunding: 0,
   totalFunding: 0
+};
+
+mobius.science.event.default = {
+  project: "default",
+  text: "Default text please replace.",
+  type: "info"
 };
 
 mobius.science.modal = {};

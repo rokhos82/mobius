@@ -169,6 +169,14 @@ a.mobius-bookmark {
 	color: #ad66d5;
 }
 
+.text-special {
+	color: #ad66d5;
+}
+
+.text-special:hover {
+	color: #ad66d5;
+}
+
 .alert-special {
 	background-color: #ad66d5;
 	color: #ffffff;

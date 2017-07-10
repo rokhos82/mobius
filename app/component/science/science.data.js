@@ -101,6 +101,11 @@ mobius.science.data = mobius.app.factory("mobius.science.data",["$rootScope","$w
     return _data.events;
   };
 
+  _service.createEvent = function(event) {
+    _data.events.unshift(event);
+    return _data.events;
+  };
+
   _service.listAlerts = function() {
     return _data.alerts;
   };

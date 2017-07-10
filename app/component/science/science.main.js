@@ -43,6 +43,12 @@ mobius.science.controller = function($scope,_data,$uibModal,$window,$filter) {
     _data.save();
   };
 
+  // Add a project event ////////////////////////////////////////////////////////////////
+  $ctrl.addEvent = function(event) {
+    $ctrl.events = _data.createEvent(event);
+    _data.save();
+  };
+
   // Add a new research project /////////////////////////////////////////////////////////
   $ctrl.addProject = function(proj) {
     let project = new mobius.science.project(proj);
@@ -53,7 +59,9 @@ mobius.science.controller = function($scope,_data,$uibModal,$window,$filter) {
   $ctrl.onNewProject = function(proj) {
     mobius.science.modal.new($uibModal,proj).result.then(
       function(output) {
-        $ctrl.addProject(output.project);
+        let project = output.project;
+        $ctrl.addProject(project);
+        $ctrl.addEvent(new mobius.science.event({'project':project.uuid,'text':`Started new project: ${project.name} @ ${project.stage.name} stage.`,'type':'info'}));
       }
     );
   };
@@ -133,7 +141,7 @@ mobius.science.controller = function($scope,_data,$uibModal,$window,$filter) {
       if(project.roll <= project.failChance) {
         // Yes, log the event
         $ctrl.alerts.research.push(new mobius.pageAlerts.alert(`${project.name} failed this turn!`,"danger"));
-        $ctrl.events.push(new mobius.science.event(project.uuid,`${project.name} rolled a ${project.roll} and had a catastrophic failure.`,options));
+        $ctrl.addEvent(new mobius.science.event({'project':project.uuid,'text':`${project.name} rolled a ${project.roll} and had a catastrophic failure.`,'type':'danger'}));
       }
       else {
         // No, see if the project succeeded.
@@ -141,11 +149,11 @@ mobius.science.controller = function($scope,_data,$uibModal,$window,$filter) {
         let message = success ? "was successful" : "did not succeed";
         project.success = success;
         options.success = success;
-        $ctrl.events.push(new mobius.science.event(project.uuid,`${project.name} was effectively funded at ${effectiveFunding} and rolled a ${project.roll} and ${message}.`,options));
+        $ctrl.addEvent(new mobius.science.event({'project':project.uuid,'text':`${project.name} was effectively funded at ${effectiveFunding} and rolled a ${project.roll} and ${message}.`,'type':'success'}));
         if(success && !project.stage.finis) {
           project.stage = mobius.science.project.stages[project.stage.next];
           options.advance = true;
-          $ctrl.events.push(new mobius.science.event(project.uuid,`${project.name} has moved to the ${project.stage.name} stage.`,options));
+          $ctrl.addEvent(new mobius.science.event({'project':project.uuid,'text':`${project.name} has moved to the ${project.stage.name} stage.`,'type':'special'}));
           project.totalFunding = 0;
           if(project.stage.finis) {
             $ctrl.alerts.research.push(new mobius.pageAlerts.alert(`Research into ${project.name} is now finished!`,"special"));
@@ -163,7 +171,7 @@ mobius.science.controller = function($scope,_data,$uibModal,$window,$filter) {
       _data.save();
     }
     else {
-      $ctrl.events.push(new mobius.science.event(project.uuid,`${project.name} was not funded this turn.  No roll.`));
+      $ctrl.addEvent(new mobius.science.event(project.uuid,`${project.name} was not funded this turn.  No roll.`));
     }
   };
 
