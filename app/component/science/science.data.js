@@ -105,5 +105,10 @@ mobius.science.data = mobius.app.factory("mobius.science.data",["$rootScope","$w
     return _data.alerts;
   };
 
+  _service.clearAlerts = function() {
+    _data.alerts = [];
+    return _data.alerts;
+  };
+
   return _service;
 }]);

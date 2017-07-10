@@ -184,10 +184,22 @@ a.mobius-bookmark {
 
 .mob-turn-tile {
 	display: block;
-	height: 300px;
+	position: fixed;
+	top: 70px;
+	left: 10px;
+	height: 125px;
+	width: 125px;
 	text-align: center;
 	vertical-align: middle;
-	border-top-left-radius: 75px;
-	border-bottom-right-radius: 75px;
-	background-color: #000000;
+	border-radius: 40px 0px 40px 0px;
+	background-color: #1c1e22;
+	border: 1px solid #0c0d0e;
+	-webkit-box-shadow: 0px 0px 3px 1px rgba(96,37,128,1);
+}
+
+.mob-turn-tile > h1 {
+	display: block;
+	vertical-align: middle;
+	font-size: 75px;
+	font-family: "Iceberg";
 }

@@ -13,6 +13,8 @@ mobius.science.controller = function($scope,_data,$uibModal,$window,$filter) {
     level: 0
   };
 
+  $ctrl.currentTurn = 1;
+
   $ctrl.stages = mobius.science.project.stages;
 
   $ctrl.welcome = "<p>Welcome to the science manager. Here you will manage your research projects and related information.</p><p class='text-warning'>Currently, funding must be applied to each project individually.</p>"
@@ -45,7 +47,6 @@ mobius.science.controller = function($scope,_data,$uibModal,$window,$filter) {
   $ctrl.addProject = function(proj) {
     let project = new mobius.science.project(proj);
     $ctrl.projects = _data.createProject(project);
-    $scope.$broadcast("mobius.reset");
   };
 
   // Open the new project modal /////////////////////////////////////////////////////////
@@ -173,6 +174,7 @@ mobius.science.controller = function($scope,_data,$uibModal,$window,$filter) {
       function () {
       $ctrl.projects = _data.clearProjects();
       $ctrl.events = _data.clearEvents();
+      $ctrl.alerts = _data.clearAlerts();
       _data.save();
     });
   };
