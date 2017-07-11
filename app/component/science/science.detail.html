@@ -2,7 +2,7 @@
   <h3 class="modal-title mobius-title text-info">Project Details</h3>
 </div>
 <div class="modal-body">
-  <div class="form-horizontal" ng-repeat="project in $ctrl.options.projects">
+  <form class="form-horizontal" ng-repeat="project in $ctrl.options.projects">
     <fieldset>
       <legend>{{project.name}}</legend>
       <mobius-select mobius-options="$ctrl.stages" mobius-selector="stage.name disable when stage.finis for stage" mobius-label="Stage" mobius-selected="project.stage"></mobius-select>
@@ -31,7 +31,8 @@
         </div>
       </div>
     </fieldset>
-  </div>
+    <button type="submit" ng-show="false" tabindex="-1" ng-click="$ctrl.confirm()"></button>
+  </form>
 </div>
 <div class="modal-footer">
   <button class="btn btn-success" type="button" ng-click="$ctrl.confirm()">Save Project</button>

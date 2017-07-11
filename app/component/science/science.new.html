@@ -34,7 +34,7 @@
           <p ng-show="newProject.failChance.$invalid" class="help-block text-danger">Please enter a chance of failure.</p>
         </div>
       </div>
-      <button type="submit" ng-disabled="newProject.$invalid" ng-show="false" tabindex="-1"></button>
+      <button type="submit" ng-disabled="newProject.$invalid" ng-show="false" tabindex="-1" ng-click="$ctrl.confirm()"></button>
     </fieldset>
   </form>
 </div>

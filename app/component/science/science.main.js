@@ -149,7 +149,7 @@ mobius.science.controller = function($scope,_data,$uibModal,$window,$filter) {
         let message = success ? "was successful" : "did not succeed";
         project.success = success;
         options.success = success;
-        $ctrl.addEvent(new mobius.science.event({'project':project.uuid,'text':`${project.name} was effectively funded at ${effectiveFunding} and rolled a ${project.roll} and ${message}.`,'type':'success'}));
+        $ctrl.addEvent(new mobius.science.event({'project':project.uuid,'text':`${project.name} was effectively funded at ${effectiveFunding} and rolled a ${project.roll} and ${message}.`,'type': success ? 'success' : 'warning'}));
         if(success && !project.stage.finis) {
           project.stage = mobius.science.project.stages[project.stage.next];
           options.advance = true;
