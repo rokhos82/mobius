@@ -13,7 +13,7 @@ mobius.science.controller = function($scope,_data,$uibModal,$window,$filter) {
     level: 0
   };
 
-  $ctrl.currentTurn = 1;
+  $ctrl.currentTurn = _data.getTurn();
 
   $ctrl.stages = mobius.science.project.stages;
 

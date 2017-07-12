@@ -8,7 +8,8 @@ mobius.science.data = mobius.app.factory("mobius.science.data",["$rootScope","$w
     get: { method: "GET" },
     remove: { method: "DELETE" },
     update: { method: "PUT" }
-  })
+  });
+  
   const _key = "mobius.data.science";
   var _service = {};
   var _data = undefined;
@@ -21,7 +22,10 @@ mobius.science.data = mobius.app.factory("mobius.science.data",["$rootScope","$w
     },
     projects: {},
     events: [],
-    alerts: []
+    alerts: [],
+    general: {
+      turn: 1
+    },
   };
 
   // Restore the data object from localStorage if not loaded
@@ -114,6 +118,14 @@ mobius.science.data = mobius.app.factory("mobius.science.data",["$rootScope","$w
     _data.alerts = [];
     return _data.alerts;
   };
+
+  _service.getTurn = function() {
+    return _data.general.turn;
+  };
+
+  _service.setTurn = function(turn) {
+    _data.general.turn = turn;
+  }
 
   return _service;
 }]);

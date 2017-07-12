@@ -15,6 +15,10 @@ mobius.science.project = function(options) {
   _.defaults(this,mobius.science.project.default);
 };
 
+mobius.science.project.prototype.copy = function() {
+  // Do a copy of each key value into a new object and return.
+};
+
 mobius.science.event = function(options) {
   _.defaults(this,options);
   _.defaults(this,mobius.science.event.default);
