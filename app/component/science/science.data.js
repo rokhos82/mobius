@@ -9,7 +9,7 @@ mobius.science.data = mobius.app.factory("mobius.science.data",["$rootScope","$w
     remove: { method: "DELETE" },
     update: { method: "PUT" }
   });
-  
+
   const _key = "mobius.data.science";
   var _service = {};
   var _data = undefined;
@@ -38,6 +38,21 @@ mobius.science.data = mobius.app.factory("mobius.science.data",["$rootScope","$w
   // Setup Message Handlers
   $rootScope.$on(mobius.science.events.dirty,_service.save);
 
+  // Service Functions for Projects --------------------------------------------
+  _service.projects = {};
+
+  _service.projects.read = function(uuid) {
+    let res = _data.projects[uuid] || _.toArray(_data.projects);
+    return res;
+  };
+
+  _service.projects.create = function(options) {
+    let project = new mobius.science.project(options);
+  };
+
+  _service.projects.delete = function(uuid) {};
+
+  // Old service functions -----------------------------------------------------
   _service.save = function() {
     // Saves the local data objects to localStorage.
     console.log("Saving science data.");

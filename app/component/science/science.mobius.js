@@ -1,24 +1,57 @@
-////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
 // Mobius Science Namespace
-////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
 mobius.science = {};
 
-// Science Events ///////////////////////////////////////////////////////////////////////
+// Science Events //////////////////////////////////////////////////////////////
 mobius.science.events = {};
 mobius.science.events.dirty = "mobius.science.events.dirty";
 
+// Science Turn Object /////////////////////////////////////////////////////////
+mobius.science.turn = function(currentTurn,projects) {
+  this.uuid = mobius.functions.uuid();
+  this.currentTurn = currentTurn;
+  this.projects = projects;
+  this.stages = {};
+};
+
+// Science Turn Setup Stage Object ---------------------------------------------
+mobius.science.turn.setup = function() {
+  this.projects = {};
+};
+
+mobius.science.turn.setup.prototype.addProject = function(project) {};
+
+// Science Project Object //////////////////////////////////////////////////////
 mobius.science.project = function(options) {
   // Generate a unique ID for the research project.  Then copy in any options
   // passed and then set any defaults that remain.
-  this.uuid = window.uuid.v4();
+
+  // If the options are a JSON string convert it to an object.
+  if(typeof options === "string") {
+    options = angular.fromJson(options);
+  }
+
+  // Do the options include a UUID?
+  this.uuid = options.uuid || mobius.functions.uuid();
+
+  // Apply the options to 'this' and any other default values.
   _.defaults(this,options);
   _.defaults(this,mobius.science.project.default);
 };
 
 mobius.science.project.prototype.copy = function() {
-  // Do a copy of each key value into a new object and return.
+  // Since a project object is very simple use Angular to do a copy of the
+  // object and return.
+  return angular.copy(this);
 };
 
+mobius.science.project.prototype.toJson = function() {
+  // Use Angular to covert the object to JSON and return the string.
+  return angular.toJson(this);
+};
+
+// Science Event Log Object ////////////////////////////////////////////////////
 mobius.science.event = function(options) {
   _.defaults(this,options);
   _.defaults(this,mobius.science.event.default);

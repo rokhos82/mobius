@@ -57,3 +57,5 @@ mobius.functions.dieRoll = function(quantity,size) {
 	}
 	return total;
 };
+
+mobius.functions.uuid = window.uuid.v4;
