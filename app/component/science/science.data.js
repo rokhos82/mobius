@@ -14,7 +14,8 @@ mobius.science.data = mobius.app.factory("mobius.science.data",["$rootScope","$w
   var _service = {};
   var _data = undefined;
   var _state = {
-    loaded: false
+    loaded: false,
+    dirty: false;
   };
   let _default = {
     bonus: {
@@ -26,6 +27,7 @@ mobius.science.data = mobius.app.factory("mobius.science.data",["$rootScope","$w
     general: {
       turn: 1
     },
+    turns: {}
   };
 
   // Restore the data object from localStorage if not loaded
@@ -35,13 +37,37 @@ mobius.science.data = mobius.app.factory("mobius.science.data",["$rootScope","$w
     _state.loaded = true;
   }
 
+  _state.save = function() {
+  };
+
+  _state.load = function() {};
+
   // Setup Message Handlers
   $rootScope.$on(mobius.science.events.dirty,_service.save);
+
+  // Serivce functions for Turns -----------------------------------------------
+  _service.turns = {};
+
+  _service.turns.create = function(options) {
+    let turn = new mobius.science.turn(options);
+    _data.turns[turn.uuid] = turn;
+    return turn;
+  };
+
+  _service.turns.read = function(uuid) {
+    let turn = _data.turns[uuid] || _.toArray(_data.turns);
+    return turn;
+  };
+
+  _service.turns.update = function(options) {};
+
+  _service.turns.delete = function(uuid) {};
 
   // Service Functions for Projects --------------------------------------------
   _service.projects = {};
 
-  _service.projects.read = function(uuid) {
+  _service.projects.read = function(uuid,turn) {
+    // Return the specific project or a list of all projects.
     let res = _data.projects[uuid] || _.toArray(_data.projects);
     return res;
   };

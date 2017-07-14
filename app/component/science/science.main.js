@@ -13,25 +13,19 @@ mobius.science.controller = function($scope,_data,$uibModal,$window,$filter) {
     level: 0
   };
 
-  $ctrl.currentTurn = _data.getTurn();
-
   $ctrl.stages = mobius.science.project.stages;
-
   $ctrl.welcome = "<p>Welcome to the science manager. Here you will manage your research projects and related information.</p><p class='text-warning'>Currently, funding must be applied to each project individually.</p>"
 
   $ctrl.data = {};
-
-  $ctrl.bonus = _data.listBonuses();
-
-  $ctrl.events = _data.listEvents();
-
+  $ctrl.bonus = {};
+  $ctrl.events = [];
   $ctrl.alerts = {
     general: [],
-    research: _data.listAlerts()
+    research: []
   };
-
-  // Get the array of projects from the science data service.
   $ctrl.projects = _data.listProjects();
+
+  $ctrl.turns = _data.turns.list();
 
   // UI state object.
   $ctrl.ui = {

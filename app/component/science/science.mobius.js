@@ -15,12 +15,29 @@ mobius.science.turn = function(currentTurn,projects) {
   this.stages = {};
 };
 
+mobius.science.turn.prototype.newProject = function(options) {
+  // Create the new project and add to the projects hash.  Also flag
+  // the turn as dirty for the data service.
+  let project = new mobius.science.project(options);
+  this.projects[project.uuid] = project;
+  this.dirty = true;
+  return project;
+};
+
+mobius.science.turn.prototype.listProjects = function() {
+  // Return the projects hash as an array for use with Angular.
+  return _.toArray(this.projects);
+};
+
+mobius.science.turn.prototype.getProject = function(uuid) {
+  let project = this.projects[uuid] || false;
+  return project;
+};
+
 // Science Turn Setup Stage Object ---------------------------------------------
 mobius.science.turn.setup = function() {
   this.projects = {};
 };
-
-mobius.science.turn.setup.prototype.addProject = function(project) {};
 
 // Science Project Object //////////////////////////////////////////////////////
 mobius.science.project = function(options) {
