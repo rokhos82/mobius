@@ -15,7 +15,7 @@ mobius.science.data = mobius.app.factory("mobius.science.data",["$rootScope","$w
   var _data = undefined;
   var _state = {
     loaded: false,
-    dirty: false;
+    dirty: false
   };
   let _default = {
     bonus: {

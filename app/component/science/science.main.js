@@ -25,7 +25,12 @@ mobius.science.controller = function($scope,_data,$uibModal,$window,$filter) {
   };
   $ctrl.projects = _data.listProjects();
 
-  $ctrl.turns = _data.turns.list();
+  $ctrl.turns = _data.turns.read();
+  $ctrl.turn = {
+    current: 1,
+    count: 10
+  };
+  //$ctrl.turn = _data.lastTurn();
 
   // UI state object.
   $ctrl.ui = {
