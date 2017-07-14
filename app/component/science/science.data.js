@@ -25,9 +25,9 @@ mobius.science.data = mobius.app.factory("mobius.science.data",["$rootScope","$w
     events: [],
     alerts: [],
     general: {
-      turn: 1
+      turn: 0
     },
-    turns: {}
+    turns: []
   };
 
   // Restore the data object from localStorage if not loaded
@@ -54,14 +54,25 @@ mobius.science.data = mobius.app.factory("mobius.science.data",["$rootScope","$w
     return turn;
   };
 
-  _service.turns.read = function(uuid) {
-    let turn = _data.turns[uuid] || _.toArray(_data.turns);
+  _service.turns.read = function(index) {
+    let turn = _data.turns[index] || _data.turns;
     return turn;
   };
 
   _service.turns.update = function(options) {};
 
-  _service.turns.delete = function(uuid) {};
+  _service.turns.delete = function(index) {
+    if(index) {
+    }
+    else {
+      _data = [];
+      return _data;
+    }
+  };
+
+  _service.turns.count = function() {
+    return _data.turns.length;
+  }
 
   // Service Functions for Projects --------------------------------------------
   _service.projects = {};

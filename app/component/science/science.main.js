@@ -6,7 +6,7 @@
 /////////////////////////////////////////////////////////////////////////////////////////
 // Science Component Controller
 /////////////////////////////////////////////////////////////////////////////////////////
-mobius.science.controller = function($scope,_data,$uibModal,$window,$filter) {
+mobius.science.controller = function($scope,_data,_ui,$uibModal,$window,$filter) {
   const $ctrl = this;
 
   $ctrl.user = {
@@ -25,18 +25,20 @@ mobius.science.controller = function($scope,_data,$uibModal,$window,$filter) {
   };
   $ctrl.projects = _data.listProjects();
 
-  $ctrl.turns = _data.turns.read();
-  $ctrl.turn = {
-    current: 1,
-    count: 10
-  };
-  //$ctrl.turn = _data.lastTurn();
+  // $onInit - Setup the component /////////////////////////////////////////////
+  $ctrl.$onInit = function() {
+    // Get the turn objects from the data service.
+    $ctrl.turns = _data.turns.read();
+    // Get the UI object from the ui service.
+    $ctrl.ui = _ui.get();
 
-  // UI state object.
-  $ctrl.ui = {
-    selectedProjects: {},
-    selectAllProjects: false
+    // Initialize the UI objects components if needed.
+    if(!$ctrl.ui.initialized) {
+      _ui.initialize(_data);
+    }
   };
+
+  $ctrl.saveUI = _ui.save;
 
   $ctrl.saveChanges = function() {
     _data.save();
@@ -182,8 +184,14 @@ mobius.science.controller = function($scope,_data,$uibModal,$window,$filter) {
       $ctrl.projects = _data.clearProjects();
       $ctrl.events = _data.clearEvents();
       $ctrl.alerts = _data.clearAlerts();
+      $ctrl.turns = _data.turns.delete();
       _data.save();
     });
+  };
+
+  // Reset UI state variables
+  $ctrl.clearUI = function() {
+    $ctrl.ui = _ui.clear();
   };
 
   // Remove those projects with checked checkboxes //////////////////////////////////////
@@ -274,7 +282,7 @@ mobius.science.controller = function($scope,_data,$uibModal,$window,$filter) {
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 mobius.app.component("scienceMain",{
 	templateUrl: 'app/component/science/science.main.html',
-	controller: ["$scope","mobius.science.data","$uibModal","$window","$filter",mobius.science.controller],
+	controller: ["$scope","mobius.science.data","mobius.science.ui","$uibModal","$window","$filter",mobius.science.controller],
 	bindings: {}
 });
 

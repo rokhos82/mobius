@@ -20,9 +20,14 @@
             </fieldset>
           </form>
         </div>
-        <ul uib-pagination total-items="$ctrl.turn.count" items-per-page="1" ng-model="$ctrl.turn.current" previous-text="&lsaquo;" next-text="&rsaquo;"></ul>
-        <div class="well well-sm">
-          {{$ctrl.turn}}
+        <h3 class="mobius-title-sm">Turn {{$ctrl.ui.turn.current}}</h3>
+        <ul uib-pagination total-items="$ctrl.ui.turn.count" force-ellipses="true" items-per-page="1" max-size="10" ng-model="$ctrl.ui.turn.current" previous-text="&lsaquo;" next-text="&rsaquo;" ng-change="$ctrl.saveUI();"></ul>
+        <div>
+          <button ng-click="$ctrl.ui.turn.count = $ctrl.ui.turn.count + 1" class="btn btn-default">Add Turn</button>
+        </div>
+        <hr />
+        <div class="well well-sm text-warning">
+          {{$ctrl.ui}}
         </div>
       </div>
     </div>
@@ -59,6 +64,7 @@
               <li role="menuitem"><a href ng-click="$ctrl.rollSelectedProjects()">Roll Selected</a></li>
               <li class="divider"></li>
               <li role="menuitem"><a href ng-click="$ctrl.clearProjects()">Clear Data</a></li>
+              <li role="menuitem"><a href ng-click="$ctrl.clearUI()">Clear UI</a></li>
             </ul>
           </div>
         </div>
