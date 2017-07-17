@@ -6,6 +6,11 @@ env_variables:
   MYSQL_PASSWORD: ''
 
 handlers:
+# Favicon.ico
+- url: /favicon\.ico
+  static_files: favicon.ico
+  upload: favicon\.ico
+  
 # Include all of the JavaScript library files
 - url: /js/(.+)$
   static_files: js/\1
