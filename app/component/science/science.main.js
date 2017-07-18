@@ -16,17 +16,15 @@ mobius.science.controller = function($scope,_data,_ui,$uibModal,$window,$filter)
   $ctrl.stages = mobius.science.project.stages;
   $ctrl.welcome = `<p>Welcome to the science manager. Here you will manage your research projects and related information.</p><p class="text-info">Race Name (Game Name) - Turn 1</p>`;
 
-  $ctrl.data = {};
   $ctrl.bonus = {};
-  $ctrl.events = [];
   $ctrl.alerts = {
     general: [],
     research: []
   };
-  $ctrl.projects = _data.listProjects();
 
   // $onInit - Setup the component /////////////////////////////////////////////
   $ctrl.$onInit = function() {
+    console.log("$onInit");
     // Get the turn objects from the data service.
     $ctrl.turns = _data.turns.read();
     // Get the UI object from the ui service.
@@ -35,6 +33,14 @@ mobius.science.controller = function($scope,_data,_ui,$uibModal,$window,$filter)
     // Initialize the UI objects components if needed.
     if(!$ctrl.ui.initialized) {
       _ui.initialize(_data);
+    }
+
+    // Are there any turns present in the data set?
+    if($ctrl.turns.length === 0) {
+      // Create a new turn and it is turn 1.
+      let turn = _data.turns.create({currentTurn:1});
+      $ctrl.projects = turn.projects;
+      console.log("Turn 1");
     }
 
     // Get the research bonuses.

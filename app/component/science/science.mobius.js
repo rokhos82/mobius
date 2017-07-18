@@ -8,11 +8,17 @@ mobius.science.events = {};
 mobius.science.events.dirty = "mobius.science.events.dirty";
 
 // Science Turn Object /////////////////////////////////////////////////////////
-mobius.science.turn = function(currentTurn,projects) {
+mobius.science.turn = function(options) {
   this.uuid = mobius.functions.uuid();
-  this.currentTurn = currentTurn;
-  this.projects = projects;
-  this.stages = {};
+  _.defaults(this,options);
+  _.defaults(this,mobius.science.turn.default);
+};
+
+mobius.science.turn.default = {
+  uuid: "invalid",
+  currentTurn: -1,
+  projects: [],
+  stages: {}
 };
 
 mobius.science.turn.prototype.newProject = function(options) {

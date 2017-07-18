@@ -58,7 +58,8 @@ mobius.science.data = mobius.app.factory("mobius.science.data",["$rootScope","$w
 
   _service.turns.create = function(options) {
     let turn = new mobius.science.turn(options);
-    _data.turns[turn.uuid] = turn;
+    console.log(turn);
+    _data.turns.push(turn);
     return turn;
   };
 
@@ -74,7 +75,7 @@ mobius.science.data = mobius.app.factory("mobius.science.data",["$rootScope","$w
       _data.turns.splice(index,1);
       // Reset the current turn attribute of all of the remaining turns.
       _.each(_data.turns,function(turn,index) {
-        turn.currentTurn = index;
+        turn.currentTurn = index+1;
       });
       return _data.turns;
     }
