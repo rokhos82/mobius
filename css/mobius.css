@@ -211,3 +211,8 @@ a.mobius-bookmark {
 	font-size: 75px;
 	font-family: "Iceberg";
 }
+
+hr.spacer {
+	border: 0;
+	margin: 10px;
+}

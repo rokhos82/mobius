@@ -34,9 +34,18 @@
           <p ng-show="newProject.failChance.$invalid" class="help-block text-danger">Please enter a chance of failure.</p>
         </div>
       </div>
+      <div class="form-group">
+        <label for="status" class="control-label col-lg-3">Status</label>
+        <div class="col-lg-9">
+          <select class="form-control" id="status" ng-model="$ctrl.project.status" ng-options="status for status in $ctrl.statuses" required ng-required="true"></select>
+        </div>
+      </div>
       <button type="submit" ng-disabled="newProject.$invalid" ng-show="false" tabindex="-1" ng-click="$ctrl.confirm()"></button>
     </fieldset>
   </form>
+  <div class="well well-sm text-warning">
+    {{$ctrl.project}}
+  </div>
 </div>
 <div class="modal-footer">
   <button class="btn btn-success" type="button" ng-disabled="newProject.$invalid" ng-click="$ctrl.confirm()">Save Project</button>

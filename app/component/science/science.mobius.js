@@ -81,6 +81,8 @@ mobius.science.project.stages = [
   {name:"Completed",index:3,finis:true}
 ];
 
+mobius.science.project.statuses = ["active","suspended"];
+
 mobius.science.project.default = {
   name: "default",
   description: "this should be replaced",
@@ -89,7 +91,8 @@ mobius.science.project.default = {
   failChance: 1,
   funding: 0,
   prevFunding: 0,
-  totalFunding: 0
+  totalFunding: 0,
+  status: mobius.science.project.statuses[0]
 };
 
 mobius.science.event.default = {
@@ -161,6 +164,7 @@ mobius.app.component("mobius.modal.science.detail",{
     const $ctrl = this;
 
     $ctrl.stages = mobius.science.project.stages;
+    $ctrl.statuses = mobius.science.project.statuses;
 
     $ctrl.confirm = function() {
       $ctrl.close({$value:$ctrl.options});
@@ -189,6 +193,7 @@ mobius.app.component("mobius.modal.science.funding",{
     const $ctrl = this;
 
     $ctrl.stages = mobius.science.project.stages;
+    $ctrl.statuses = mobius.science.project.statuses;
 
     $ctrl.confirm = function() {
       $ctrl.close({$value:$ctrl.options});
@@ -236,6 +241,7 @@ mobius.app.component("mobius.modal.science.new",{
     const $ctrl = this;
 
     $ctrl.stages = mobius.science.project.stages;
+    $ctrl.statuses = mobius.science.project.statuses;
 
     $ctrl.confirm = function() {
       $ctrl.close({$value:$ctrl.options});
@@ -255,6 +261,8 @@ mobius.app.component("mobius.modal.science.new",{
         $ctrl.project.stage = $ctrl.stages[0];
       }
       delete $ctrl.project.uuid;
+
+      $ctrl.project.status = mobius.science.project.statuses[0];
 
       $timeout(function(){
         $window.document.getElementById('name').focus();

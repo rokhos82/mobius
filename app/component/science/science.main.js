@@ -36,6 +36,10 @@ mobius.science.controller = function($scope,_data,_ui,$uibModal,$window,$filter)
     if(!$ctrl.ui.initialized) {
       _ui.initialize(_data);
     }
+
+    $ctrl.events = _data.listEvents();
+    $ctrl.bonus.global = 0;
+    $ctrl.dataService = _data;
   };
 
   $ctrl.saveUI = _ui.save;
@@ -305,7 +309,19 @@ mobius.app.filter("activeResearch",["$window",function($window){
   return function(projects) {
     var filtered = [];
     $window.angular.forEach(projects,function(project,index){
-      if(project.stage && project.stage.finis !== true) {
+      if(project.stage && project.stage.finis !== true && project.status === mobius.science.project.statuses[0]) {
+        filtered.push(project);
+      }
+    });
+    return filtered;
+  };
+}]);
+
+mobius.app.filter("suspendedResearch",["$window",function($window) {
+  return function(projects) {
+    var filtered = [];
+    $window.angular.forEach(projects,function(project,index){
+      if (project.stage && project.stage.finis !== true && project.status === mobius.science.project.statuses[1]) {
         filtered.push(project);
       }
     });

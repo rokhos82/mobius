@@ -8,41 +8,126 @@
     </ul>
   </div>
 </div>
+<page-alerts alerts="$ctrl.alerts.research"></page-alerts>
 <div class="row">
   <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
     <div class="panel panel-default">
-        <div class="btn-toolbar">
-          <div class="btn-group btn-group-justified">
-            <a href class="btn btn-default">
+      <div class="panel-body">
+        <div class="btn-group btn-group-justified" role="group">
+          <div class="btn-group">
+            <button href class="btn btn-default" ng-click="$ctrl.onNewProject()">
               <img src="img/vial-64-lgray.png" alt="Projects" />
-            </a>
-            <a href class="btn btn-default">
+            </button>
+          </div>
+          <div class="btn-group">
+            <button href class="btn btn-default" ng-click="$ctrl.fundProjects($ctrl.projects)">
               <img src="img/money-stack-64-lgray.png" alt="Funding" />
-            </a>
-            <a href class="btn btn-default">
+            </button>
+          </div>
+          <div class="btn-group">
+            <button href class="btn btn-default disabled">
               <img src="img/airtight-hatch-64-lgray.png" alt="Facilities" />
-            </a>
-            <a href class="btn btn-default">
+            </button>
+          </div>
+          <div class="btn-group">
+            <button href class="btn btn-default disabled">
               <img src="img/upgrade-64-lgray.png" alt="Bonuses" />
-            </a>
-            <a href class="btn btn-default">
+            </button>
+          </div>
+          <div class="btn-group">
+            <button href class="btn btn-default" ng-click="$ctrl.rollProjects()">
               <img src="img/clockwork-64-lgray.png" alt="Next Turn" />
-            </a>
-            <div class="btn-group" uib-dropdown>
-              <a href class="btn btn-default" uib-dropdown-toggle>
-                <img src="img/cog-64-lgray.png" alt="Tools" />
-              </a>
-              <ul class="dropdown-menu" uib-dropdown-menu role="menu">
-                <li role="menuitem"><a href>Action</a></li>
-                <li role="menuitme"><a href>Action</a></li>
-              </ul>
-            </div>
+            </button>
+          </div>
+          <div class="btn-group" uib-dropdown>
+            <button href class="btn btn-default" uib-dropdown-toggle>
+              <img src="img/cog-64-lgray.png" alt="Tools" />
+            </button>
+            <ul class="dropdown-menu" uib-dropdown-menu role="menu">
+              <li role="menuitem"><a href ng-click="$ctrl.clearProjects()">Clear Data</a></li>
+            </ul>
           </div>
         </div>
+        <hr class="spacer" />
+        <uib-tabset active="active" justified="true">
+          <uib-tab index="0" heading="Active" classes="text-info">
+            <uib-tab-heading><span class="text-info mobius-title">Active</span></uib-tab-heading>
+            <table class="table table-striped table-hover table-bordered">
+              <thead>
+                <tr>
+                  <th>Project</th>
+                  <th>Stage</th>
+                  <th>Turn Funding</th>
+                  <th>Total Funding</th>
+                  <th>Project Bonus</th>
+                  <th>Total Bonus</th>
+                  <th>Roll</th>
+                </tr>
+              </thead>
+              <tfoot>
+                <tr><th colspan="8" class="text-warning">Total Funding: {{$ctrl.totalFunding()}}</th></tr>
+              </tfoot>
+              <tbody>
+                <tr class="mobius-table-row" ng-repeat="project in $ctrl.projects | activeResearch track by $index" ng-click="$ctrl.updateProjects([project])" ng-class="{'text-warning':project.stage.index == 0,'text-info':project.stage.index == 1,'text-success':project.stage.index == 2}">
+                  <td>{{project.name}}</td>
+                  <td>{{project.stage.name}}</td>
+                  <td>{{project.funding}}</td>
+                  <td>{{project.totalFunding}}</td>
+                  <td>{{project.bonus}}</td>
+                  <td>{{project.bonus + $ctrl.bonus.global}}</td>
+                  <td>{{project.roll}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </uib-tab>
+          <uib-tab index="1" heading="Suspended">
+            <uib-tab-heading><span class="text-info mobius-title">Suspended</span></uib-tab-heading>
+            <table class="table table-striped table-hover">
+              <thead>
+                <tr><th>Project</th><th>Stage</th><th>Total Funding</th><th>Project Bonus</th></tr>
+              </thead>
+              <tbody>
+                <tr class="mobius-table-row" ng-repeat="project in $ctrl.projects | suspendedResearch track by $index">
+                  <td>{{project.name}}</td>
+                  <td>{{project.stage.name}}</td>
+                  <td>{{project.totalFunding}}</td>
+                  <td>{{project.bonus}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </uib-tab>
+          <uib-tab index="2" heading="Completed">
+            <uib-tab-heading><span class="text-info mobius-title">Completed</span></uib-tab-heading>
+            <table class="table table-striped table-hover">
+              <thead>
+                <tr><th>Project</th><th>Stage</th><th>Total Funding</th><th>Project Bonus</th><th></th></tr>
+              </thead>
+              <tbody>
+                <tr class="mobius-table-row" ng-repeat="project in $ctrl.projects | completedResearch track by $index">
+                  <td>{{project.name}}</td>
+                  <td>{{project.stage.name}}</td>
+                  <td>{{project.totalFunding}}</td>
+                  <td>{{project.bonus}}</td>
+                  <td><span class="glyphicon glyphicon-open text-info" ng-if="project.hasLevels" ng-click="$ctrl.onNewProject(project)"></span></td>
+                </tr>
+              </tbody>
+            </table>
+          </uib-tab>
+        </uib-tabset>
       </div>
+      <table class="table table-striped table-hover">
+        <tbody>
+          <tr ng-repeat="event in $ctrl.events track by $index" ng-class="['mobius-table-row']">
+            <!--<td class="text-info text-right">{{$index+1}}</td>
+            <td ng-class="{'mob-text-special': event.advance,'text-success': event.success, 'text-danger': event.fail, 'text-warning': (!event.success && !event.fail)}">{{event.text}}</td>-->
+            <td ng-class="'text-'+(event.type || 'info')">{{event.text}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 </div>
-<div class="row">
+<!--<div class="row">
   <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
     <div class="panel panel-default">
       <div class="panel-heading">
@@ -108,7 +193,6 @@
         </tbody>
       </table>
     </div>
-    <page-alerts alerts="$ctrl.alerts.research"></page-alerts>
   </div>
 </div>
 <div class="row">
@@ -144,8 +228,8 @@
         <table class="table table-striped table-hover">
           <tbody>
             <tr ng-repeat="event in $ctrl.events track by $index" ng-class="['mobius-table-row']">
-              <!--<td class="text-info text-right">{{$index+1}}</td>-->
-              <!--<td ng-class="{'mob-text-special': event.advance,'text-success': event.success, 'text-danger': event.fail, 'text-warning': (!event.success && !event.fail)}">{{event.text}}</td>-->
+              <td class="text-info text-right">{{$index+1}}</td>
+              <td ng-class="{'mob-text-special': event.advance,'text-success': event.success, 'text-danger': event.fail, 'text-warning': (!event.success && !event.fail)}">{{event.text}}</td>
               <td ng-class="'text-'+(event.type || 'info')">{{event.text}}</td>
             </tr>
           </tbody>
@@ -153,7 +237,7 @@
       </div>
     </div>
   </div>
-</div>
+</div>-->
 <div class="row">
   <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" ng-if="$ctrl.user.level <= 0">
     <div class="panel panel-default">
@@ -174,6 +258,16 @@
         <h4>$ctrl.ui</h4>
         <div class="well well-sm text-warning">
           {{$ctrl.ui}}
+        </div>
+        <hr />
+        <h4>$ctrl.projects</h4>
+        <div class="well well-sm text-warning">
+          {{$ctrl.projects}}
+        </div>
+        <hr />
+        <h4>_data</h4>
+        <div class="well well-sm text-warning">
+          {{$ctrl.dataService}}
         </div>
       </div>
     </div>
