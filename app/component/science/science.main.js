@@ -37,8 +37,11 @@ mobius.science.controller = function($scope,_data,_ui,$uibModal,$window,$filter)
       _ui.initialize(_data);
     }
 
+    // Get the research bonuses.
+    $ctrl.bonus = _data.bonuses.read();
+
+    // Bridging the gap with the old way...
     $ctrl.events = _data.listEvents();
-    $ctrl.bonus.global = 0;
     $ctrl.dataService = _data;
   };
 

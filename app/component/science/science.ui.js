@@ -2,13 +2,11 @@ mobius.science.ui = mobius.app.factory("mobius.science.ui",["$rootScope","$windo
   const _key = "mobius.scinece.ui";
 
   var _data = {};
-  var _defaults = {
+  var _default = {
     turn: {
       current: 1,
       count: 1,
-    },
-    selectedProjects: [],
-    selectAllProjects: false
+    }
   };
 
   var _state = {
@@ -20,13 +18,18 @@ mobius.science.ui = mobius.app.factory("mobius.science.ui",["$rootScope","$windo
   _service.save = function() {
     let json = $window.angular.toJson(_data);
     $window.localStorage.setItem(_key,json);
-    console.log(json);
   };
 
   _service.load = function() {
     let json = $window.localStorage.getItem(_key);
-    let data = $window.angular.fromJson(json) || _defaults;
-    _data = data;
+    if(json === null) {
+      _data = _default;
+      _service.save();
+    }
+    else {
+      _data = $window.angular.fromJson(json);
+      _.defaults(_data,_default);
+    }
     _state.loaded = true;
   };
 
@@ -46,7 +49,7 @@ mobius.science.ui = mobius.app.factory("mobius.science.ui",["$rootScope","$windo
   };
 
   _service.clear = function() {
-    _data = _defaults;
+    _data = _default;
     $window.localStorage.removeItem(_key);
     return _data;
   };

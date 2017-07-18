@@ -10,12 +10,11 @@ mobius.science.data = mobius.app.factory("mobius.science.data",["$rootScope","$w
     update: { method: "PUT" }
   });
 
-  const _key = "mobius.data.science";
+  const _key = "mobius.science.data";
   var _service = {};
   var _data = undefined;
   var _state = {
-    loaded: false,
-    dirty: false
+    loaded: false
   };
   let _default = {
     bonus: {
@@ -30,22 +29,31 @@ mobius.science.data = mobius.app.factory("mobius.science.data",["$rootScope","$w
     turns: []
   };
 
-  // Restore the data object from localStorage if not loaded
-  if(!_state.loaded) {
-    _data = $window.angular.fromJson(localStorage.getItem(_key)) || _default;
-    _.defaults(_data,_default);
-    _state.loaded = true;
-  }
-
   _state.save = function() {
+    let json = $window.angular.toJson(_data);
+    $window.localStorage.setItem(_key,json);
   };
 
   _state.load = function() {};
 
+  // Restore the data object from localStorage if not loaded
+  if(!_state.loaded) {
+    let json = localStorage.getItem(_key);
+    if(json === null) {
+      _data = _default;
+      _state.save();
+    }
+    else {
+      _data = $window.angular.fromJson(json);
+      _.defaults(_data,_default);
+    }
+    _state.loaded = true;
+  }
+
   // Setup Message Handlers
   $rootScope.$on(mobius.science.events.dirty,_service.save);
 
-  // Serivce functions for Turns -----------------------------------------------
+  // Serivce Functions for Turns -----------------------------------------------
   _service.turns = {};
 
   _service.turns.create = function(options) {
@@ -63,16 +71,32 @@ mobius.science.data = mobius.app.factory("mobius.science.data",["$rootScope","$w
 
   _service.turns.delete = function(index) {
     if(index) {
+      _data.turns.splice(index,1);
+      // Reset the current turn attribute of all of the remaining turns.
+      _.each(_data.turns,function(turn,index) {
+        turn.currentTurn = index;
+      });
+      return _data.turns;
     }
     else {
-      _data = [];
-      return _data;
+      _data.turns = [];
+      return _data.turns;
     }
   };
 
   _service.turns.count = function() {
     return _data.turns.length;
   }
+
+  // Service Functions for Bonuses ---------------------------------------------
+  _service.bonuses = {};
+
+  _service.bonuses.create = function(options) {};
+
+  _service.bonuses.read = function(category) {
+    let bonus = _data.bonus[category] || _.toArray(_data.bonus);
+    return bonus;
+  };
 
   // Service Functions for Projects --------------------------------------------
   _service.projects = {};
