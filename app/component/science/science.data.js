@@ -12,7 +12,6 @@ mobius.science.data = mobius.app.factory("mobius.science.data",["$rootScope","$w
 
   const _key = "mobius.science.data";
   var _service = {};
-  var _data = undefined;
   var _state = {
     loaded: false
   };
@@ -28,6 +27,7 @@ mobius.science.data = mobius.app.factory("mobius.science.data",["$rootScope","$w
     },
     turns: []
   };
+  var _data = _default;
 
   _state.save = function() {
     let json = $window.angular.toJson(_data);
@@ -39,13 +39,20 @@ mobius.science.data = mobius.app.factory("mobius.science.data",["$rootScope","$w
   // Restore the data object from localStorage if not loaded
   if(!_state.loaded) {
     let json = localStorage.getItem(_key);
+
     if(json === null) {
-      _data = _default;
       _state.save();
     }
     else {
-      _data = $window.angular.fromJson(json);
-      _.defaults(_data,_default);
+      let data = $window.angular.fromJson(json);
+      console.log(_data);
+
+      // Build new turn objects for each turn.
+      _.each(data.turns,function(turn,index) {
+        let t = new mobius.science.turn(turn);
+        console.log(t);
+        _data.turns.push(t);
+      });
     }
     _state.loaded = true;
   }

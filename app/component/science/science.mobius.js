@@ -17,7 +17,7 @@ mobius.science.turn = function(options) {
 mobius.science.turn.default = {
   uuid: "invalid",
   currentTurn: -1,
-  projects: [],
+  projects: {},
   stages: {}
 };
 
@@ -26,8 +26,6 @@ mobius.science.turn.prototype.newProject = function(options) {
   // the turn as dirty for the data service.
   let project = new mobius.science.project(options);
   this.projects[project.uuid] = project;
-  this.dirty = true;
-  return project;
 };
 
 mobius.science.turn.prototype.listProjects = function() {
@@ -39,6 +37,10 @@ mobius.science.turn.prototype.getProject = function(uuid) {
   let project = this.projects[uuid] || false;
   return project;
 };
+
+mobius.science.turn.prototype.removeProject = function(uuid) {
+  delete this.projects[uuid];
+}
 
 // Science Turn Setup Stage Object ---------------------------------------------
 mobius.science.turn.setup = function() {
