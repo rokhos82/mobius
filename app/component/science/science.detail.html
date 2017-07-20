@@ -5,35 +5,40 @@
   <form class="form-horizontal" ng-repeat="project in $ctrl.options.projects">
     <fieldset>
       <legend>{{project.name}}</legend>
-      <mobius-select mobius-options="$ctrl.stages" mobius-selector="stage.name disable when stage.finis for stage" mobius-label="Stage" mobius-selected="project.stage"></mobius-select>
       <div class="form-group">
-        <label for="{{project.name}}" class="control-label col-lg-2">Funding</label>
-        <div class="col-lg-10">
+        <label for="stage" class="control-label col-lg-3">Stage</label>
+        <div class="col-lg-9">
+          <select class="form-control" id="stage" ng-model="project.stage" ng-options="stage.name disable when stage.finis for stage in $ctrl.stages" required ng-required="true"></select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="{{project.name}}" class="control-label col-lg-3">Funding</label>
+        <div class="col-lg-9">
           <input type="number" id="{{project.name}}" class="form-control" ng-model="project.funding" ng-change="$ctrl.updateFunding(project);" />
         </div>
       </div>
       <div class="form-group">
-        <label for="funding" class="control-label col-lg-2">Previous Funding</label>
-        <div class="col-lg-10">
+        <label for="funding" class="control-label col-lg-3">Previous Funding</label>
+        <div class="col-lg-9">
           <input type="number" id="funding" class="form-control" ng-model="project.prevFunding" readonly />
         </div>
       </div>
       <div class="form-group">
-        <label for="funding" class="control-label col-lg-2">Total Funding</label>
-        <div class="col-lg-10">
+        <label for="funding" class="control-label col-lg-3">Total Funding</label>
+        <div class="col-lg-9">
           <input type="number" id="funding" class="form-control" ng-model="project.totalFunding" readonly />
         </div>
       </div>
       <div class="form-group">
-        <label for="bonus" class="control-label col-lg-2">Research Bonus</label>
-        <div class="col-lg-10">
-          <input type="number" id="bonus" class="form-control" ng-model="project.bonus"
+        <label for="bonus" class="control-label col-lg-3">Research Bonus</label>
+        <div class="col-lg-9">
+          <input type="number" id="bonus" class="form-control" ng-model="project.bonus" />
         </div>
       </div>
       <div class="form-group">
         <label for="status" class="control-label col-lg-3">Status</label>
         <div class="col-lg-9">
-          <select class="form-control" id="status" ng-model="$ctrl.project.status" ng-options="status for status in $ctrl.statuses" required ng-required="true"></select>
+          <select class="form-control" id="status" ng-model="project.status" ng-options="status for status in $ctrl.statuses" required ng-required="true"></select>
         </div>
       </div>
     </fieldset>

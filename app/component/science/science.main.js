@@ -42,6 +42,7 @@ mobius.science.controller = function($scope,_data,_ui,$uibModal,$window,$filter)
       $ctrl.ui.turn.count = 1;
     }
 
+    $ctrl.turn = $ctrl.turns[$ctrl.ui.turn.current-1];
     $ctrl.projects = $ctrl.turns[$ctrl.ui.turn.current-1].listProjects();
 
     // Get the research bonuses.
@@ -66,9 +67,8 @@ mobius.science.controller = function($scope,_data,_ui,$uibModal,$window,$filter)
 
   // Add a new research project /////////////////////////////////////////////////////////
   $ctrl.addProject = function(proj) {
-    let turn = $ctrl.turns[$ctrl.ui.turn.current-1];
-    turn.newProject(proj);
-    $ctrl.projects = turn.listProjects();
+    $ctrl.turn.newProject(proj);
+    $ctrl.projects = $ctrl.turn.listProjects();
   };
 
   // Open the new project modal /////////////////////////////////////////////////////////
@@ -102,9 +102,10 @@ mobius.science.controller = function($scope,_data,_ui,$uibModal,$window,$filter)
       function(output) {
         let fundedProjects = output.projects;
         _.each(fundedProjects,function(fundedProject){
-          _data.updateProject(fundedProject);
+          $ctrl.turn.updateProject(fundedProject);
         });
-        $ctrl.projects = _data.listProjects();
+        $ctrl.projects = $ctrl.turn.listProjects();
+        _data.save();
       }
     );
   };

@@ -122,11 +122,7 @@ mobius.science.data = mobius.app.factory("mobius.science.data",["$rootScope","$w
   _service.projects.delete = function(uuid) {};
 
   // Old service functions -----------------------------------------------------
-  _service.save = function() {
-    // Saves the local data objects to localStorage.
-    console.log("Saving science data.");
-    localStorage.setItem(_key,$window.angular.toJson(_data));
-  };
+  _service.save = _state.save;
 
   _service.listBonuses = function() {
     return _data.bonus;

@@ -40,7 +40,16 @@ mobius.science.turn.prototype.getProject = function(uuid) {
 
 mobius.science.turn.prototype.removeProject = function(uuid) {
   delete this.projects[uuid];
-}
+};
+
+mobius.science.turn.prototype.updateProject = function(options) {
+  let uuid = options.uuid;
+  let project = this.projects[uuid];
+  let keys = _.keys(_.omit(options,'uuid'));
+  _.each(keys,function(key,index,list){
+    project[key] = options[key];
+  });
+};
 
 // Science Turn Setup Stage Object ---------------------------------------------
 mobius.science.turn.setup = function() {
@@ -275,6 +284,35 @@ mobius.app.component("mobius.modal.science.new",{
       $timeout(function(){
         $window.document.getElementById('name').focus();
       });
+    };
+  }],
+  bindings: {
+    resolve: "<",
+    dismiss: "&",
+    close: "&"
+  }
+});
+
+// Research Bonuses Modal ////////////////////////////////////////////////////////////////////
+mobius.app.component("mobius.modal.science.bonus",{
+  templateUrl: 'app/component/science/science.bonuses.html',
+  controller: ["$scope","$location","$window","$timeout",function($scope,$location,$window,$timeout) {
+    const $ctrl = this;
+
+    $ctrl.stages = mobius.science.project.stages;
+    $ctrl.statuses = mobius.science.project.statuses;
+
+    $ctrl.confirm = function() {
+      $ctrl.close({$value:$ctrl.options});
+    };
+    $ctrl.cancel = function() { $ctrl.dismiss(); };
+
+    $ctrl.$onInit = function() {
+      $ctrl.options = $window.angular.copy($ctrl.resolve.options);
+
+      /*$timeout(function(){
+        $window.document.getElementById('name').focus();
+      });//*/
     };
   }],
   bindings: {
