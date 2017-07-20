@@ -49,7 +49,7 @@
           </div>
         </div>
         <hr class="spacer" />
-        <uib-tabset active="active" justified="true" vertical="false">
+        <uib-tabset active="active" justified="false" vertical="false">
           <uib-tab index="0">
             <uib-tab-heading><span class="text-info mobius-title">Active</span></uib-tab-heading>
             <table class="table table-striped table-hover table-bordered">
@@ -68,7 +68,7 @@
                 <tr><th colspan="8" class="text-warning">Total Funding: {{$ctrl.totalFunding()}}</th></tr>
               </tfoot>
               <tbody>
-                <tr class="mobius-table-row" ng-repeat="project in $ctrl.projects | activeResearch track by $index" ng-click="$ctrl.updateProjects([project])" ng-class="{'text-warning':project.stage.index == 0,'text-info':project.stage.index == 1,'text-success':project.stage.index == 2}">
+                <tr class="mobius-table-row" ng-repeat="project in $ctrl.projects | activeResearch track by $index" ng-click="$ctrl.updateProjects(project)" ng-class="{'text-warning':project.stage.index == 0,'text-info':project.stage.index == 1,'text-success':project.stage.index == 2}">
                   <td>{{project.name}}</td>
                   <td>{{project.stage.name}}</td>
                   <td>{{project.funding}}</td>

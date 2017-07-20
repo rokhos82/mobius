@@ -132,14 +132,14 @@ mobius.science.modal.confirm = function($uibModal,title,message) {
   });
 };
 
-mobius.science.modal.detail = function($uibModal,projects) {
+mobius.science.modal.detail = function($uibModal,project) {
   return $uibModal.open({
     animation: true,
     component: 'mobius.modal.science.detail',
     resolve: {
       options: function() {
         return {
-          'projects': projects
+          'project': project
         };
       }
     }
@@ -184,16 +184,20 @@ mobius.app.component("mobius.modal.science.detail",{
     $ctrl.statuses = mobius.science.project.statuses;
 
     $ctrl.confirm = function() {
-      $ctrl.close({$value:$ctrl.options});
+      $ctrl.close({$value:$ctrl.project});
     };
     $ctrl.cancel = function() { $ctrl.dismiss(); };
 
-    $ctrl.updateFunding = function(project) {
-      project.totalFunding = project.prevFunding + project.funding;
+    $ctrl.updateFunding = function() {
+      $ctrl.project.totalFunding = $ctrl.project.prevFunding + $ctrl.project.funding;
     };
 
     $ctrl.$onInit = function() {
       $ctrl.options = $window.angular.copy($ctrl.resolve.options);
+      $ctrl.project = $ctrl.options.project;
+      $ctrl.project.stage = $ctrl.stages[$ctrl.project.stage.index];
+      console.log($ctrl.project.stage);
+      console.log($ctrl.stages);
     };
   }],
   bindings: {
@@ -271,6 +275,8 @@ mobius.app.component("mobius.modal.science.new",{
       $ctrl.options.project = $ctrl.options.project || {};
       $ctrl.project = $ctrl.options.project;
 
+      // If the new project already has a stage then it is most likely a new
+      // level to an existing project.
       if($ctrl.project.stage) {
         $ctrl.project.stage = $ctrl.stages[1];
       }

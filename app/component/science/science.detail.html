@@ -2,46 +2,49 @@
   <h3 class="modal-title mobius-title text-info">Project Details</h3>
 </div>
 <div class="modal-body">
-  <form class="form-horizontal" ng-repeat="project in $ctrl.options.projects">
+  <form class="form-horizontal">
     <fieldset>
-      <legend>{{project.name}}</legend>
+      <legend>{{$ctrl.project.name}}</legend>
       <div class="form-group">
         <label for="stage" class="control-label col-lg-3">Stage</label>
         <div class="col-lg-9">
-          <select class="form-control" id="stage" ng-model="project.stage" ng-options="stage.name disable when stage.finis for stage in $ctrl.stages" required ng-required="true"></select>
+          <select class="form-control" id="stage" ng-model="$ctrl.project.stage" ng-options="stage.name disable when stage.finis for stage in $ctrl.stages" required ng-required="true"></select>
         </div>
       </div>
       <div class="form-group">
-        <label for="{{project.name}}" class="control-label col-lg-3">Funding</label>
+        <label for="funding" class="control-label col-lg-3">Funding</label>
         <div class="col-lg-9">
-          <input type="number" id="{{project.name}}" class="form-control" ng-model="project.funding" ng-change="$ctrl.updateFunding(project);" />
+          <input type="number" id="funding" class="form-control" ng-model="$ctrl.project.funding" ng-change="$ctrl.updateFunding();" />
         </div>
       </div>
       <div class="form-group">
-        <label for="funding" class="control-label col-lg-3">Previous Funding</label>
+        <label for="prevFunding" class="control-label col-lg-3">Previous Funding</label>
         <div class="col-lg-9">
-          <input type="number" id="funding" class="form-control" ng-model="project.prevFunding" readonly />
+          <input type="number" id="prevFunding" class="form-control" ng-model="$ctrl.project.prevFunding" readonly />
         </div>
       </div>
       <div class="form-group">
-        <label for="funding" class="control-label col-lg-3">Total Funding</label>
+        <label for="totalFunding" class="control-label col-lg-3">Total Funding</label>
         <div class="col-lg-9">
-          <input type="number" id="funding" class="form-control" ng-model="project.totalFunding" readonly />
+          <input type="number" id="totalFunding" class="form-control" ng-model="$ctrl.project.totalFunding" readonly />
         </div>
       </div>
       <div class="form-group">
         <label for="bonus" class="control-label col-lg-3">Research Bonus</label>
         <div class="col-lg-9">
-          <input type="number" id="bonus" class="form-control" ng-model="project.bonus" />
+          <input type="number" id="bonus" class="form-control" ng-model="$ctrl.project.bonus" />
         </div>
       </div>
       <div class="form-group">
         <label for="status" class="control-label col-lg-3">Status</label>
         <div class="col-lg-9">
-          <select class="form-control" id="status" ng-model="project.status" ng-options="status for status in $ctrl.statuses" required ng-required="true"></select>
+          <select class="form-control" id="status" ng-model="$ctrl.project.status" ng-options="status for status in $ctrl.statuses" required ng-required="true"></select>
         </div>
       </div>
     </fieldset>
+    <div class="well well-sm text-warning">
+      <span style="display: block;" ng-repeat="(key,value) in $ctrl.project"><code>{{key}}</code>: {{value}}</span>
+    </div>
     <button type="submit" ng-show="false" tabindex="-1" ng-click="$ctrl.confirm()"></button>
   </form>
 </div>

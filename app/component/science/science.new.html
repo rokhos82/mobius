@@ -44,7 +44,7 @@
     </fieldset>
   </form>
   <div class="well well-sm text-warning">
-    {{$ctrl.project}}
+    <span style="display: block;" ng-repeat="(key,value) in $ctrl.project"><code>{{key}}</code>: {{value}}</span>
   </div>
 </div>
 <div class="modal-footer">

@@ -82,15 +82,13 @@ mobius.science.controller = function($scope,_data,_ui,$uibModal,$window,$filter)
     );
   };
 
-  $ctrl.updateProjects = function(projects) {
-    mobius.science.modal.detail($uibModal,projects).result.then(
+  $ctrl.updateProjects = function(project) {
+    mobius.science.modal.detail($uibModal,project).result.then(
       // Project details have been changed.
-      function(options) {
-        let funding = options.projects;
-        for(var i in funding) {
-          _data.updateProject(funding[i]);
-        }
-        $ctrl.projects = _data.listProjects();
+      function(project) {
+        $ctrl.turn.updateProject(project);
+        $ctrl.projects = $ctrl.turn.listProjects();
+        _data.save();
       }
     );
   };
