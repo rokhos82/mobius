@@ -102,7 +102,7 @@ mobius.science.data = mobius.app.factory("mobius.science.data",["$rootScope","$w
   _service.bonuses.create = function(options) {};
 
   _service.bonuses.read = function(category) {
-    let bonus = _data.bonus[category] || _.toArray(_data.bonus);
+    let bonus = _data.bonus[category] || _data.bonus;
     return bonus;
   };
 

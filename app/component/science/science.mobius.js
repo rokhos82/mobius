@@ -174,6 +174,20 @@ mobius.science.modal.new = function($uibModal,project) {
   });
 };
 
+mobius.science.modal.bonuses = function($uibModal,bonuses) {
+  return $uibModal.open({
+    animation: true,
+    component: 'mobius.modal.science.bonus',
+    resolve: {
+      options: function() {
+        return {
+          'bonuses': bonuses
+        }
+      }
+    }
+  });
+};
+
 // Project Detail Modal ///////////////////////////////////////////////////////////////////////////
 mobius.app.component("mobius.modal.science.detail",{
   templateUrl: 'app/component/science/science.detail.html',
@@ -309,12 +323,14 @@ mobius.app.component("mobius.modal.science.bonus",{
     $ctrl.statuses = mobius.science.project.statuses;
 
     $ctrl.confirm = function() {
-      $ctrl.close({$value:$ctrl.options});
+      $ctrl.close({$value:$ctrl.bonuses});
     };
     $ctrl.cancel = function() { $ctrl.dismiss(); };
 
     $ctrl.$onInit = function() {
-      $ctrl.options = $window.angular.copy($ctrl.resolve.options);
+      //$ctrl.options = $window.angular.copy($ctrl.resolve.options);
+      $ctrl.bonuses = $window.angular.copy($ctrl.resolve.options.bonuses);
+      console.log($ctrl.bonuses);
 
       /*$timeout(function(){
         $window.document.getElementById('name').focus();

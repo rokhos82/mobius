@@ -82,6 +82,19 @@ mobius.science.controller = function($scope,_data,_ui,$uibModal,$window,$filter)
     );
   };
 
+  $ctrl.onBonuses = function() {
+    mobius.science.modal.bonuses($uibModal,$ctrl.bonus).result.then(
+      function(bonuses) {
+        console.log(bonuses);
+        _.each(bonuses,function(bonus,category){
+          console.log(category,bonus);
+          $ctrl.bonus[category] = bonus;
+        });
+        console.log($ctrl.bonus);
+      }
+    );
+  };
+
   $ctrl.updateProjects = function(project) {
     mobius.science.modal.detail($uibModal,project).result.then(
       // Project details have been changed.

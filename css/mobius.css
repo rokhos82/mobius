@@ -216,3 +216,7 @@ hr.spacer {
 	border: 0;
 	margin: 10px;
 }
+
+.mob-capitalize {
+	text-transform: capitalize;
+}

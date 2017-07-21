@@ -2,6 +2,11 @@
   <h3 class="modal-title mobius-title text-info">Research Bonuses</h3>
 </div>
 <div class="modal-body">
+  <table class="table table-striped table-hover">
+    <tbody>
+      <tr ng-repeat="(name,bonus) in $ctrl.bonuses"><td class="mob-capitalize">{{name}}</td><td><input class="form-control input-sm" type="number" ng-model="$ctrl.bonuses[name]" ng-keystroke="console.log($event)" /></td></tr>
+    </tbody>
+  </table>
 </div>
 <div class="modal-footer">
   <button class="btn btn-success" type="button" ng-click="$ctrl.confirm()">Save</button>

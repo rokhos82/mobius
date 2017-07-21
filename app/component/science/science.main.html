@@ -30,7 +30,7 @@
             </button>
           </div>
           <div class="btn-group">
-            <button href class="btn btn-default disabled">
+            <button href class="btn btn-default" ng-click="$ctrl.onBonuses()">
               <img src="img/upgrade-64-lgray.png" alt="Bonuses" />
             </button>
           </div>
@@ -130,117 +130,6 @@
     </div>
   </div>
 </div>
-<!--<div class="row">
-  <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-    <div class="panel panel-default">
-      <div class="panel-heading">
-        <h4 class="mobius-title text-info">Active Science Projects</h4>
-      </div>
-      <div class="panel-body">
-        <div class="btn-toolbar">
-          <div class="btn-group" uib-dropdown>
-            <button class="btn btn-primary" uib-dropdown-toggle>Apply to Checked <span class="caret"></span></button>
-            <ul class="dropdown-menu" uib-dropdown-menu role="menu">
-              <li role="menuitem"><a href ng-click="$ctrl.removeSelectedProjects()">Remove</a></li>
-            </ul>
-          </div>
-          <div class="btn-group">
-            <button class="btn btn-success" type="button" ng-click="$ctrl.fundProjects($ctrl.projects)">Fund Projects</button>
-            <button class="btn btn-info" type="button" ng-click="$ctrl.rollProjects()">Update Projects</button>
-          </div>
-          <div class="btn-group">
-            <button class="btn btn-success" type="button" ng-click="$ctrl.onNewProject()">New Project</button>
-            <button class="btn btn-default" type="button" ng-click="$ctrl.onImportProjects()">Import Data</button>
-            <button class="btn btn-default" type="button" ng-click="$ctrl.exportProjects()">Export Data</button>
-          </div>
-          <div class="btn-group" uib-dropdown ng-if"$ctrl.user.level <= 5">
-            <button class="btn btn-warning" uib-dropdown-toggle>Tools <span class="caret"></span></button>
-            <ul class="dropdown-menu" uib-dropdown-menu role="menu">
-              <li role="menuitem"><a href>Mass Add Projects</a></li>
-              <li class="divider"></li>
-              <li role="menuitem"><a href ng-click="$ctrl.rollSelectedProjects()">Roll Selected</a></li>
-              <li class="divider"></li>
-              <li role="menuitem"><a href ng-click="$ctrl.clearProjects()">Clear Data</a></li>
-              <li role="menuitem"><a href ng-click="$ctrl.clearUI()">Clear UI</a></li>
-            </ul>
-          </div>
-        </div>
-      </div>
-      <table class="table table-striped table-hover">
-        <thead>
-          <tr>
-            <th><input type="checkbox" class="mob-checkbox-lg" id="checkAll" ng-model="$ctrl.ui.selectAllProjects" ng-click="$ctrl.checkAllProjects();" /></th>
-            <th>Project</th>
-            <th>Stage</th>
-            <th>Turn Funding</th>
-            <th>Total Funding</th>
-            <th>Project Bonus</th>
-            <th>Total Bonus</th>
-            <th>Roll</th>
-          </tr>
-        </thead>
-        <tfoot>
-          <tr><th colspan="8" class="text-warning">Total Funding: {{$ctrl.totalFunding()}}</th></tr>
-        </tfoot>
-        <tbody>
-          <tr class="mobius-table-row" ng-repeat="project in $ctrl.projects | activeResearch track by $index" ng-click="$ctrl.updateProjects([project])" ng-class="{'text-warning':project.stage.index == 0,'text-info':project.stage.index == 1,'text-success':project.stage.index == 2}">
-            <td><input type="checkbox" class="mob-checkbox-lg" id="{{'project'+$index}}" ng-click="$event.stopPropagation();" ng-model="$ctrl.ui.selectedProjects[project.uuid]" /></td>
-            <td>{{project.name}}</td>
-            <td>{{project.stage.name}}</td>
-            <td>{{project.funding}}</td>
-            <td>{{project.totalFunding}}</td>
-            <td>{{project.bonus}}</td>
-            <td>{{project.bonus + $ctrl.bonus.global}}</td>
-            <td>{{project.roll}}</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-</div>
-<div class="row">
-  <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-    <div class="panel panel-default">
-      <div class="panel-heading">
-        <h4 class="mobius-title text-info">Completed Research Projects</h4>
-      </div>
-      <table class="table table-striped table-hover">
-        <thead>
-          <tr><th>Project</th><th>Stage</th><th>Total Funding</th><th>Project Bonus</th><th></th></tr>
-        </thead>
-        <tbody>
-          <tr class="mobius-table-row" ng-repeat="project in $ctrl.projects | completedResearch track by $index">
-            <td>{{project.name}}</td>
-            <td>{{project.stage.name}}</td>
-            <td>{{project.totalFunding}}</td>
-            <td>{{project.bonus}}</td>
-            <td><span class="glyphicon glyphicon-open text-info" ng-if="project.hasLevels" ng-click="$ctrl.onNewProject(project)"></span></td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-</div>
-<div class="row">
-  <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-    <div class="panel panel-default">
-      <div class="panel-heading">
-        <h4 class="mobius-title text-info">Event Log</h4>
-      </div>
-      <div class="mob-div-fixed">
-        <table class="table table-striped table-hover">
-          <tbody>
-            <tr ng-repeat="event in $ctrl.events track by $index" ng-class="['mobius-table-row']">
-              <td class="text-info text-right">{{$index+1}}</td>
-              <td ng-class="{'mob-text-special': event.advance,'text-success': event.success, 'text-danger': event.fail, 'text-warning': (!event.success && !event.fail)}">{{event.text}}</td>
-              <td ng-class="'text-'+(event.type || 'info')">{{event.text}}</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-  </div>
-</div>-->
 <div class="row">
   <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" ng-if="$ctrl.user.level <= 0">
     <div class="panel panel-default">
@@ -258,20 +147,14 @@
           <div class="text-warning" style="text-warp: normal;">{{commandOutput}}</div>
         </div>
         <hr />
-        <h4>$ctrl.ui</h4>
-        <div class="well well-sm text-warning">
-          {{$ctrl.ui}}
-        </div>
-        <hr />
-        <h4>$ctrl.projects</h4>
-        <div class="well well-sm text-warning">
-          {{$ctrl.projects}}
-        </div>
-        <hr />
-        <h4>$ctrl.turns</h4>
-        <div class="well well-sm text-warning">
-          {{$ctrl.turns}}
-        </div>
+        <h4 class="mobius-title-sm">$ctrl.ui</h4>
+        <p><pre>{{$ctrl.ui | json}}</pre></p>
+        <h4 class="mobius-title-sm">$ctrl.projects</h4>
+        <p><pre>{{$ctrl.projects | json}}</pre></p>
+        <h4 class="mobius-title-sm">$ctrl.turns</h4>
+        <p><pre>{{$ctrl.turns | json}}</pre></p>
+        <h4 class="mobius-title-sm">$ctrl.bonus</h4>
+        <p><pre>{{$ctrl.bonus | json}}</pre></p>
       </div>
     </div>
   </div>
