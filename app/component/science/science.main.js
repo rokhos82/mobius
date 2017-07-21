@@ -121,6 +121,12 @@ mobius.science.controller = function($scope,_data,_ui,$uibModal,$window,$filter)
     );
   };
 
+  $ctrl.onTurnUpdate = function() {
+    // 1. Roll projects and present results to user
+    // 2. User 'confirms' results and they are saved
+    // 3. Copy all data to a new turn
+  };
+
   $ctrl.rollProjects = function() {
     // Roll a d100 for each project.
     // On a 1, the project is an instant success.
