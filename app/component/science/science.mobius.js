@@ -18,7 +18,8 @@ mobius.science.turn.default = {
   uuid: "invalid",
   currentTurn: -1,
   projects: {},
-  stages: {}
+  stages: {},
+  events: []
 };
 
 mobius.science.turn.prototype.newProject = function(options) {
@@ -51,9 +52,22 @@ mobius.science.turn.prototype.updateProject = function(options) {
   });
 };
 
-// Science Turn Setup Stage Object ---------------------------------------------
-mobius.science.turn.setup = function() {
-  this.projects = {};
+mobius.science.turn.prototype.suspendProject = function(uuid) {
+  this.projects[uuid].status = mobius.science.project.statuses[1];
+};
+
+mobius.science.turn.prototype.activateProject = function(uuid) {
+  this.projects[uuid].status = mobius.science.project.statuses[0];
+};
+
+// Mobius Turn Event Functions //
+mobius.science.turn.prototype.newEvent = function(options) {
+  let event = new mobius.science.event(options);
+  this.events.push(event);
+};
+
+mobius.science.turn.prototype.listEvents = function() {
+  return this.events;
 };
 
 // Science Project Object //////////////////////////////////////////////////////

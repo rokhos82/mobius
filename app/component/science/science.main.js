@@ -43,14 +43,11 @@ mobius.science.controller = function($scope,_data,_ui,$uibModal,$window,$filter)
     }
 
     $ctrl.turn = $ctrl.turns[$ctrl.ui.turn.current-1];
-    $ctrl.projects = $ctrl.turns[$ctrl.ui.turn.current-1].listProjects();
+    $ctrl.projects = $ctrl.turn.listProjects();
+    $ctrl.events = $ctrl.turn.listEvents();
 
     // Get the research bonuses.
     $ctrl.bonus = _data.bonuses.read();
-
-    // Bridging the gap with the old way...
-    $ctrl.events = _data.listEvents();
-    $ctrl.dataService = _data;
   };
 
   $ctrl.saveUI = _ui.save;
@@ -61,7 +58,8 @@ mobius.science.controller = function($scope,_data,_ui,$uibModal,$window,$filter)
 
   // Add a project event ////////////////////////////////////////////////////////////////
   $ctrl.addEvent = function(event) {
-    $ctrl.events = _data.createEvent(event);
+    $ctrl.turn.newEvent(event);
+    $ctrl.events = $ctrl.turn.listEvents();
     _data.save();
   };
 
@@ -69,6 +67,7 @@ mobius.science.controller = function($scope,_data,_ui,$uibModal,$window,$filter)
   $ctrl.addProject = function(proj) {
     $ctrl.turn.newProject(proj);
     $ctrl.projects = $ctrl.turn.listProjects();
+    _data.save();
   };
 
   // Open the new project modal /////////////////////////////////////////////////////////
@@ -77,7 +76,7 @@ mobius.science.controller = function($scope,_data,_ui,$uibModal,$window,$filter)
       function(output) {
         let project = output.project;
         $ctrl.addProject(project);
-        $ctrl.addEvent(new mobius.science.event({'project':project.uuid,'text':`Started new project: ${project.name} @ ${project.stage.name} stage.`,'type':'info'}));
+        $ctrl.addEvent({'project':project.uuid,'text':`Started new project: ${project.name} @ ${project.stage.name} stage.`,'type':'info'});
       }
     );
   };
@@ -85,12 +84,10 @@ mobius.science.controller = function($scope,_data,_ui,$uibModal,$window,$filter)
   $ctrl.onBonuses = function() {
     mobius.science.modal.bonuses($uibModal,$ctrl.bonus).result.then(
       function(bonuses) {
-        console.log(bonuses);
         _.each(bonuses,function(bonus,category){
-          console.log(category,bonus);
           $ctrl.bonus[category] = bonus;
         });
-        console.log($ctrl.bonus);
+        _data.save();
       }
     );
   };
@@ -121,10 +118,13 @@ mobius.science.controller = function($scope,_data,_ui,$uibModal,$window,$filter)
     );
   };
 
-  $ctrl.onTurnUpdate = function() {
+  $ctrl.onRollProjects = function() {
     // 1. Roll projects and present results to user
     // 2. User 'confirms' results and they are saved
-    // 3. Copy all data to a new turn
+  };
+
+  $ctrl.onTurnUpdate = function() {
+    // 1. Copy current turn to new turn and advance to the new turn.
   };
 
   $ctrl.rollProjects = function() {
@@ -248,6 +248,34 @@ mobius.science.controller = function($scope,_data,_ui,$uibModal,$window,$filter)
     );
   };
 
+  $ctrl.onSuspendProject = function(project) {
+    mobius.science.modal.confirm($uibModal,'Science Manager',`Are you sure you want to suspend ${project.name}?`).result.then(
+      function () {
+        $ctrl.turn.suspendProject(project.uuid);
+        _data.save();
+      }
+    );
+  };
+
+  $ctrl.onActivateProject = function(project) {
+    mobius.science.modal.confirm($uibModal,'Science Manager',`Are you sure you want to activate ${project.name}?`).result.then(
+      function () {
+        $ctrl.turn.activateProject(project.uuid);
+        _data.save();
+      }
+    );
+  };
+
+  $ctrl.onRemoveProject = function(project) {
+    mobius.science.modal.confirm($uibModal,'Science Manager',`Are you sure you want to delete ${project.name}?`).result.then(
+      function() {
+        $ctrl.turn.removeProject(project.uuid);
+        $ctrl.projects = $ctrl.turn.listProjects();
+        _data.save();
+      }
+    );
+  };
+
   // Total Funding caluclation //////////////////////////////////////////////////////////
   $ctrl.totalFunding = function() {
     return _.reduce($filter('activeResearch')($ctrl.projects),function(total,project){return total + project.funding;},0);
@@ -262,7 +290,7 @@ mobius.science.controller = function($scope,_data,_ui,$uibModal,$window,$filter)
   };
 
   // Open the project export modal //////////////////////////////////////////////////////
-  $ctrl.exportProjects = function() {
+  $ctrl.onExportData = function() {
     let modal = $uibModal.open({
       animation: true,
       component: "exportModal",
@@ -274,7 +302,7 @@ mobius.science.controller = function($scope,_data,_ui,$uibModal,$window,$filter)
           };
         },
         output: function() {
-          let projects = $window.angular.copy($ctrl.projects);
+          let projects = $window.angular.copy($ctrl.turns);
           return projects;
         }
       }
@@ -282,7 +310,7 @@ mobius.science.controller = function($scope,_data,_ui,$uibModal,$window,$filter)
   };
 
   // Open the project import modal //////////////////////////////////////////////////////
-  $ctrl.onImportProjects = function() {
+  $ctrl.onImportData = function() {
     let modal = $uibModal.open({
       animation: true,
       component: "importModal",
@@ -298,10 +326,6 @@ mobius.science.controller = function($scope,_data,_ui,$uibModal,$window,$filter)
 
   // Import the provided projects to the science manager ////////////////////////////////
   $ctrl.importProjects = function(projects) {
-    console.log(typeof projects);
-    _.each(projects,function(project){
-      $ctrl.projects = _data.createProject(project);
-    });
   };
 
   // Command-line Execution

@@ -145,7 +145,7 @@ a.mobius-bookmark {
 	padding: 4px 8px 4px 8px !important;
 }
 
-.mobius-fleet-table > td,.mobius-table-row > td {
+.mobius-fleet-table > td,.mobius-table-row > td,.mobius-table-row > th {
 	vertical-align: middle !important;
 	padding: 2px 0px 2px 10px !important;
 	margin: 0px;

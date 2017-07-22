@@ -35,6 +35,11 @@
             </button>
           </div>
           <div class="btn-group">
+            <button class="btn btn-default disabled">
+              <img src="img/perspective-dice-one-64-lgray.png" alt="Update Projects" />
+            </button>
+          </div>
+          <div class="btn-group">
             <button href class="btn btn-default" ng-click="$ctrl.rollProjects()">
               <img src="img/clockwork-64-lgray.png" alt="Next Turn" />
             </button>
@@ -44,6 +49,8 @@
               <img src="img/cog-64-lgray.png" alt="Tools" />
             </button>
             <ul class="dropdown-menu" uib-dropdown-menu role="menu">
+              <li role="menuitem"><a href>Import Data</a></li>
+              <li role="menuitem"><a href ng-click="$ctrl.onExportData()">Export Data</a></li>
               <li role="menuitem"><a href ng-click="$ctrl.clearProjects()">Clear Data</a></li>
             </ul>
           </div>
@@ -62,11 +69,9 @@
                   <th>Project Bonus</th>
                   <th>Total Bonus</th>
                   <th>Roll</th>
+                  <th></th>
                 </tr>
               </thead>
-              <tfoot>
-                <tr><th colspan="8" class="text-warning">Total Funding: {{$ctrl.totalFunding()}}</th></tr>
-              </tfoot>
               <tbody>
                 <tr class="mobius-table-row" ng-repeat="project in $ctrl.projects | activeResearch track by $index" ng-click="$ctrl.updateProjects(project)" ng-class="{'text-warning':project.stage.index == 0,'text-info':project.stage.index == 1,'text-success':project.stage.index == 2}">
                   <td>{{project.name}}</td>
@@ -76,6 +81,10 @@
                   <td>{{project.bonus}}</td>
                   <td>{{project.bonus + $ctrl.bonus.global}}</td>
                   <td>{{project.roll}}</td>
+                  <td>
+                    <img src="img/pause-button-64-warning.png" alt="Suspend Project" height="16" ng-click="$ctrl.onSuspendProject(project); $event.stopPropagation();" />
+                    <img src="img/cancel-64-danger.png" alt="Delete Project" height="16" ng-click="$ctrl.onRemoveProject(project); $event.stopPropagation();" />
+                  </td>
                 </tr>
               </tbody>
             </table>
@@ -84,7 +93,7 @@
             <uib-tab-heading><span class="text-info mobius-title">Suspended</span></uib-tab-heading>
             <table class="table table-striped table-hover table-bordered">
               <thead>
-                <tr><th>Project</th><th>Stage</th><th>Total Funding</th><th>Project Bonus</th></tr>
+                <tr><th>Project</th><th>Stage</th><th>Total Funding</th><th>Project Bonus</th><th></th></tr>
               </thead>
               <tbody>
                 <tr class="mobius-table-row" ng-repeat="project in $ctrl.projects | suspendedResearch track by $index">
@@ -92,6 +101,7 @@
                   <td>{{project.stage.name}}</td>
                   <td>{{project.totalFunding}}</td>
                   <td>{{project.bonus}}</td>
+                  <td><img src="img/play-button-64-success.png" alt="Activate Project" height="16" ng-click="$ctrl.onActivateProject(project); $event.stopPropagation();" /></td>
                 </tr>
               </tbody>
             </table>
@@ -126,6 +136,11 @@
             </table>
           </uib-tab>
         </uib-tabset>
+        <div class="well well-sm">
+          <p class="text-info">Project Count: {{$ctrl.projects.length}}</p>
+          <p class="text-success">Total Funding: {{$ctrl.totalFunding()}}</p>
+          <p class="text-info">Global Bonus: {{$ctrl.bonus.global}}</p>
+        </div>
       </div>
     </div>
   </div>

@@ -27,11 +27,15 @@ mobius.science.data = mobius.app.factory("mobius.science.data",["$rootScope","$w
     },
     turns: []
   };
+
+  // Set the data object to the defaults object.  This may be overwritten
+  // later when localStorage is loaded.
   var _data = _default;
 
   _state.save = function() {
     let json = $window.angular.toJson(_data);
     $window.localStorage.setItem(_key,json);
+    console.log("Saving science manager data.");
   };
 
   _state.load = function() {};
@@ -41,6 +45,7 @@ mobius.science.data = mobius.app.factory("mobius.science.data",["$rootScope","$w
     let json = localStorage.getItem(_key);
 
     if(json === null) {
+      // Save the defaults to localStorage
       _state.save();
     }
     else {
@@ -53,6 +58,9 @@ mobius.science.data = mobius.app.factory("mobius.science.data",["$rootScope","$w
         console.log(t);
         _data.turns.push(t);
       });
+
+      // Pull out the research bonuses.
+      _data.bonus = data.bonus;
     }
     _state.loaded = true;
   }
