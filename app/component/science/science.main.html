@@ -1,5 +1,4 @@
 <page-title title="Science Manager" message="{{$ctrl.welcome}}"></page-title>
-<page-alerts alerts="$ctrl.alerts.general"></page-alerts>
 <div class="row">
   <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
     <ul class="breadcrumb">
@@ -8,7 +7,7 @@
     </ul>
   </div>
 </div>
-<page-alerts alerts="$ctrl.alerts.research"></page-alerts>
+<page-alerts alerts="$ctrl.ui.alerts"></page-alerts>
 <div class="row">
   <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
     <div class="panel panel-default">
@@ -101,7 +100,10 @@
                   <td>{{project.stage.name}}</td>
                   <td>{{project.totalFunding}}</td>
                   <td>{{project.bonus}}</td>
-                  <td><img src="img/play-button-64-success.png" alt="Activate Project" height="16" ng-click="$ctrl.onActivateProject(project); $event.stopPropagation();" /></td>
+                  <td>
+                    <img src="img/play-button-64-success.png" alt="Activate Project" height="16" ng-click="$ctrl.onActivateProject(project); $event.stopPropagation();" />
+                    <img src="img/cancel-64-danger.png" alt="Delete Project" height="16" ng-click="$ctrl.onRemoveProject(project); $event.stopPropagation();" />
+                  </td>
                 </tr>
               </tbody>
             </table>

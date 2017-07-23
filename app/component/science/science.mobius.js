@@ -27,6 +27,7 @@ mobius.science.turn.prototype.newProject = function(options) {
   // the turn as dirty for the data service.
   let project = new mobius.science.project(options);
   this.projects[project.uuid] = project;
+  return project;
 };
 
 mobius.science.turn.prototype.listProjects = function() {

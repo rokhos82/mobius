@@ -16,12 +16,6 @@ mobius.science.controller = function($scope,_data,_ui,$uibModal,$window,$filter)
   $ctrl.stages = mobius.science.project.stages;
   $ctrl.welcome = `<p>Welcome to the science manager. Here you will manage your research projects and related information.</p><p class="text-info">Race Name (Game Name) - Turn 1</p>`;
 
-  $ctrl.bonus = {};
-  $ctrl.alerts = {
-    general: [],
-    research: []
-  };
-
   // $onInit - Setup the component /////////////////////////////////////////////
   $ctrl.$onInit = function() {
     // Get the turn objects from the data service.
@@ -65,9 +59,16 @@ mobius.science.controller = function($scope,_data,_ui,$uibModal,$window,$filter)
 
   // Add a new research project /////////////////////////////////////////////////////////
   $ctrl.addProject = function(proj) {
-    $ctrl.turn.newProject(proj);
+    let project = $ctrl.turn.newProject(proj);
     $ctrl.projects = $ctrl.turn.listProjects();
     _data.save();
+    return project;
+  };
+
+  // Add an alert to the UI ////////////////////////////////////////////////////
+  $ctrl.addAlert = function(msg,type,timeout) {
+    let alert = new mobius.pageAlerts.alert(msg,type,timeout);
+    $ctrl.ui.alerts.push(alert);
   };
 
   // Open the new project modal /////////////////////////////////////////////////////////
@@ -75,8 +76,9 @@ mobius.science.controller = function($scope,_data,_ui,$uibModal,$window,$filter)
     mobius.science.modal.new($uibModal,proj).result.then(
       function(output) {
         let project = output.project;
-        $ctrl.addProject(project);
+        project = $ctrl.addProject(project);
         $ctrl.addEvent({'project':project.uuid,'text':`Started new project: ${project.name} @ ${project.stage.name} stage.`,'type':'info'});
+        $ctrl.addAlert(`New Project: ${project.name}!`,"info",2500);
       }
     );
   };

@@ -6,7 +6,8 @@ mobius.science.ui = mobius.app.factory("mobius.science.ui",["$rootScope","$windo
     turn: {
       current: 1,
       count: 1,
-    }
+    },
+    alerts: []
   };
 
   var _state = {
