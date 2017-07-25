@@ -89,6 +89,8 @@
 		<script type="text/javascript" src="app/component/science/science.data.js"></script>
 		<script type="text/javascript" src="app/component/science/science.ui.js"></script>
 		<script type="text/javascript" src="app/component/science/science.main.js"></script>
+		<script type="text/javascript" src="app/component/facilities/facilities.mobius.js"></script>
+		<script type="text/javascript" src="app/component/facilities/facilities.main.js"></script>
 		<script type="text/javascript" src="app/component/card.components.js"></script>
 		<script type="text/javascript" src="app/component/modal.components.js"></script>
 	</body>
