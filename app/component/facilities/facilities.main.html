@@ -7,7 +7,17 @@
         <h4 class="mobius-title text-info">Research Facilities</h4>
       </div>
       <div class="panel-body">
-        <button class="btn btn-lg btn-default">New</button>
+        <form class="form-horizontal" ng-init="facility">
+          <fieldset>
+            <legend>New Research Facility</legend>
+            <div class="form-group">
+              <label for="name" class="control-label col-lg-3">Name</label>
+              <div class="col-lg-9">
+                <input id="name" name="name" type="text" class="form-control" ng-required="true" required ng-model="facility.name" />
+              </div>
+            </div>
+          </fieldset>
+        </form>
       </div>
       <table class="tabel table-stripe table-hover">
       </table>
