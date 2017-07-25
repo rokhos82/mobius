@@ -101,6 +101,13 @@ mobiusEngine.app.config(['$compileProvider','$stateProvider','$locationProvider'
           resolve: {}
         };
 
+        var facilities = {
+          name: 'facilities',
+          url: '/facilities',
+          component: 'mobius.facilities.main',
+          resolve: {}
+        };
+
         $stateProvider.state(defaultState);
         $stateProvider.state(combatState);
         $stateProvider.state(fleetState);
@@ -112,4 +119,5 @@ mobiusEngine.app.config(['$compileProvider','$stateProvider','$locationProvider'
         $stateProvider.state(reportDtlState);
         $stateProvider.state(simulator);
         $stateProvider.state(scinece);
+        $stateProvider.state(facilities);
 }]);

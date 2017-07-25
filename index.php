@@ -29,6 +29,7 @@
 						<li ui-sref-active="active"><a ui-sref="reports"><span class="glyphicon glyphicon-briefcase"></span> Reports</a></li>
 						<li ui-serf-active="active"><a ui-sref="simulator"><span class="glyphicon glyphicon-expand"></span> Simulator</a></li>
 						<li ui-sref-active="active"><a ui-sref="science"><span class="glyphicon glyphicon-education"></span> Science</a></li>
+						<li ui-sref-active="active"><a ui-sref="facilities">Facilities</a></li>
 					</ul>
 					<ul class="nav navbar-nav navbar-right">
 						<li><a href><span class="glyphicon glyphicon-log-in"></span></a></li>
