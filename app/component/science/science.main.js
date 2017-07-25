@@ -120,9 +120,24 @@ mobius.science.controller = function($scope,_data,_ui,$uibModal,$window,$filter)
     );
   };
 
-  $ctrl.onRollProjects = function() {
+  $ctrl.onResourceAssign = function() {
+    let filtered = $filter('activeResearch')($ctrl.projects);
+    mobius.science.modal.resources($uibModal,filtered,$ctrl.resources).result.then(
+      function(resources) {
+        console.log(resources);
+      }
+    );
+  };
+
+  $ctrl.onProjectUpdates = function() {
     // 1. Roll projects and present results to user
     // 2. User 'confirms' results and they are saved
+    let filtered = $filter('activeResearch')($ctrl.projects);
+    mobius.science.modal.results($uibModal,filtered).result.then(
+      function(results) {
+        console.log(results);
+      }
+    );
   };
 
   $ctrl.onTurnUpdate = function() {

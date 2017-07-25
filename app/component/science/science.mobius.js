@@ -203,6 +203,35 @@ mobius.science.modal.bonuses = function($uibModal,bonuses) {
   });
 };
 
+mobius.science.modal.resources = function($uibModal,projects,resources) {
+  return $uibModal.open({
+    animation: true,
+    component: 'mobius.modal.science.resources',
+    resolve: {
+      options: function() {
+        return {
+          'resources': resources,
+          'projects': projects
+        }
+      }
+    }
+  });
+};
+
+mobius.science.modal.results = function($uibModal,projects) {
+  return $uibModal.open({
+    animation: true,
+    component: 'mobius.modal.science.results',
+    resolve: {
+      options: function() {
+        return {
+          'projects': projects
+        }
+      }
+    }
+  });
+};
+
 // Project Detail Modal ///////////////////////////////////////////////////////////////////////////
 mobius.app.component("mobius.modal.science.detail",{
   templateUrl: 'app/component/science/science.detail.html',
@@ -345,7 +374,75 @@ mobius.app.component("mobius.modal.science.bonus",{
     $ctrl.$onInit = function() {
       //$ctrl.options = $window.angular.copy($ctrl.resolve.options);
       $ctrl.bonuses = $window.angular.copy($ctrl.resolve.options.bonuses);
-      console.log($ctrl.bonuses);
+
+      /*$timeout(function(){
+        $window.document.getElementById('name').focus();
+      });//*/
+    };
+  }],
+  bindings: {
+    resolve: "<",
+    dismiss: "&",
+    close: "&"
+  }
+});
+
+// Research Resources Modal ////////////////////////////////////////////////////
+mobius.app.component("mobius.modal.science.resources",{
+  templateUrl: 'app/component/science/science.resources.html',
+  controller: ["$scope","$location","$window","$timeout",function($scope,$location,$window,$timeout) {
+    const $ctrl = this;
+
+    $ctrl.stages = mobius.science.project.stages;
+    $ctrl.statuses = mobius.science.project.statuses;
+
+    $ctrl.confirm = function() {
+      $ctrl.close({$value:$ctrl.bonuses});
+    };
+    $ctrl.cancel = function() { $ctrl.dismiss(); };
+
+    $ctrl.$onInit = function() {
+      $ctrl.projects = $ctrl.resolve.options.projects;
+      $ctrl.resources = $window.angular.copy($ctrl.resolve.options.resources);
+
+      /*$timeout(function(){
+        $window.document.getElementById('name').focus();
+      });//*/
+    };
+  }],
+  bindings: {
+    resolve: "<",
+    dismiss: "&",
+    close: "&"
+  }
+});
+
+// Research Resources Modal ////////////////////////////////////////////////////
+mobius.app.component("mobius.modal.science.results",{
+  templateUrl: 'app/component/science/science.results.html',
+  controller: ["$scope","$location","$window","$timeout",function($scope,$location,$window,$timeout) {
+    const $ctrl = this;
+
+    $ctrl.stages = mobius.science.project.stages;
+    $ctrl.statuses = mobius.science.project.statuses;
+
+    $ctrl.confirm = function() {
+      $ctrl.close({$value:$ctrl.bonuses});
+    };
+    $ctrl.cancel = function() { $ctrl.dismiss(); };
+
+    $ctrl.rollProjectResults = function() {};
+
+    $ctrl.$onInit = function() {
+      //$ctrl.options = $window.angular.copy($ctrl.resolve.options);
+      $ctrl.projects = $window.angular.copy($ctrl.resolve.options.projects);
+
+      // Copy the projects into a results array.
+      $ctrl.results = {};
+      _.each($ctrl.projects,function(project) {
+        let uuid = project.uuid;
+        $ctrl.results[uuid] = $window.angular.copy(project);
+      });
 
       /*$timeout(function(){
         $window.document.getElementById('name').focus();
