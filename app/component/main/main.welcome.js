@@ -10,7 +10,7 @@ mobiusEngine.app.component("mainWelcome",{
 
 		$http({
 			method: "GET",
-			url: "rest/settings.php"
+			url: "rest/settings"
 		}).then(
 			function s(response) {
 				var main = response.data.general.main;
@@ -21,7 +21,7 @@ mobiusEngine.app.component("mainWelcome",{
 				}
 			},
 			function f(response) {
-				$ctrl.welcome = "Unable to retrieve data!";
+				$ctrl.welcome = ["Unable to retrieve data!"];
 			}
 		);
 	}],
