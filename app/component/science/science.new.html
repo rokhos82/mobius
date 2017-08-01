@@ -43,8 +43,8 @@
       <button type="submit" ng-disabled="newProject.$invalid" ng-show="false" tabindex="-1" ng-click="$ctrl.confirm()"></button>
     </fieldset>
   </form>
-  <div class="well well-sm text-warning">
-    <span style="display: block;" ng-repeat="(key,value) in $ctrl.project"><code>{{key}}</code>: {{value}}</span>
+  <div ng-if="user.level <= 0">
+    <p><pre>{{$ctrl.project | json}}</pre></p>
   </div>
 </div>
 <div class="modal-footer">

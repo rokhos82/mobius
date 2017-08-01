@@ -21,11 +21,24 @@ $settings_data = array(
   )
 );
 
+$users = array(
+  array(
+    "username" => "test",
+    "password" => "password",
+    "level" => 0,
+    "email" => "justin.l.lane@gmail.com",
+    "name" => "Justin Lane",
+    "uuid" => "custom-mobius-123456"
+  )
+);
+
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 
 $app = new Silex\Application();
 $app['debug'] = true;
+$app->register(new Silex\Provider\SessionServiceProvider());
 
 $app->get('/',function() {
   return new Response("This page intentionally left blank");
@@ -47,6 +60,21 @@ $app->get('/settings/{section}',function(Silex\Application $app,$section) use($s
   $response = new JsonResponse();
   $response->setEncodingOptions(JSON_NUMERIC_CHECK);
   $response->setData($settings_data[$section]);
+  return $response;
+});
+
+$app->post('/auth',function(Request $request) use ($users) {
+  $username = $request->get('username');
+  $password = $request->get('password');
+
+  if($username === $users[0]['username'] && $password === $users[0]['password']) {
+    $app['session']->set('user',$users[0]);
+    return $app->json($users[0]);
+  }
+
+  $response = new Response();
+  $response->headers->set('WWW-Authenticate',sprintf('Basic realm="%s"','site_login'));
+  $response->setStatusCode(401,'Please sign in.');
   return $response;
 });
 

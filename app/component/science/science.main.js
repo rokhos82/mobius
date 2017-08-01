@@ -9,10 +9,6 @@
 mobius.science.controller = function($scope,_data,_ui,$uibModal,$window,$filter) {
   const $ctrl = this;
 
-  $ctrl.user = {
-    level: 0
-  };
-
   $ctrl.stages = mobius.science.project.stages;
   $ctrl.welcome = `<p>Welcome to the science manager. Here you will manage your research projects and related information.</p><p class="text-info">Race Name (Game Name) - Turn 1</p>`;
 

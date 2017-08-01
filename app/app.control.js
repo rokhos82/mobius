@@ -32,12 +32,17 @@ mobiusEngine.messageTypes = {
 ////////////////////////////////////////////////////////////////////////////////////////////////
 // Mobius Engine Controller
 ////////////////////////////////////////////////////////////////////////////////////////////////
-mobiusEngine.controller = mobiusEngine.app.controller("mobiusCtl",["$location","$http",function($location,$http){
+mobiusEngine.controller = mobiusEngine.app.controller("mobiusCtl",["$scope","$window","$location","$http",function($scope,$window,$location,$http){
 	var $ctrl = this;
 	// Added a redirect from mobius/ to mobius/#/ so that the mainWelcome state is encountered
 	if($location.path() === "") {
 		$location.url("/");
 	}
+
+	$ctrl.user = {
+		level: 0
+	};
+	$scope.user = $ctrl.user;
 
 	$ctrl.rest = function() {
 		console.log("Testing Rest");
