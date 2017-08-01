@@ -44,10 +44,6 @@ $app->get('/',function() {
   return new Response("This page intentionally left blank");
 });
 
-$app->get('/test',function() {
-  return "Hello World!";
-});
-
 $app->get('/settings',function() use ($settings_data) {
   $response = new JsonResponse();
   $response->setEncodingOptions(JSON_NUMERIC_CHECK);

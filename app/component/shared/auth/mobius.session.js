@@ -2,15 +2,15 @@ mobius.session = {};
 
 mobius.app.service('mobius.auth.session',[function(){
   $service = this;
-  
-  $service.create = function(sessionId,userId,userLevel) {
-    this.session = sessionId;
-    this.user = userId;
-    this.level = userRole;
+
+  $service.create = function(user) {
+    this.uuid = user.uuid;
+    this.user = user;
+    this.level = user.level;
   };
 
   $service.destroy = function() {
-    this.session = null;
+    this.uuid = null;
     this.user = null;
     this.level = null;
   };

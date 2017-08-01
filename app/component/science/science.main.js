@@ -38,6 +38,10 @@ mobius.science.controller = function($scope,_data,_ui,$uibModal,$window,$filter)
 
     // Get the research bonuses.
     $ctrl.bonus = _data.bonuses.read();
+    $ctrl.user = {
+      level: 0
+    };
+    $ctrl.uuid = $window.uuid.v4;
   };
 
   $ctrl.saveUI = _ui.save;
