@@ -11,7 +11,8 @@
 
           /* Feature modules */
           'app.dashboard',
-          'app.layout'
+          'app.layout',
+          'app.units'
         ]);
 })();
 

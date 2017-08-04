@@ -17,13 +17,13 @@
     function getStates() {
         return [
             {
-                state: 'dashBoard',
+                state: 'dashboard',
                 config: {
                     url: '/',
-                    templateUrl: 'app/dashBoard/dashBoard.html',
+                    templateUrl: 'app/dashboard/dashboard.html',
                     controller: 'DashboardController',
                     controllerAs: '$ctrl',
-                    title: 'dashBoard',
+                    title: 'dashboard',
                     params: {
                     }
                 }

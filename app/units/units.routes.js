@@ -19,10 +19,10 @@
             {
                 state: 'units',
                 config: {
-                    url: '/',
+                    url: '/units',
                     templateUrl: 'app/units/units.html',
                     controller: 'UnitsController',
-                    controllerAs: 'vm',
+                    controllerAs: '$ctrl',
                     title: 'units',
                     params: {
                     }
