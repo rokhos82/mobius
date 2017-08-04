@@ -10,11 +10,14 @@
           'app.core',
 
           /* Feature modules */
+          'app.combat',
           'app.dashboard',
           'app.facilities',
           'app.fleets',
           'app.layout',
+          'app.reports',
           'app.science',
+          'app.simulator',
           'app.units'
         ]);
 })();

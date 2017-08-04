@@ -24,25 +24,36 @@
 		<script type="text/javascript" src="js/ui-bootstrap-2.5.0.js"></script>
 		<script type="text/javascript" src="js/angular-editable-text.js"></script>
 		<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular-sanitize.js"></script>
-		<script type="text/javascript" src="app/mobius.js"></script>
+		<!-- Shared -->
 		<script type="text/javascript" src="app/core/core.module.js"></script>
 		<script type="text/javascript" src="app/core/core.routes.js"></script>
+		<script type="text/javascript" src="app/layout/layout.module.js"></script>
+		<!-- Features -->
+		<script type="text/javascript" src="app/combat/combat.module.js"></script>
+		<script type="text/javascript" src="app/combat/combat.controller.js"></script>
+		<script type="text/javascript" src="app/combat/combat.routes.js"></script>
 		<script type="text/javascript" src="app/dashboard/dashboard.module.js"></script>
 		<script type="text/javascript" src="app/dashboard/dashboard.controller.js"></script>
 		<script type="text/javascript" src="app/dashboard/dashboard.routes.js"></script>
-		<script type="text/javascript" src="app/layout/layout.module.js"></script>
-		<script type="text/javascript" src="app/units/units.module.js"></script>
-		<script type="text/javascript" src="app/units/units.controller.js"></script>
-		<script type="text/javascript" src="app/units/units.routes.js"></script>
-		<script type="text/javascript" src="app/science/science.module.js"></script>
-		<script type="text/javascript" src="app/science/science.controller.js"></script>
-		<script type="text/javascript" src="app/science/science.routes.js"></script>
-		<script type="text/javascript" src="app/fleets/fleets.module.js"></script>
-		<script type="text/javascript" src="app/fleets/fleets.controller.js"></script>
-		<script type="text/javascript" src="app/fleets/fleets.routes.js"></script>
 		<script type="text/javascript" src="app/facilities/facilities.module.js"></script>
 		<script type="text/javascript" src="app/facilities/facilities.controller.js"></script>
 		<script type="text/javascript" src="app/facilities/facilities.routes.js"></script>
+		<script type="text/javascript" src="app/fleets/fleets.module.js"></script>
+		<script type="text/javascript" src="app/fleets/fleets.controller.js"></script>
+		<script type="text/javascript" src="app/fleets/fleets.routes.js"></script>
+		<script type="text/javascript" src="app/reports/reports.module.js"></script>
+		<script type="text/javascript" src="app/reports/reports.controller.js"></script>
+		<script type="text/javascript" src="app/reports/reports.routes.js"></script>
+		<script type="text/javascript" src="app/science/science.module.js"></script>
+		<script type="text/javascript" src="app/science/science.controller.js"></script>
+		<script type="text/javascript" src="app/science/science.routes.js"></script>
+		<script type="text/javascript" src="app/simulator/simulator.module.js"></script>
+		<script type="text/javascript" src="app/simulator/simulator.controller.js"></script>
+		<script type="text/javascript" src="app/simulator/simulator.routes.js"></script>
+		<script type="text/javascript" src="app/units/units.module.js"></script>
+		<script type="text/javascript" src="app/units/units.controller.js"></script>
+		<script type="text/javascript" src="app/units/units.routes.js"></script>
+		<!-- Root Module -->
 		<script type="text/javascript" src="app/app.module.js"></script>
 	</body>
 </html>

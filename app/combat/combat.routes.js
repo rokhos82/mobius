@@ -2,7 +2,7 @@
     'use strict';
 
     angular
-        .module('app.fleets')
+        .module('app.combat')
         .config(configureStates);
 
     configureStates.$inject = ['$stateProvider'];
@@ -17,13 +17,13 @@
     function getStates() {
         return [
             {
-                state: 'fleets',
+                state: 'combat',
                 config: {
-                    url: '/fleets',
-                    templateUrl: 'app/fleets/fleets.html',
-                    controller: 'FleetsController',
+                    url: '/combat',
+                    templateUrl: 'app/combat/combat.html',
+                    controller: 'CombatController',
                     controllerAs: '$ctrl',
-                    title: 'fleets',
+                    title: 'combat',
                     params: {
                     }
                 }

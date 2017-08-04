@@ -2,7 +2,7 @@
     'use strict';
 
     angular
-        .module('app.fleets')
+        .module('app.reports')
         .config(configureStates);
 
     configureStates.$inject = ['$stateProvider'];
@@ -17,13 +17,13 @@
     function getStates() {
         return [
             {
-                state: 'fleets',
+                state: 'reports',
                 config: {
-                    url: '/fleets',
-                    templateUrl: 'app/fleets/fleets.html',
-                    controller: 'FleetsController',
-                    controllerAs: '$ctrl',
-                    title: 'fleets',
+                    url: '/reports',
+                    templateUrl: 'app/reports/reports.html',
+                    controller: 'reportsController',
+                    controllerAs: 'vm',
+                    title: 'reports',
                     params: {
                     }
                 }

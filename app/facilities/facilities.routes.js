@@ -19,7 +19,7 @@
             {
                 state: 'facilities',
                 config: {
-                    url: '/',
+                    url: '/facilities',
                     templateUrl: 'app/facilities/facilities.html',
                     controller: 'FacilitiesController',
                     controllerAs: '$ctrl',
