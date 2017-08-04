@@ -12,7 +12,7 @@
 	<body>
 		<div ng-include="'app/layout/navbar.html'">
 		</div>
-		<div class="container" ui-view>
+		<div class="container shuffle-animation" ui-view>
 		</div>
 		<script type="text/javascript" src="js/uuid.js"></script>
 		<script type="text/javascript" src="js/underscore.js"></script>
@@ -34,6 +34,15 @@
 		<script type="text/javascript" src="app/units/units.module.js"></script>
 		<script type="text/javascript" src="app/units/units.controller.js"></script>
 		<script type="text/javascript" src="app/units/units.routes.js"></script>
+		<script type="text/javascript" src="app/science/science.module.js"></script>
+		<script type="text/javascript" src="app/science/science.controller.js"></script>
+		<script type="text/javascript" src="app/science/science.routes.js"></script>
+		<script type="text/javascript" src="app/fleets/fleets.module.js"></script>
+		<script type="text/javascript" src="app/fleets/fleets.controller.js"></script>
+		<script type="text/javascript" src="app/fleets/fleets.routes.js"></script>
+		<script type="text/javascript" src="app/facilities/facilities.module.js"></script>
+		<script type="text/javascript" src="app/facilities/facilities.controller.js"></script>
+		<script type="text/javascript" src="app/facilities/facilities.routes.js"></script>
 		<script type="text/javascript" src="app/app.module.js"></script>
 	</body>
 </html>

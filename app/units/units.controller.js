@@ -9,7 +9,7 @@
 
     /* @ngInject */
     function UnitsController($window) {
-        var vm = this;
+        var $ctrl = this;
 
         activate();
 

@@ -9,7 +9,7 @@
 
     /* @ngInject */
     function DashboardController() {
-        var vm = this;
+        var $ctrl = this;
 
         activate();
 

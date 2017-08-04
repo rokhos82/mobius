@@ -11,7 +11,10 @@
 
           /* Feature modules */
           'app.dashboard',
+          'app.facilities',
+          'app.fleets',
           'app.layout',
+          'app.science',
           'app.units'
         ]);
 })();
