@@ -5,7 +5,7 @@
         .module('app.reports')
         .controller('ReportsController', ReportsController);
 
-    ReportsController.$inject = ['$windows'];
+    ReportsController.$inject = ['$window'];
 
     /* @ngInject */
     function ReportsController($window) {

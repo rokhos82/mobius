@@ -21,7 +21,7 @@
                 config: {
                     url: '/reports',
                     templateUrl: 'app/reports/reports.html',
-                    controller: 'reportsController',
+                    controller: 'ReportsController',
                     controllerAs: 'vm',
                     title: 'reports',
                     params: {
