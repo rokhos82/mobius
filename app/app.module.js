@@ -1,11 +1,21 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////
-// BattleEngine2 Global Namespace Variable
+// Mobius Angular Module
 ////////////////////////////////////////////////////////////////////////////////////////////////
-var mobiusEngine = {};
+(function() {
+    'use strict';
 
-////////////////////////////////////////////////////////////////////////////////////////////////
-// BattleEngine2 angular module
-////////////////////////////////////////////////////////////////////////////////////////////////
+    angular
+        .module('app', [
+          /* Shared modules */
+          'app.core',
+
+          /* Feature modules */
+          'app.dashboard',
+          'app.layout'
+        ]);
+})();
+
+/*
 mobiusEngine.app = angular.module('mobiusEngine',['ui.bootstrap','ui.router','ngSanitize','ngResource']);
 mobius.app = mobiusEngine.app;
 
@@ -120,4 +130,4 @@ mobiusEngine.app.config(['$compileProvider','$stateProvider','$locationProvider'
         $stateProvider.state(simulator);
         $stateProvider.state(scinece);
         $stateProvider.state(facilities);
-}]);
+}]);*/
