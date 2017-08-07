@@ -4,12 +4,15 @@
 </div>
 <div class="row">
   <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-    <ul class="breadcrumb">
+    <ul ng-if="!!$ctrl.ui.history" class="breadcrumb">
       <li><a ui-sref="dashboard">Dashboard</a></li>
       <li ng-repeat="crumb in $ctrl.ui.history" ng-class="{active:crumb.active}">
         <span ng-if="crumb.active">{{crumb.label}}</span>
         <a ng-if="!crumb.active" ui-sref="crumb.state">{{crumb.label}}</a>
       </li>
+    </ul>
+    <ul ng-if="!$ctrl.ui.history" class="breadcrumb">
+      <li class="active">Dashboard</a></li>
     </ul>
   </div>
 </div>
