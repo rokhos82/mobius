@@ -22,7 +22,7 @@
                     url: '/reports',
                     templateUrl: 'app/reports/reports.html',
                     controller: 'ReportsController',
-                    controllerAs: 'vm',
+                    controllerAs: '$ctrl',
                     title: 'reports',
                     params: {
                     }

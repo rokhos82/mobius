@@ -11,6 +11,11 @@
     function FacilitiesController($window) {
         var $ctrl = this;
 
+        $ctrl.ui = {};
+        $ctrl.ui.history = [{state:'',label:'Facilities Management',active:true}];
+        $ctrl.ui.message = "";
+        $ctrl.ui.title = "Facilities Management";
+
         activate();
 
         function activate() {
