@@ -8,6 +8,7 @@
         .module('app', [
           /* Shared modules */
           'app.core',
+          'block.alerts',
 
           /* Feature modules */
           'app.combat',

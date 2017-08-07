@@ -27,8 +27,11 @@
 		<!-- Shared -->
 		<script type="text/javascript" src="app/core/core.module.js"></script>
 		<script type="text/javascript" src="app/core/core.routes.js"></script>
-		<script type="text/javascript" src="app/layout/layout.module.js"></script>
+		<script type="text/javascript" src="app/blocks/block.alerts.module.js"></script>
+		<script type="text/javascript" src="app/blocks/block.alerts.component.js"></script>
+		<script type="text/javascript" src="app/blocks/block.alerts.factory.js"></script>
 		<script type="text/javascript" src="app/directives/pageheader.directive.js"></script>
+		<script type="text/javascript" src="app/layout/layout.module.js"></script>
 		<!-- Features -->
 		<script type="text/javascript" src="app/combat/combat.module.js"></script>
 		<script type="text/javascript" src="app/combat/combat.controller.js"></script>
@@ -48,6 +51,7 @@
 		<script type="text/javascript" src="app/science/science.module.js"></script>
 		<script type="text/javascript" src="app/science/science.controller.js"></script>
 		<script type="text/javascript" src="app/science/science.routes.js"></script>
+		<script type="text/javascript" src="app/science/science.filters.js"></script>
 		<script type="text/javascript" src="app/simulator/simulator.module.js"></script>
 		<script type="text/javascript" src="app/simulator/simulator.controller.js"></script>
 		<script type="text/javascript" src="app/simulator/simulator.routes.js"></script>
