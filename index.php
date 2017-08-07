@@ -28,6 +28,7 @@
 		<script type="text/javascript" src="app/core/core.module.js"></script>
 		<script type="text/javascript" src="app/core/core.routes.js"></script>
 		<script type="text/javascript" src="app/layout/layout.module.js"></script>
+		<script type="text/javascript" src="app/directives/pageheader.directive.js"></script>
 		<!-- Features -->
 		<script type="text/javascript" src="app/combat/combat.module.js"></script>
 		<script type="text/javascript" src="app/combat/combat.controller.js"></script>

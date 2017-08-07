@@ -1,0 +1,15 @@
+<div class="jumbotron">
+	<h3 class="mobius-title text-shadow-info">{{$ctrl.ui.title}}</h3>
+  <p>{{$ctrl.ui.message}}</p>
+</div>
+<div class="row">
+  <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+    <ul class="breadcrumb">
+      <li><a ui-sref="dashboard">Dashboard</a></li>
+      <li ng-repeat="crumb in $ctrl.ui.history" ng-class="{active:crumb.active}">
+        <span ng-if="crumb.active">{{crumb.label}}</span>
+        <a ng-if="!crumb.active" ui-sref="crumb.state">{{crumb.label}}</a>
+      </li>
+    </ul>
+  </div>
+</div>
