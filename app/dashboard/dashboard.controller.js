@@ -11,15 +11,17 @@
   function DashboardController($window,alertFactory) {
     var $ctrl = this;
 
-    $ctrl.ui = {};
-    $ctrl.ui.alerts = [alertFactory.create('Test','success')];
-    $ctrl.ui.message = "Please use the toolbar below to access different features.";
-    $ctrl.ui.title = "Welcome to Mobius";
-
-    activate();
+    $ctrl.$onInit = activate;
 
     function activate() {
+      // Setup UI object for the controller.
+      $ctrl.ui = {};
+      $ctrl.ui.alerts = [alertFactory.create('Test','success')];
+      $ctrl.ui.message = "Please use the toolbar below to access different features.";
+      $ctrl.ui.title = "Welcome to Mobius";
+
       console.log("Dashboard Controller Activated");
     }
+
   }
 })();

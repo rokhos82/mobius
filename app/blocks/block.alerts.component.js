@@ -27,8 +27,7 @@
       var $ctrl = this;
 
       $ctrl.closeAlert = closeAlert;
-
-      activate();
+      $ctrl.$onInit = activate;
 
       function activate() {
         console.log("Page Alerts Controller Activated");
