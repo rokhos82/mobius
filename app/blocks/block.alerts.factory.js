@@ -5,7 +5,7 @@
     .module('block.alerts')
     .factory('block.alerts.alertFactory', alertFactory);
 
-  alertFactory.$inject = [''];
+  //alertFactory.$inject = [''];
 
   /* @ngInject */
   function alertFactory() {

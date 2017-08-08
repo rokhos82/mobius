@@ -5,10 +5,10 @@
         .module('app.units')
         .controller('UnitsController', UnitsController);
 
-    UnitsController.$inject = ['$window'];
+    UnitsController.$inject = ['$window','block.alerts.alertFactory'];
 
     /* @ngInject */
-    function UnitsController($window) {
+    function UnitsController($window,alertFactory) {
         var $ctrl = this;
 
         $ctrl.ui = {};

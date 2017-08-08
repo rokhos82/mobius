@@ -1,25 +1,25 @@
 (function() {
-    'use strict';
+  'use strict';
 
-    angular
-        .module('app.dashboard')
-        .controller('DashboardController', DashboardController);
+  angular
+    .module('app.dashboard')
+    .controller('DashboardController', DashboardController);
 
-    DashboardController.$inject = ["$window","block.alerts.alertFactory"];
+  DashboardController.$inject = ["$window","block.alerts.alertFactory"];
 
-    /* @ngInject */
-    function DashboardController($window,alertFactory) {
-        var $ctrl = this;
+  /* @ngInject */
+  function DashboardController($window,alertFactory) {
+    var $ctrl = this;
 
-        $ctrl.ui = {};
-        $ctrl.ui.alerts = [alertFactory.create("Test Alert","info")];
-        $ctrl.ui.message = "Please use the toolbar below to access different features.";
-        $ctrl.ui.title = "Welcome to Mobius";
+    $ctrl.ui = {};
+    $ctrl.ui.alerts = [alertFactory.create('Test','success')];
+    $ctrl.ui.message = "Please use the toolbar below to access different features.";
+    $ctrl.ui.title = "Welcome to Mobius";
 
-        activate();
+    activate();
 
-        function activate() {
-
-        }
+    function activate() {
+      console.log("Dashboard Controller Activated");
     }
+  }
 })();

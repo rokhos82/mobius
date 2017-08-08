@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html ng-app="app">
+<html ng-app="app" ng-strict-di>
 	<head>
 		<title>Mobius</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1">

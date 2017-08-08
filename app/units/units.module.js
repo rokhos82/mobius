@@ -3,6 +3,7 @@
 
     angular
         .module('app.units', [
-            'app.core'
+            'app.core',
+            'block.alerts'
         ]);
 })();

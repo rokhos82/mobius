@@ -2,41 +2,40 @@
     'use strict';
 
     angular
-        .module('block.alerts')
-        .component('mobPageAlerts', mobPageAlerts);
+      .module('block.alerts')
+      .component('mobPageAlerts', mobPageAlerts);
 
     /* @ngInject */
     function mobPageAlerts() {
-        var directive = {
-            templateUrl: 'app/blocks/block.alerts.html',
-            controller: PageAlertsController,
-            bindings: {
-              alerts: '='
-            }
-        };
-
-        return directive;
-
-        function linkFunc(scope, el, attr, ctrl) {
+      var directive = {
+        templateUrl: 'app/blocks/block.alerts.html',
+        controller: PageAlertsController,
+        bindings: {
+          alerts: '='
         }
+      };
+
+      console.log("mobPageAlerts Component Declaration");
+
+      return directive;
     }
 
     PageAlertsController.$inject = ['$window'];
 
     /* @ngInject */
     function PageAlertsController($window) {
-        var $ctrl = this;
+      var $ctrl = this;
 
+      $ctrl.closeAlert = closeAlert;
 
-        $ctrl.closeAlert = closeAlert;
+      activate();
 
-        activate();
+      function activate() {
+        console.log("Page Alerts Controller Activated");
+      }
 
-        function activate() {
-        }
-
-        function closeAlert(index) {
-          $ctrl.alerts.splice(index,1);
-        }
+      function closeAlert(index) {
+        $ctrl.alerts.splice(index,1);
+      }
     }
 })();
