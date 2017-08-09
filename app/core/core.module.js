@@ -9,6 +9,7 @@
           'ngSanitize',
           /* Building Blocks */
           'block.alerts',
+          'block.user-login',
           /* 3rd-party modules */
           'ui.bootstrap',
           'ui.router'

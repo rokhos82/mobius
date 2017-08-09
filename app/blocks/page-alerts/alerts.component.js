@@ -8,7 +8,7 @@
   /* @ngInject */
   function mobPageAlerts() {
     var component = {
-      templateUrl: 'app/blocks/block.alerts.html',
+      templateUrl: 'app/blocks/page-alerts/alerts.html',
       controller: PageAlertsController,
       bindings: {
         alerts: "="

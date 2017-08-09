@@ -8,7 +8,7 @@
     /* @ngInject */
     function mobDevFooter() {
         var component = {
-            templateUrl: 'app/blocks/dev-footer/block.dev-footer.html',
+            templateUrl: 'app/blocks/dev-footer/dev-footer.html',
             controller: DevFooterController,
             bindings: {
               label: "@",
