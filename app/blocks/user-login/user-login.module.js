@@ -3,5 +3,6 @@
 
     angular
         .module('block.user-login', [
+          'ui.router'
         ]);
 })();
