@@ -4,7 +4,8 @@
   angular
     .module('app.dashboard', [
       'app.core',
-      'block.alerts'
+      'block.alerts',
+      'block.dev-footer'
   ]);
 
 })();

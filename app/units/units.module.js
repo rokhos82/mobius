@@ -4,6 +4,7 @@
     angular
         .module('app.units', [
             'app.core',
-            'block.alerts'
+            'block.alerts',
+            'block.dev-footer'
         ]);
 })();
