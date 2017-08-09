@@ -1,40 +1,39 @@
 (function() {
-    'use strict';
+  'use strict';
 
-    angular
-      .module('block.alerts')
-      .component('mobPageAlerts', mobPageAlerts);
+  angular
+    .module('block.alerts')
+    .component('mobPageAlerts', mobPageAlerts());
 
-    /* @ngInject */
-    function mobPageAlerts() {
-      var directive = {
-        templateUrl: 'app/blocks/block.alerts.html',
-        controller: PageAlertsController,
-        bindings: {
-          alerts: '='
-        }
-      };
+  /* @ngInject */
+  function mobPageAlerts() {
+    var component = {
+      templateUrl: 'app/blocks/block.alerts.html',
+      controller: PageAlertsController,
+      bindings: {
+        alerts: "="
+      }
+    };
 
-      console.log("mobPageAlerts Component Declaration");
+    return component;
+  }
 
-      return directive;
+  PageAlertsController.$inject = ['$window'];
+
+  /* @ngInject */
+  function PageAlertsController($window) {
+    var $ctrl = this;
+
+    $ctrl.closeAlert = closeAlert;
+    $ctrl.$onInit = activate;
+
+    function activate() {
+      console.log("Page Alerts Controller Activated");
+      console.log($ctrl.alerts);
     }
 
-    PageAlertsController.$inject = ['$window'];
-
-    /* @ngInject */
-    function PageAlertsController($window) {
-      var $ctrl = this;
-
-      $ctrl.closeAlert = closeAlert;
-      $ctrl.$onInit = activate;
-
-      function activate() {
-        console.log("Page Alerts Controller Activated");
-      }
-
-      function closeAlert(index) {
-        $ctrl.alerts.splice(index,1);
-      }
+    function closeAlert(index) {
+      $ctrl.alerts.splice(index,1);
     }
+  }
 })();

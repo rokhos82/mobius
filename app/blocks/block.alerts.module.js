@@ -2,6 +2,6 @@
     'use strict';
 
     angular
-        .module('block.alerts', [
-        ]);
+      .module('block.alerts', [
+      ]);
 })();
