@@ -19,6 +19,23 @@
 
     /* @ngInject */
     function UserLoginController($window) {
+      var $ctrl = this;
 
-    }
+      $ctrl.$onInit = activate();
+
+      function activate() {
+        fullPageSetup();
+      }
+
+      function doLogin(creds) {
+        $ctrl.credentials = creds;
+      }
+
+      function fullPageSetup() {
+        $ctrl.ui = {};
+        $ctrl.ui.history = [{state:'',label:'User Login',active:true}];
+        $ctrl.ui.message = "Papers please!";
+        $ctrl.ui.title = "User Login";
+      }
+  }
 })();

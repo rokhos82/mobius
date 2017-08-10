@@ -24,15 +24,6 @@
           title: 'login',
           resolve: {}
         }
-      },
-      {
-        state: 'logout',
-        config: {
-          url: '/logout',
-          component: 'mobUserLogin',
-          title: 'logout',
-          resolve: {}
-        }
       }
     ];
   }
