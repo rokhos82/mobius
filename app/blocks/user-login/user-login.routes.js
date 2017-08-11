@@ -2,8 +2,8 @@
   'use strict';
 
   angular
-      .module('block.user-login')
-      .config(configureStates);
+    .module('block.user-login')
+    .config(configureStates);
 
   configureStates.$inject = ['$stateProvider'];
   /* @ngInject */

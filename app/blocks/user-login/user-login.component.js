@@ -15,7 +15,7 @@
         return component;
     }
 
-    UserLoginController.$inject = ['$state','$window','app.core.login.defaultState','block.alerts.alertFactory','user-login.service'];
+    UserLoginController.$inject = ['$state','$window','app.core.login.defaultState','block.alerts.alertFactory','block.user-login.service'];
 
     /* @ngInject */
     function UserLoginController($state,$window,defaultState,alertFactory,userService) {

@@ -5,18 +5,20 @@
     .module('app.dashboard')
     .controller('DashboardController', DashboardController);
 
-  DashboardController.$inject = ["$window","block.alerts.alertFactory"];
+  DashboardController.$inject = ["$window","block.alerts.alertFactory","block.user-login.service"];
 
   /* @ngInject */
-  function DashboardController($window,alertFactory) {
+  function DashboardController($window,alert,user) {
     var $ctrl = this;
 
     $ctrl.$onInit = activate;
 
     function activate() {
+      $ctrl.session = user.getSession();
+
       // Setup UI object for the controller.
       $ctrl.ui = {};
-      $ctrl.ui.alerts = [alertFactory.create('Test','success')];
+      $ctrl.ui.alerts = [];
       $ctrl.ui.message = "Please use the toolbar below to access different features.";
       $ctrl.ui.title = "Welcome to Mobius";
 

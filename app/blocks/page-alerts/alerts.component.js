@@ -28,8 +28,6 @@
     $ctrl.$onInit = activate;
 
     function activate() {
-      console.log("Page Alerts Controller Activated");
-      console.log($ctrl.alerts);
     }
 
     function closeAlert(index) {

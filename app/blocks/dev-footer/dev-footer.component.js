@@ -28,7 +28,6 @@
       $ctrl.$onInit = activate;
 
       function activate() {
-        console.log("DevFooterController Activated");
       }
     }
 })();

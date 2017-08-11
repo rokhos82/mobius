@@ -3,7 +3,8 @@
 
     angular
         .module('app.units')
-        .config(configureStates);
+        .config(configureStates)
+        .run(stateChanges);
 
     configureStates.$inject = ['$stateProvider'];
     /* @ngInject */
@@ -25,9 +26,28 @@
                     controllerAs: '$ctrl',
                     title: 'units',
                     params: {
+                    },
+                    data: {
+                      authorizedLevel: 10
                     }
                 }
             }
         ];
+    }
+
+    stateChanges.$inject = ['$state','$transitions','block.user-login.service'];
+
+    function stateChanges($state,$transitions,userService) {
+      $transitions.onStart({to:'units.**'},function(trans){
+        let $to = trans.$to();
+        if(!userService.isAuthorized($to.data.authorizedLevel)) {
+          if(userService.isAuthenticated()) {
+            $state.go('403');
+          }
+          else {
+            $state.go('login');
+          }
+        }
+      });
     }
 })();

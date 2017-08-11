@@ -5,17 +5,19 @@
         .module('app.units')
         .controller('UnitsController', UnitsController);
 
-    UnitsController.$inject = ['$window','block.alerts.alertFactory'];
+    UnitsController.$inject = ['$window','block.alerts.alertFactory','block.user-login.service'];
 
     /* @ngInject */
-    function UnitsController($window,alert) {
+    function UnitsController($window,alert,user) {
         var $ctrl = this;
 
         $ctrl.$onInit = activate;
 
         function activate() {
+          $ctrl.session = user.getSession();
+
           $ctrl.ui = {};
-          $ctrl.ui.alerts = [alert.create("Alerts with timeouts are working!","info",5000)];
+          $ctrl.ui.alerts = [];
           $ctrl.ui.history = [{state:'',label:'Units',active:true}];
           $ctrl.ui.message = "Create, replace, design!  Do it all here!";
           $ctrl.ui.title = "Units Management";

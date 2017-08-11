@@ -2,28 +2,50 @@
     'use strict';
 
     angular
-        .module('block.user-login')
-        .factory('user-login.service', userLoginService);
+      .module('block.user-login')
+      .factory('block.user-login.service', userLoginService);
 
-    userLoginService.$inject = ['$http','user-login.session'];
+    userLoginService.$inject = ['$http'];
 
     /* @ngInject */
-    function userLoginService($http,userSession) {
-        var service = {
-            test : test
-        };
+    function userLoginService($http) {
+      var data = {};
 
-        return service;
+      var service = {
+        getSession: getSession,
+        isAuthenticated: isAuthenticated,
+        isAuthorized: isAuthorized,
+        setSession: setSession,
+        test : test
+      };
 
-        function test(creds) {
-          if(creds.username === "test" && creds.password === "password") {
-            let session = {jwt:"abcdefg.a1b2c3.asdfasdf"};
-            userSession.setSession(session);
-            return session;
-          }
-          else {
-            return false;
-          }
+      return service;
+
+      function getSession() {
+        return data.session;
+      }
+
+      function isAuthenticated() {
+        return !!data.session;
+      }
+
+      function isAuthorized(level) {
+        return (!!data.session && data.session.level <= level);
+      }
+
+      function setSession(session) {
+        data.session = session;
+      }
+
+      function test(creds) {
+        if(creds.username === "test" && creds.password === "password") {
+          let session = {jwt:"abcdefg.a1b2c3.asdfasdf",username: creds.username,level: 20};
+          setSession(session);
+          return session;
         }
+        else {
+          return false;
+        }
+      }
     }
 })();

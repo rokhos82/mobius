@@ -37,7 +37,6 @@
 		<script type="text/javascript" src="app/blocks/user-login/user-login.component.js"></script>
 		<script type="text/javascript" src="app/blocks/user-login/user-login.routes.js"></script>
 		<script type="text/javascript" src="app/blocks/user-login/user-login.service.js"></script>
-		<script type="text/javascript" src="app/blocks/user-login/user-session.service.js"></script>
 		<script type="text/javascript" src="app/directives/pageheader.directive.js"></script>
 		<script type="text/javascript" src="app/layout/layout.module.js"></script>
 		<script type="text/javascript" src="app/services/rest.js"></script>
