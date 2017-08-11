@@ -3,6 +3,7 @@
 
   angular
     .module('block.dev-console', [
-      'ui.router'
+      'ui.router',
+      'block.dev-footer'
     ]);
 })();

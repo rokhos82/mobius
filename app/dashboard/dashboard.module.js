@@ -5,7 +5,8 @@
     .module('app.dashboard', [
       'app.core',
       'block.alerts',
-      'block.dev-footer'
+      'block.dev-footer',
+      'block.user-login'
   ]);
 
 })();

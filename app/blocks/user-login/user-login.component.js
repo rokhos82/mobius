@@ -15,27 +15,37 @@
         return component;
     }
 
-    UserLoginController.$inject = ['$window'];
+    UserLoginController.$inject = ['$state','$window','app.core.login.defaultState','block.alerts.alertFactory','user-login.service'];
 
     /* @ngInject */
-    function UserLoginController($window) {
+    function UserLoginController($state,$window,defaultState,alertFactory,userService) {
       var $ctrl = this;
 
-      $ctrl.$onInit = activate();
+      $ctrl.$onInit = activate;
+      $ctrl.doLogin = doLogin;
 
       function activate() {
         fullPageSetup();
       }
 
       function doLogin(creds) {
-        $ctrl.credentials = creds;
+        $ctrl.credentials = userService.test(creds);
+        if(!!$ctrl.credentials) {
+          $state.go(defaultState);
+        }
+        else {
+          $ctrl.ui.alerts.push(alertFactory.create("Username or password is invalid!","danger"));
+        }
       }
 
       function fullPageSetup() {
         $ctrl.ui = {};
+        $ctrl.ui.alerts = [];
         $ctrl.ui.history = [{state:'',label:'User Login',active:true}];
         $ctrl.ui.message = "Papers please!";
         $ctrl.ui.title = "User Login";
+
+        $ctrl.credentials = {};
       }
   }
 })();

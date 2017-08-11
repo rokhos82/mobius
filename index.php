@@ -26,6 +26,7 @@
 		<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular-sanitize.js"></script>
 		<!-- Shared -->
 		<script type="text/javascript" src="app/core/core.module.js"></script>
+		<script type="text/javascript" src="app/core/core.const.js"></script>
 		<script type="text/javascript" src="app/core/core.routes.js"></script>
 		<script type="text/javascript" src="app/blocks/page-alerts/alerts.module.js"></script>
 		<script type="text/javascript" src="app/blocks/page-alerts/alerts.component.js"></script>
@@ -35,6 +36,8 @@
 		<script type="text/javascript" src="app/blocks/user-login/user-login.module.js"></script>
 		<script type="text/javascript" src="app/blocks/user-login/user-login.component.js"></script>
 		<script type="text/javascript" src="app/blocks/user-login/user-login.routes.js"></script>
+		<script type="text/javascript" src="app/blocks/user-login/user-login.service.js"></script>
+		<script type="text/javascript" src="app/blocks/user-login/user-session.service.js"></script>
 		<script type="text/javascript" src="app/directives/pageheader.directive.js"></script>
 		<script type="text/javascript" src="app/layout/layout.module.js"></script>
 		<script type="text/javascript" src="app/services/rest.js"></script>
