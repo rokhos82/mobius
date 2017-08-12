@@ -34,6 +34,7 @@
 		<script type="text/javascript" src="app/blocks/dev-footer/dev-footer.module.js"></script>
 		<script type="text/javascript" src="app/blocks/dev-footer/dev-footer.component.js"></script>
 		<script type="text/javascript" src="app/blocks/user-login/user-login.module.js"></script>
+		<script type="text/javascript" src="app/blocks/user-login/user-login.const.js"></script>
 		<script type="text/javascript" src="app/blocks/user-login/user-login.component.js"></script>
 		<script type="text/javascript" src="app/blocks/user-login/user-login.routes.js"></script>
 		<script type="text/javascript" src="app/blocks/user-login/user-login.service.js"></script>

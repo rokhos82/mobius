@@ -8,6 +8,9 @@
     getConstants.$inject = ['$provide'];
 
     function getConstants($provide) {
-      $provide.value('app.core.login.defaultState','dashboard');
+      $provide.constant('app.core.login.defaultState','dashboard');
+      $provide.constant('app.core.config',{
+        localKey: 'mobius'
+      });
     }
 })();

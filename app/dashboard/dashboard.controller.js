@@ -21,8 +21,6 @@
       $ctrl.ui.alerts = [];
       $ctrl.ui.message = "Please use the toolbar below to access different features.";
       $ctrl.ui.title = "Welcome to Mobius";
-
-      console.log("Dashboard Controller Activated");
     }
 
   }

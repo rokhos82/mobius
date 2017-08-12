@@ -6,16 +6,16 @@
         .config(configureStates)
         .run(stateChanges);
 
-    configureStates.$inject = ['$stateProvider'];
+    configureStates.$inject = ['$stateProvider','block.user-login.levels'];
     /* @ngInject */
-    function configureStates($stateProvider) {
-        let states = getStates();
+    function configureStates($stateProvider,userLevels) {
+        let states = getStates(userLevels);
         states.forEach(function(state) {
           $stateProvider.state(state.state,state.config);
         });
     }
 
-    function getStates() {
+    function getStates(userLevels) {
         return [
             {
                 state: 'units',
@@ -28,7 +28,7 @@
                     params: {
                     },
                     data: {
-                      authorizedLevel: 10
+                      authorizedLevel: userLevels.user
                     }
                 }
             }
