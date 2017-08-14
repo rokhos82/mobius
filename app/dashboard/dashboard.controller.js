@@ -5,16 +5,16 @@
     .module('app.dashboard')
     .controller('DashboardController', DashboardController);
 
-  DashboardController.$inject = ["$window","block.alerts.alertFactory","block.user-login.service"];
+  DashboardController.$inject = ["$window","block.alerts.alertFactory","block.user-login.service","block.user-login.session"];
 
   /* @ngInject */
-  function DashboardController($window,alert,user) {
+  function DashboardController($window,$alert,$user,$session) {
     var $ctrl = this;
 
     $ctrl.$onInit = activate;
 
     function activate() {
-      $ctrl.session = user.getSession();
+      $ctrl.session = $user.getSession();
 
       // Setup UI object for the controller.
       $ctrl.ui = {};

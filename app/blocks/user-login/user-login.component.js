@@ -30,6 +30,7 @@
 
       function doLogin(creds) {
         $ctrl.credentials = userService.test(creds);
+        console.log($ctrl.credentials);
         if(!!$ctrl.credentials) {
           $state.go(defaultState);
         }

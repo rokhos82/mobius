@@ -8,17 +8,21 @@
 
     userLoginService.$inject = [
       '$http',
+      '$rootScope',
       '$window',
       'app.core.config',
-      'block.user-login.levels'
+      'block.user-login.levels',
+      'block.user-login.session',
     ];
 
     /* @ngInject */
     function userLoginService(
       $http,
+      $rootScope,
       $window,
       appConfig,
-      userLevels
+      userLevels,
+      $session
     ) {
       var data = {};
       var storageKey = ".user.session";
@@ -76,7 +80,8 @@
 
       function test(creds) {
         if(creds.username === "test" && creds.password === "password") {
-          let session = {jwt:"abcdefg.a1b2c3.asdfasdf",username: creds.username,level: userLevels.user};
+          let jwt = "abcdefg.eyJ1c2VybmFtZSI6IlRlc3QgVXNlciIsInN0YXRlIjpbImRhc2hib2FyZCIsInVuaXRzIl0sImV4cGlyYXRpb24iOnRydWUsImxldmVsIjowfQ==.asdfasdf";
+          let session = $session.create(jwt);
           setSession(session);
           return session;
         }
