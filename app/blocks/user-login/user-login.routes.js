@@ -24,6 +24,15 @@
           title: 'login',
           resolve: {}
         }
+      },
+      {
+        state: 'logout',
+        config: {
+          url: '/logout',
+          component: 'mobUserLogout',
+          title: 'logout',
+          resolve: {}
+        }
       }
     ];
   }

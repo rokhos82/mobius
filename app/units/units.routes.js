@@ -37,17 +37,21 @@
 
     stateChanges.$inject = ['$state','$transitions','block.user-login.service'];
 
-    function stateChanges($state,$transitions,userService) {
+    function stateChanges($state,$transitions,$user) {
       $transitions.onStart({to:'units.**'},function(trans){
         let $to = trans.$to();
-        if(!userService.isAuthorized($to.data.authorizedLevel)) {
-          if(userService.isAuthenticated()) {
-            $state.go('403');
+        if(!$user.isAuthorized($to.data.authorizedLevel)) {
+          if($user.isAuthenticated()) {
+            // Not authorized to view this page, redirect to the forbidden page.
+            return $state.target('403');
           }
           else {
-            $state.go('login');
+            // Not logged in so redirect to the login page.
+            return $state.target('login');
           }
         }
+        // Let the state transition resume.
+        return true;
       });
     }
 })();

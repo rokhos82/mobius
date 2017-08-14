@@ -21,8 +21,10 @@
       userLevels
     ) {
       var data = {};
+      var storageKey = ".user.session";
 
       var service = {
+        deleteSession: deleteSession,
         getSession: getSession,
         isAuthenticated: isAuthenticated,
         isAuthorized: isAuthorized,
@@ -33,6 +35,15 @@
       };
 
       return service;
+
+      /**
+      * The function to delete the current user session.
+      */
+      function deleteSession() {
+        delete data.session;
+        $window.localStorage.removeItem(appConfig.localKey + storageKey);
+        // Don't forget to have the backend invalidate the session as well.
+      }
 
       function getSession() {
         return data.session;
@@ -47,14 +58,14 @@
       }
 
       function retrieveSession() {
-        let key = appConfig.localKey + '.user.session';
+        let key = appConfig.localKey + storageKey;
         let session = $window.angular.fromJson($window.localStorage[key]);
 
         return (!!session) ? session : false;
       }
 
       function saveSession() {
-        let key = appConfig.localKey + '.user.session';
+        let key = appConfig.localKey + storageKey;
         $window.localStorage[key] = $window.angular.toJson(data.session);
       }
 
@@ -76,10 +87,10 @@
     }
 
     sessionRestore.$inject = ['$window','block.user-login.service'];
-    function sessionRestore($window,user) {
-      let session = user.retrieveSession();
+    function sessionRestore($window,$user) {
+      let session = $user.retrieveSession();
       if(!!session) {
-        user.setSession(session);
+        $user.setSession(session);
       }
     }
 })();
