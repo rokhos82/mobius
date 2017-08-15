@@ -11,6 +11,7 @@
     function sessionService($window) {
         this.create = create;
         this.destroy = destroy;
+        this.getLevel = getLevel;
         this.retrieve = retrieve;
         this.save = save;
 
@@ -32,6 +33,17 @@
           this.jwt = null;
           this.claims = null;
           return this;
+        }
+
+        function getLevel() {
+          // Return the user access level or 1000 (which should be higher than anything used).
+          // The 1000 should block access to most things that are controlled by user level.
+          if(!isNaN(this.claims.level)) {
+            return this.claims.level;
+          }
+          else {
+            return 1000;
+          }
         }
 
         function retrieve() {}

@@ -24,8 +24,8 @@
       userLevels,
       $session
     ) {
-      var data = {};
-      var storageKey = ".user.session";
+      var _data = {};
+      var _storageKey = ".user.session";
 
       var service = {
         deleteSession: deleteSession,
@@ -44,37 +44,42 @@
       * The function to delete the current user session.
       */
       function deleteSession() {
-        delete data.session;
-        $window.localStorage.removeItem(appConfig.localKey + storageKey);
+        delete _data.session;
+        $window.localStorage.removeItem(appConfig.localKey + _storageKey);
         // Don't forget to have the backend invalidate the session as well.
       }
 
       function getSession() {
-        return data.session;
+        return _data.session;
       }
 
       function isAuthenticated() {
-        return !!data.session;
+        return !!_data.session;
       }
 
       function isAuthorized(level) {
-        return (!!data.session && data.session.level <= level);
+        return (!!_data.session && _data.session.claims.level <= level);
       }
 
       function retrieveSession() {
-        let key = appConfig.localKey + storageKey;
-        let session = $window.angular.fromJson($window.localStorage[key]);
+        let key = appConfig.localKey + _storageKey;
+        let jwt = $window.localStorage[key];
 
-        return (!!session) ? session : false;
+        if(!!jwt) {
+          return $session.create(jwt);
+        }
+        else {
+          return false;
+        }
       }
 
       function saveSession() {
-        let key = appConfig.localKey + storageKey;
-        $window.localStorage[key] = $window.angular.toJson(data.session);
+        let key = appConfig.localKey + _storageKey;
+        $window.localStorage[key] = _data.session.jwt;
       }
 
       function setSession(session) {
-        data.session = session;
+        _data.session = session;
         saveSession();
       }
 
