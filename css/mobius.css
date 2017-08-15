@@ -220,3 +220,12 @@ hr.spacer {
 .mob-capitalize {
 	text-transform: capitalize;
 }
+
+.ng-enter {
+	transition: 0.5s;
+	opacity: 0.0;
+}
+
+.ng-enter-active {
+	opacity: 1.0;
+}

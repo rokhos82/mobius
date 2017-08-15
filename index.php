@@ -12,7 +12,7 @@
 	<body>
 		<div ng-include="'app/layout/navbar.html'">
 		</div>
-		<div class="container shuffle-animation" ui-view>
+		<div class="container" ui-view>
 		</div>
 		<script type="text/javascript" src="js/uuid.js"></script>
 		<script type="text/javascript" src="js/underscore.js"></script>
