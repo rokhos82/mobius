@@ -5,29 +5,27 @@
       .module('app.dashboard')
       .config(configureStates);
 
-    configureStates.$inject = ["$stateProvider"];
+    configureStates.$inject = ["$stateRegistryProvider"];
 
-    function configureStates($stateProvider) {
+    function configureStates($registry) {
       let states = getStates();
       states.forEach(function(state) {
-        $stateProvider.state(state.state,state.config);
+        $registry.register(state);
       });
     }
 
     function getStates() {
-        return [
-            {
-                state: 'dashboard',
-                config: {
-                    url: '/',
-                    templateUrl: 'app/dashboard/dashboard.html',
-                    controller: 'DashboardController',
-                    controllerAs: '$ctrl',
-                    title: 'dashboard',
-                    params: {
-                    }
-                }
-            }
-        ];
+      return [
+        {
+          name: 'dashboard',
+          url: '/',
+          templateUrl: 'app/dashboard/dashboard.html',
+          controller: 'DashboardController',
+          controllerAs: '$ctrl',
+          title: 'dashboard',
+          params: {
+          }
+        }
+      ];
     }
 })();

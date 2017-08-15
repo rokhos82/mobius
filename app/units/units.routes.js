@@ -6,33 +6,31 @@
         .config(configureStates)
         .run(stateChanges);
 
-    configureStates.$inject = ['$stateProvider','block.user-login.levels'];
+    configureStates.$inject = ['$stateRegistryProvider','block.user-login.levels'];
     /* @ngInject */
-    function configureStates($stateProvider,userLevels) {
-        let states = getStates(userLevels);
-        states.forEach(function(state) {
-          $stateProvider.state(state.state,state.config);
-        });
+    function configureStates($registry,userLevels) {
+      let states = getStates(userLevels);
+      states.forEach(function(state) {
+        $registry.register(state);
+      });
     }
 
     function getStates(userLevels) {
-        return [
-            {
-                state: 'units',
-                config: {
-                    url: '/units',
-                    templateUrl: 'app/units/units.html',
-                    controller: 'UnitsController',
-                    controllerAs: '$ctrl',
-                    title: 'units',
-                    params: {
-                    },
-                    data: {
-                      authorizedLevel: userLevels.user
-                    }
-                }
-            }
-        ];
+      return [
+        {
+          name: 'units',
+          url: '/units',
+          templateUrl: 'app/units/units.html',
+          controller: 'UnitsController',
+          controllerAs: '$ctrl',
+          title: 'units',
+          params: {
+          },
+          data: {
+            authorizedLevel: userLevels.user
+          }
+        }
+      ];
     }
 
     stateChanges.$inject = ['$state','$transitions','block.user-login.service'];
@@ -40,7 +38,7 @@
     function stateChanges($state,$transitions,$user) {
       $transitions.onStart({to:'units.**'},function(trans){
         let $to = trans.$to();
-        if(!$user.isAuthorized($to.data.authorizedLevel)) {
+        if(!$user.isAuthorized($to.data.authorizedLevel,'units')) {
           if($user.isAuthenticated()) {
             // Not authorized to view this page, redirect to the forbidden page.
             return $state.target('403');

@@ -12,6 +12,7 @@
         this.create = create;
         this.destroy = destroy;
         this.getLevel = getLevel;
+        this.hasState = hasState;
         this.retrieve = retrieve;
         this.save = save;
 
@@ -44,6 +45,15 @@
           else {
             return 1000;
           }
+        }
+
+        function hasState(state) {
+          // Determine if the user has access to a given state.
+          let exist = false;
+          this.claims.state.forEach(function(stt) {
+            exist = (stt === state);
+          });
+          return exist;
         }
 
         function retrieve() {}

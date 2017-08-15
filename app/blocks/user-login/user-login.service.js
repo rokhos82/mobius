@@ -57,8 +57,12 @@
         return !!_data.session;
       }
 
-      function isAuthorized(level) {
-        return (!!_data.session && _data.session.claims.level <= level);
+      function isAuthorized(level,state) {
+        return (
+          isAuthenticated() && // Is a user authenticated?
+          _data.session.getLevel() <= level && // Does the user have a sufficient privilage level?
+          _data.session.hasState(state) // Does the user have access to the state
+        );
       }
 
       function retrieveSession() {

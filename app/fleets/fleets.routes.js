@@ -6,33 +6,31 @@
         .config(configureStates)
         .run(stateChanges);
 
-    configureStates.$inject = ['$stateProvider','block.user-login.levels'];
+    configureStates.$inject = ['$stateRegistryProvider','block.user-login.levels'];
     /* @ngInject */
-    function configureStates($stateProvider,userLevels) {
+    function configureStates($registry,userLevels) {
       let states = getStates(userLevels);
       states.forEach(function(state) {
-        $stateProvider.state(state.state,state.config);
+        $registry.register(state);
       });
     }
 
     function getStates(userLevels) {
-        return [
-            {
-                state: 'fleets',
-                config: {
-                    url: '/fleets',
-                    templateUrl: 'app/fleets/fleets.html',
-                    controller: 'FleetsController',
-                    controllerAs: '$ctrl',
-                    title: 'fleets',
-                    params: {
-                    },
-                    data: {
-                      authorizedLevel: userLevels.user
-                    }
-                }
-            }
-        ];
+      return [
+        {
+          name: 'fleets',
+          url: '/fleets',
+          templateUrl: 'app/fleets/fleets.html',
+          controller: 'FleetsController',
+          controllerAs: '$ctrl',
+          title: 'fleets',
+          params: {
+          },
+          data: {
+            authorizedLevel: userLevels.user
+          }
+        }
+      ];
     }
 
     stateChanges.$inject = ['$state','$transitions','block.user-login.service'];
@@ -40,7 +38,7 @@
     function stateChanges($state,$transitions,$user) {
       $transitions.onStart({to:'fleets.**'},function(trans) {
         let $to = trans.$to();
-        if(!$user.isAuthorized($to.data.authorizedLevel)) {
+        if(!$user.isAuthorized($to.data.authorizedLevel,'fleets')) {
           if($user.isAuthenticated()) {
             // Not authorized to view this page, redirect to the forbidden page.
             return $state.target('403');
