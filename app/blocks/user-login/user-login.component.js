@@ -15,10 +15,22 @@
         return component;
     }
 
-    UserLoginController.$inject = ['$state','$window','app.core.login.defaultState','block.alerts.alertFactory','block.user-login.service'];
+    UserLoginController.$inject = [
+      '$state',
+      '$window',
+      'app.core.login.defaultState',
+      'block.alerts.alertFactory',
+      'block.user-login.service'
+    ];
 
     /* @ngInject */
-    function UserLoginController($state,$window,defaultState,alertFactory,userService) {
+    function UserLoginController(
+      $state,
+      $window,
+      defaultState,
+      $alerts,
+      userService
+    ) {
       var $ctrl = this;
 
       $ctrl.$onInit = activate;
@@ -40,7 +52,7 @@
 
       function fullPageSetup() {
         $ctrl.ui = {};
-        $ctrl.ui.alerts = [];
+        $ctrl.ui.alerts = $alerts.list();
         $ctrl.ui.history = [{state:'',label:'User Login',active:true}];
         $ctrl.ui.message = "Papers please!";
         $ctrl.ui.title = "User Login";

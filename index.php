@@ -28,6 +28,7 @@
 		<script type="text/javascript" src="app/core/core.module.js"></script>
 		<script type="text/javascript" src="app/core/core.const.js"></script>
 		<script type="text/javascript" src="app/core/core.routes.js"></script>
+		<script type="text/javascript" src="app/core/core.handlers.js"></script>
 		<script type="text/javascript" src="app/blocks/page-alerts/alerts.module.js"></script>
 		<script type="text/javascript" src="app/blocks/page-alerts/alerts.component.js"></script>
 		<script type="text/javascript" src="app/blocks/page-alerts/alerts.factory.js"></script>

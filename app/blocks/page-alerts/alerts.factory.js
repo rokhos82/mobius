@@ -10,17 +10,31 @@
   /* @ngInject */
   function alertFactory() {
     var service = {
-      create : create
+      create : create,
+      clear: clear,
+      list: list
     };
+
+    var _data = [];
 
     return service;
 
     function create(msg,type,timeout) {
-      return {
+      let a = {
         type: type || 'warning',
-        msg: msg || "",
+        msg: msg || '',
         timeout: timeout || undefined
       };
+
+      _data.push(a);
+    }
+
+    function clear() {
+      _data.length = 0;
+    }
+
+    function list() {
+      return _data;
     }
   }
 })();

@@ -5,9 +5,17 @@
     .module('app.core')
     .config(configureStates);
 
-  configureStates.$inject = ['$stateProvider','$locationProvider','$urlServiceProvider'];
+  configureStates.$inject = [
+    '$stateProvider',
+    '$locationProvider',
+    '$urlServiceProvider'
+  ];
 
-  function configureStates($stateProvider,$locationProvider,$urlServiceProvider) {
+  function configureStates(
+    $stateProvider,
+    $locationProvider,
+    $urlServiceProvider
+  ) {
     let otherwise = '/404';
     let states = getStates();
     states.forEach(function(state) {

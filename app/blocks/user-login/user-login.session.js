@@ -55,7 +55,8 @@
           // Determine if the user has access to a given state.
           let exist = false;
           this.claims.states.forEach(function(stt) {
-            exist = (stt === state);
+            if(stt === state)
+              exist = true;
           });
           return exist;
         }

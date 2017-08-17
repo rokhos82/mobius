@@ -9,8 +9,10 @@
     userLoginService.$inject = [
       '$http',
       '$rootScope',
+      '$timeout',
       '$window',
       'app.core.config',
+      'block.alerts.alertFactory',
       'block.user-login.events',
       'block.user-login.levels',
       'block.user-login.session',
@@ -21,8 +23,10 @@
     function userLoginService(
       $http,
       $rootScope,
+      $timeout,
       $window,
       $appConfig,
+      $alerts,
       $userEvents,
       $userLevels,
       $session,
@@ -59,6 +63,8 @@
           let session = $session.create(jwt);
           setSession(session);
           $rootScope.$broadcast($userEvents.login);
+          $alerts.create("You will be logged off in 5 minutes.","warning");
+          $timeout(doLogout,1000*60*5,false);
           return session;
         }
         else {
@@ -68,6 +74,8 @@
 
       function doLogout() {
         deleteSession();
+        $alerts.clear();
+        $alerts.create("You have been logged out.","warning");
         $rootScope.$broadcast($userEvents.logout);
       }
 
@@ -76,7 +84,7 @@
       }
 
       function isAuthenticated() {
-        return !!_data.session && isExpired();
+        return !!_data.session && !isExpired();
       }
 
       function isAuthorized(level,state) {
