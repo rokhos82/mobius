@@ -11,6 +11,7 @@
     function sessionService($window) {
         this.create = create;
         this.destroy = destroy;
+        this.getExpiration = getExpiration;
         this.getLevel = getLevel;
         this.hasState = hasState;
         this.retrieve = retrieve;
@@ -20,7 +21,6 @@
           this.jwt = jwt;
           // Todo: decode JWT and store claims.
           let parts = jwt.split('.');
-          console.log(parts);
           let header = parts[0];
           let claims = parts[1];
           let signature = parts[2];
@@ -34,6 +34,10 @@
           this.jwt = null;
           this.claims = null;
           return this;
+        }
+
+        function getExpiration() {
+          return this.claims.expiration;
         }
 
         function getLevel() {
@@ -50,7 +54,7 @@
         function hasState(state) {
           // Determine if the user has access to a given state.
           let exist = false;
-          this.claims.state.forEach(function(stt) {
+          this.claims.states.forEach(function(stt) {
             exist = (stt === state);
           });
           return exist;

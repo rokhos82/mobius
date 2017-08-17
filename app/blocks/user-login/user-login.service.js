@@ -11,8 +11,10 @@
       '$rootScope',
       '$window',
       'app.core.config',
+      'block.user-login.events',
       'block.user-login.levels',
       'block.user-login.session',
+      'block.user-login.fakeBackend'
     ];
 
     /* @ngInject */
@@ -20,22 +22,24 @@
       $http,
       $rootScope,
       $window,
-      appConfig,
-      userLevels,
-      $session
+      $appConfig,
+      $userEvents,
+      $userLevels,
+      $session,
+      $rest
     ) {
       var _data = {};
       var _storageKey = ".user.session";
 
       var service = {
-        deleteSession: deleteSession,
+        doLogin: doLogin,
+        doLogout: doLogout,
         getSession: getSession,
         isAuthenticated: isAuthenticated,
         isAuthorized: isAuthorized,
         retrieveSession: retrieveSession,
         saveSession: saveSession,
-        setSession: setSession,
-        test : test
+        setSession: setSession
       };
 
       return service;
@@ -45,8 +49,26 @@
       */
       function deleteSession() {
         delete _data.session;
-        $window.localStorage.removeItem(appConfig.localKey + _storageKey);
+        $window.localStorage.removeItem($appConfig.localKey + _storageKey);
         // Don't forget to have the backend invalidate the session as well.
+      }
+
+      function doLogin(creds) {
+        if($rest.authenticateUser(creds.username,creds.password)) {
+          let jwt = $rest.getJWT();
+          let session = $session.create(jwt);
+          setSession(session);
+          $rootScope.$broadcast($userEvents.login);
+          return session;
+        }
+        else {
+          return false;
+        }
+      }
+
+      function doLogout() {
+        deleteSession();
+        $rootScope.$broadcast($userEvents.logout);
       }
 
       function getSession() {
@@ -54,7 +76,7 @@
       }
 
       function isAuthenticated() {
-        return !!_data.session;
+        return !!_data.session && isExpired();
       }
 
       function isAuthorized(level,state) {
@@ -65,8 +87,12 @@
         );
       }
 
+      function isExpired() {
+        return (_data.session.getExpiration() < Date.now());
+      }
+
       function retrieveSession() {
-        let key = appConfig.localKey + _storageKey;
+        let key = $appConfig.localKey + _storageKey;
         let jwt = $window.localStorage[key];
 
         if(!!jwt) {
@@ -78,25 +104,13 @@
       }
 
       function saveSession() {
-        let key = appConfig.localKey + _storageKey;
+        let key = $appConfig.localKey + _storageKey;
         $window.localStorage[key] = _data.session.jwt;
       }
 
       function setSession(session) {
         _data.session = session;
         saveSession();
-      }
-
-      function test(creds) {
-        if(creds.username === "test" && creds.password === "password") {
-          let jwt = "abcdefg.eyJ1c2VybmFtZSI6IlRlc3QgVXNlciIsInN0YXRlIjpbImRhc2hib2FyZCIsInVuaXRzIl0sImV4cGlyYXRpb24iOnRydWUsImxldmVsIjowfQ==.asdfasdf";
-          let session = $session.create(jwt);
-          setSession(session);
-          return session;
-        }
-        else {
-          return false;
-        }
       }
     }
 

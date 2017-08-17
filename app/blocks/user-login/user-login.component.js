@@ -29,7 +29,7 @@
       }
 
       function doLogin(creds) {
-        $ctrl.credentials = userService.test(creds);
+        $ctrl.credentials = userService.doLogin(creds);
         if(!!$ctrl.credentials) {
           $state.go(defaultState);
         }

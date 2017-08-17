@@ -24,7 +24,7 @@
       $ctrl.$onInit = activate;
 
       function activate() {
-        $user.deleteSession();
+        $user.doLogout();
         $state.go('dashboard');
       }
     }

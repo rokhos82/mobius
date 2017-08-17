@@ -5,13 +5,27 @@
         .module('app.layout')
         .controller('NavController', NavController);
 
-    NavController.$inject = ['$window','block.user-login.service'];
+    NavController.$inject = [
+      '$rootScope',
+      '$window',
+      'block.user-login.events',
+      'block.user-login.service'
+    ];
 
     /* @ngInject */
-    function NavController($window,$user) {
+    function NavController(
+      $rootScope,
+      $window,
+      $userEvents,
+      $user
+    ) {
         var $ctrl = this;
 
         $ctrl.$onInit = activate;
+
+        // Setup event handlers
+        $rootScope.$on($userEvents.logout,activate);
+        $rootScope.$on($userEvents.login,activate);
 
         function activate() {
           $ctrl.session = $user.getSession();
