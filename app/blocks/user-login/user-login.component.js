@@ -53,8 +53,8 @@
       function fullPageSetup() {
         $ctrl.ui = {};
         $ctrl.ui.alerts = $alerts.list();
-        $ctrl.ui.history = [{state:'',label:'User Login',active:true}];
-        $ctrl.ui.message = "Papers please!";
+        $ctrl.ui.histroy = false;
+        $ctrl.ui.message = "Welcome to Mobius.  Please log in to continue.";
         $ctrl.ui.title = "User Login";
 
         $ctrl.credentials = {};

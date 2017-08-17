@@ -16,7 +16,6 @@
     $rootScope.$on($userEvents.logout,logoutRedirect);
 
     function logoutRedirect(event,data) {
-      console.log('$rootScope handling event user logout.  Should have transitioned to a new state.');
       $state.go($defaultState);
     }
   };
