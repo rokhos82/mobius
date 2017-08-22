@@ -75,7 +75,7 @@
       function doLogout() {
         deleteSession();
         $alerts.clear();
-        $alerts.create("You have been logged out.","warning");
+        $alerts.create("You have been logged out.","warning",10000);
         $rootScope.$broadcast($userEvents.logout);
       }
 

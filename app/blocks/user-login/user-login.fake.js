@@ -12,11 +12,51 @@
     this.authenticateUser = authenticateUser;
     this.getJWT = getJWT;
 
+    var _jwt = false;
+
+    // Public Methods
     function authenticateUser(username,password) {
-      return (username === "test" && password === "password");
+      if(username === "test" && password === "password") {
+        buildAdminJwt();
+        return true;
+      }
+      else if(username === "user" && password === "pass") {
+        buildUserJwt();
+        return true;
+      }
+      else {
+        return false;
+      }
     }
 
     function getJWT() {
+      return _jwt;
+    }
+
+    // Private methods
+    function buildAdminJwt() {
+      let header = "abcdefg";
+
+      let claims = $window.btoa($window.angular.toJson({
+        'username': "Test Admin",
+        'states': [
+          "dashboard",
+          "units",
+          "fleets",
+          "combat",
+          "reports",
+          "simulator",
+          "science"
+        ],
+        'expiration': (Date.now() + 1000*60*5), // 5-minute expiration for testing
+        'level': 0
+      }));
+      let signature = "a1b2c3d4e5";
+
+      _jwt =  `${header}.${claims}.${signature}`;
+    }
+
+    function buildUserJwt() {
       let header = "abcdefg";
 
       let claims = $window.btoa($window.angular.toJson({
@@ -24,14 +64,17 @@
         'states': [
           "dashboard",
           "units",
-          "fleets"
+          "fleets",
+          "combat",
+          "reports",
+          "science"
         ],
         'expiration': (Date.now() + 1000*60*5), // 5-minute expiration for testing
-        'level': 0
+        'level': 10
       }));
       let signature = "a1b2c3d4e5";
 
-      return `${header}.${claims}.${signature}`;
+      _jwt =  `${header}.${claims}.${signature}`;
     }
   }
 })();

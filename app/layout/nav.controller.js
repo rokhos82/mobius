@@ -23,6 +23,9 @@
 
         $ctrl.$onInit = activate;
 
+        $ctrl.doLogin = $user.doLogin;
+        $ctrl.doLogout = $user.doLogout;
+
         // Setup event handlers
         $rootScope.$on($userEvents.logout,activate);
         $rootScope.$on($userEvents.login,activate);

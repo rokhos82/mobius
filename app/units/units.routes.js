@@ -2,13 +2,19 @@
     'use strict';
 
     angular
-        .module('app.units')
-        .config(configureStates)
-        .run(stateChanges);
+      .module('app.units')
+      .config(configureStates)
+      .run(stateChanges);
 
-    configureStates.$inject = ['$stateRegistryProvider','block.user-login.levels'];
+    configureStates.$inject = [
+      '$stateRegistryProvider',
+      'block.user-login.levels'
+    ];
     /* @ngInject */
-    function configureStates($registry,userLevels) {
+    function configureStates(
+      $registry,
+      userLevels
+    ) {
       let states = getStates(userLevels);
       states.forEach(function(state) {
         $registry.register(state);
@@ -33,9 +39,17 @@
       ];
     }
 
-    stateChanges.$inject = ['$state','$transitions','block.user-login.service'];
+    stateChanges.$inject = [
+      '$state',
+      '$transitions',
+      'block.user-login.service'
+    ];
 
-    function stateChanges($state,$transitions,$user) {
+    function stateChanges(
+      $state,
+      $transitions,
+      $user
+    ) {
       $transitions.onStart({to:'units.**'},function(trans){
         let $to = trans.$to();
         if(!$user.isAuthorized($to.data.authorizedLevel,'units')) {

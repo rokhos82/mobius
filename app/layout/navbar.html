@@ -20,8 +20,8 @@
         <li ui-sref-active="active"><a ui-sref="facilities">Facilities</a></li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        <li ng-if="!$ctrl.session"><a ui-sref="login"><span class="glyphicon glyphicon-log-in"></span></a></li>
-        <li ng-if="!!$ctrl.session"><a ui-sref="logout"><span class="glyphicon glyphicon-log-out"></span></a></li>
+        <!--<li ng-if="!$ctrl.session"><a ng-click="$ctrl.doLogin();"><span class="glyphicon glyphicon-log-in"></span></a></li>-->
+        <li ng-if="!!$ctrl.session"><a ng-click="$ctrl.doLogout();"><span class="glyphicon glyphicon-log-out"></span></a></li>
         <li class="dropdown" uib-dropdown>
           <a id="gear-dropdown" href="#" uib-dropdown-toggle>
             <span class="glyphicon glyphicon-cog" aria-hidden="true" ></span> <span class="caret"></span>

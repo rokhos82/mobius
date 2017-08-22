@@ -16,7 +16,8 @@
     $rootScope.$on($userEvents.logout,logoutRedirect);
 
     function logoutRedirect(event,data) {
-      $state.go($loginState);
+      $state.reload();
+      //$state.go($loginState);
     }
   };
 })();
