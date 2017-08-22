@@ -8,15 +8,15 @@
   eventHandlers.$inject = [
     '$rootScope',
     '$state',
-    'app.core.login.defaultState',
+    'app.core.login.loginState',
     'block.user-login.events'
   ];
 
-  function eventHandlers($rootScope,$state,$defaultState,$userEvents) {
+  function eventHandlers($rootScope,$state,$loginState,$userEvents) {
     $rootScope.$on($userEvents.logout,logoutRedirect);
 
     function logoutRedirect(event,data) {
-      $state.go($defaultState);
+      $state.go($loginState);
     }
   };
 })();
