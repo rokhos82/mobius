@@ -25,6 +25,7 @@
 
         $ctrl.doLogin = $user.doLogin;
         $ctrl.doLogout = $user.doLogout;
+        $ctrl.session = $user.getSession();
 
         // Setup event handlers
         $rootScope.$on($userEvents.logout,activate);

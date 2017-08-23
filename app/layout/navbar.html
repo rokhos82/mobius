@@ -11,13 +11,13 @@
     </div>
     <div id="navbar" class="collapse navbar-collapse">
       <ul class="nav navbar-nav">
-        <li ui-sref-active="active"><a ui-sref="units"><span class="glyphicon glyphicon-send"></span> Units</a></li>
-        <li ui-sref-active="active"><a ui-sref="fleets"><span class="glyphicon glyphicon-tower"></span> Fleets</a></li>
-        <li ui-sref-active="active"><a ui-sref="combat"><span class="glyphicon glyphicon-fire"></span> Combat</a></li>
-        <li ui-sref-active="active"><a ui-sref="reports"><span class="glyphicon glyphicon-briefcase"></span> Reports</a></li>
-        <li ui-sref-active="active"><a ui-sref="simulator"><span class="glyphicon glyphicon-expand"></span> Simulator</a></li>
-        <li ui-sref-active="active"><a ui-sref="science"><span class="glyphicon glyphicon-education"></span> Science</a></li>
-        <li ui-sref-active="active"><a ui-sref="facilities">Facilities</a></li>
+        <li ng-if="$ctrl.session.hasState('units')" ui-sref-active="active"><a ui-sref="units"><span class="glyphicon glyphicon-send"></span> Units</a></li>
+        <li ng-if="$ctrl.session.hasState('fleets')" ui-sref-active="active"><a ui-sref="fleets"><span class="glyphicon glyphicon-tower"></span> Fleets</a></li>
+        <li ng-if="$ctrl.session.hasState('combat')" ui-sref-active="active"><a ui-sref="combat"><span class="glyphicon glyphicon-fire"></span> Combat</a></li>
+        <li ng-if="$ctrl.session.hasState('reports')" ui-sref-active="active"><a ui-sref="reports"><span class="glyphicon glyphicon-briefcase"></span> Reports</a></li>
+        <li ng-if="$ctrl.session.hasState('simulator')" ui-sref-active="active"><a ui-sref="simulator"><span class="glyphicon glyphicon-expand"></span> Simulator</a></li>
+        <li ng-if="$ctrl.session.hasState('science')" ui-sref-active="active"><a ui-sref="science"><span class="glyphicon glyphicon-education"></span> Science</a></li>
+        <li ng-if="$ctrl.session.hasState('facilities')" ui-sref-active="active"><a ui-sref="facilities">Facilities</a></li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <!--<li ng-if="!$ctrl.session"><a ng-click="$ctrl.doLogin();"><span class="glyphicon glyphicon-log-in"></span></a></li>-->
