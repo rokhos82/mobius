@@ -63,8 +63,9 @@
           let session = $session.create(jwt);
           setSession(session);
           $rootScope.$broadcast($userEvents.login);
-          $alerts.create("You will be logged off in 5 minutes.","warning");
-          $timeout(doLogout,1000*60*5,false);
+          $alerts.create("You will be logged off in 30 minutes.","warning");
+          let expr = session.claims.expiration - Date.now();
+          $timeout(doLogout,expr,false);
           return session;
         }
         else {

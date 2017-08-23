@@ -48,7 +48,7 @@
           "simulator",
           "science"
         ],
-        'expiration': (Date.now() + 1000*60*5), // 5-minute expiration for testing
+        'expiration': (Date.now() + 1000*60*30), // 30-minute session expiration for testing
         'level': 0
       }));
       let signature = "a1b2c3d4e5";
