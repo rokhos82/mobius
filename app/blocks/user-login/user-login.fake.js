@@ -42,6 +42,7 @@
         'states': [
           "dashboard",
           "units",
+          "facilities",
           "fleets",
           "combat",
           "reports",

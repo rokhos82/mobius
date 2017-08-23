@@ -47,12 +47,14 @@
 		<script type="text/javascript" src="app/layout/nav.controller.js"></script>
 		<script type="text/javascript" src="app/services/rest.js"></script>
 		<script type="text/javascript" src="app/services/science.projects.js"></script>
+		<script type="text/javascript" src="app/services/game.service.js"></script>
 		<!-- Features -->
 		<script type="text/javascript" src="app/combat/combat.module.js"></script>
 		<script type="text/javascript" src="app/combat/combat.controller.js"></script>
 		<script type="text/javascript" src="app/combat/combat.routes.js"></script>
 		<script type="text/javascript" src="app/dashboard/dashboard.module.js"></script>
 		<script type="text/javascript" src="app/dashboard/dashboard.controller.js"></script>
+		<script type="text/javascript" src="app/dashboard/game.component.js"></script>
 		<script type="text/javascript" src="app/dashboard/dashboard.routes.js"></script>
 		<script type="text/javascript" src="app/facilities/facilities.module.js"></script>
 		<script type="text/javascript" src="app/facilities/facilities.controller.js"></script>

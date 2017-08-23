@@ -29,6 +29,13 @@
           data: {
             authorizedLevel: $userLevels.user
           }
+        },
+        {
+          name: 'dashboard.newGame',
+          component: 'app.dashboard.newGame',
+          title: 'Mobius - New Game',
+          resolve: {
+          }
         }
       ];
     }
