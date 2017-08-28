@@ -15,16 +15,18 @@
     return component;
   }
 
-  NewGameController.$inject = [];
+  NewGameController.$inject = [
+    "block.user-login.service"
+  ];
 
   /* @ngInject */
-  function NewGameController() {
+  function NewGameController($user) {
     var $ctrl = this;
 
     $ctrl.$onInit = activate;
 
     function activate() {
-      console.log("New Game Component");
+      $ctrl.session = $user.getSession();
     }
   }
 })();

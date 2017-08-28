@@ -16,7 +16,7 @@
           <div class="form-group">
             <label for="game.desc" class="control-label col-lg-2">Description</label>
             <div class="col-lg-10">
-              <textarea class="form-control" rows="4" id="game.desc" name="game.desc"></textarea>
+              <textarea class="form-control" rows="4" id="game.desc" name="game.desc" ng-model="game.desc"></textarea>
               <span class="help-block text-info">
                 Please enter a short description for your game here. This will be seen by anyone browsing for games as well as anyone you invite to this game.
               </span>
@@ -25,11 +25,22 @@
           <div class="form-group">
             <label for="game.tags" class="control-label col-lg-2">Tags</label>
             <div class="col-lg-10">
+              <input type="text" id="game.tags" name="game.tags" class="form-control" ng-model="game.tags" />
+              <span class="help-block text-info">
+                Enter a comma seperated list of tags for the game.
+              </span>
             </div>
           </div>
         </fliedset>
         <fieldset>
           <legend>Races</legend>
+          <div class="form-group">
+            <button class="btn btn-default">Add Race</button>
+          </div>
+        </fieldset>
+        <fieldset ng-if="$ctrl.session.getLevel() <= 0">
+          <legend>Dev</legend>
+          <pre>{{game | json}}</pre>
         </fieldset>
       </form>
     </div>
