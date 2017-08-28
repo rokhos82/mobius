@@ -46,7 +46,7 @@
           $state.go(defaultState);
         }
         else {
-          $ctrl.ui.alerts.push(alertFactory.create("Username or password is invalid!","danger"));
+          $ctrl.ui.alerts.push(alertFactory.create("Username or password is invalid!","danger",0));
         }
       }
 

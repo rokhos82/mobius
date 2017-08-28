@@ -19,7 +19,6 @@
       return [
         {
           name: 'dashboard',
-          url: '/',
           templateUrl: 'app/dashboard/dashboard.html',
           controller: 'DashboardController',
           controllerAs: '$ctrl',
@@ -28,6 +27,14 @@
           },
           data: {
             authorizedLevel: $userLevels.user
+          }
+        },
+        {
+          name: 'dashboard.home',
+          url: '/',
+          component: 'app.dashboard.home',
+          title: 'Mobius - Home',
+          resolve: {
           }
         },
         {

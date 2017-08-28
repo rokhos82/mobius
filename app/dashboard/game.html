@@ -1,1 +1,37 @@
-Hello World!
+<div class="col-lg-12">
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h3 class="mobius-title-sm text-info">New Game</h3>
+    </div>
+    <div class="panel-body">
+      <form class="form-horizontal" ng-init="game = {}">
+        <fieldset>
+          <legend>General Settings</legend>
+          <div class="form-group">
+            <label for="game.name" class="control-label col-lg-2">Name</label>
+            <div class="col-lg-10">
+              <input type="text" class="form-control" id="game.name" name="game.name" ng-model="game.name" />
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="game.desc" class="control-label col-lg-2">Description</label>
+            <div class="col-lg-10">
+              <textarea class="form-control" rows="4" id="game.desc" name="game.desc"></textarea>
+              <span class="help-block text-info">
+                Please enter a short description for your game here. This will be seen by anyone browsing for games as well as anyone you invite to this game.
+              </span>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="game.tags" class="control-label col-lg-2">Tags</label>
+            <div class="col-lg-10">
+            </div>
+          </div>
+        </fliedset>
+        <fieldset>
+          <legend>Races</legend>
+        </fieldset>
+      </form>
+    </div>
+  </div>
+</div>
