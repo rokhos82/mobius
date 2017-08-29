@@ -34,9 +34,18 @@
         </fliedset>
         <fieldset>
           <legend>Races</legend>
-          <div class="form-group">
+          <div class="btn-group">
             <button class="btn btn-default">Add Race</button>
           </div>
+          <table class="table table-hover table-striped">
+            <thead>
+              <tr><th>Name</th><th>Description</th><th>Player</th><th>Confirmed</th></tr>
+            </thead>
+            <tbody>
+              <tr class="success"><td>Fake Race</td><td>Just like most millenials</td><td>Fake Player (fake.player@millenialsuck.me)</td><td>Yes/no</td></tr>
+              <tr class="warning"><td>Faker Race</td><td>Just like most millenials' kids *shudder*</td><td>Fakest Player (fakest.player@millenialsuck.me)</td><td>Unknown</td></tr>
+            </tbody>
+          </table>
         </fieldset>
         <fieldset ng-if="$ctrl.session.getLevel() <= 0">
           <legend>Dev</legend>
