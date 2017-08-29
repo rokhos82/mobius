@@ -16,17 +16,27 @@
   }
 
   NewGameController.$inject = [
+    "$window",
     "block.user-login.service"
   ];
 
   /* @ngInject */
-  function NewGameController($user) {
+  function NewGameController($window,$user) {
     var $ctrl = this;
 
     $ctrl.$onInit = activate;
 
+    $ctrl.onCreateGame = onCreateGame;
+
     function activate() {
       $ctrl.session = $user.getSession();
+
+      $ctrl.game = {
+        status: 'open'
+      };
+    }
+
+    function onCreateGame() {
     }
   }
 })();

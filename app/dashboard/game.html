@@ -4,19 +4,19 @@
       <h3 class="mobius-title-sm text-info">New Game</h3>
     </div>
     <div class="panel-body">
-      <form class="form-horizontal" ng-init="game = {}">
+      <form class="form-horizontal">
         <fieldset>
           <legend>General Settings</legend>
           <div class="form-group">
             <label for="game.name" class="control-label col-lg-2">Name</label>
             <div class="col-lg-10">
-              <input type="text" class="form-control" id="game.name" name="game.name" ng-model="game.name" />
+              <input type="text" class="form-control" id="game.name" name="game.name" ng-model="$ctrl.game.name" />
             </div>
           </div>
           <div class="form-group">
             <label for="game.desc" class="control-label col-lg-2">Description</label>
             <div class="col-lg-10">
-              <textarea class="form-control" rows="4" id="game.desc" name="game.desc" ng-model="game.desc"></textarea>
+              <textarea class="form-control" rows="4" id="game.desc" name="game.desc" ng-model="$ctrl.game.desc"></textarea>
               <span class="help-block text-info">
                 Please enter a short description for your game here. This will be seen by anyone browsing for games as well as anyone you invite to this game.
               </span>
@@ -25,10 +25,27 @@
           <div class="form-group">
             <label for="game.tags" class="control-label col-lg-2">Tags</label>
             <div class="col-lg-10">
-              <input type="text" id="game.tags" name="game.tags" class="form-control" ng-model="game.tags" />
+              <input type="text" id="game.tags" name="game.tags" class="form-control" ng-model="$ctrl.game.tags" />
               <span class="help-block text-info">
                 Enter a comma seperated list of tags for the game.
               </span>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="game.status" class="control-label col-lg-2">Status</label>
+            <div class="col-lg-10">
+              <div class="radio">
+                <label>
+                  <input type="radio" name="game.status" id="game.status.open" ng-model="$ctrl.game.status" value="open" checked />
+                  Open Game
+                </label>
+              </div>
+              <div class="radio">
+                <label>
+                  <input type="radio" name="game.status" id="game.status.closed" ng-model="$ctrl.game.status" value="closed" />
+                  Closed Game
+                </label>
+              </div>
             </div>
           </div>
         </fliedset>
@@ -36,20 +53,28 @@
           <legend>Races</legend>
           <div class="btn-group">
             <button class="btn btn-default">Add Race</button>
+            <button class="btn btn-default">Race Builder</button>
           </div>
           <table class="table table-hover table-striped">
             <thead>
               <tr><th>Name</th><th>Description</th><th>Player</th><th>Confirmed</th></tr>
             </thead>
             <tbody>
-              <tr class="success"><td>Fake Race</td><td>Just like most millenials</td><td>Fake Player (fake.player@millenialsuck.me)</td><td>Yes/no</td></tr>
-              <tr class="warning"><td>Faker Race</td><td>Just like most millenials' kids *shudder*</td><td>Fakest Player (fakest.player@millenialsuck.me)</td><td>Unknown</td></tr>
             </tbody>
           </table>
         </fieldset>
+        <fieldset>
+          <div class="btn-toolbar">
+            <div class="btn-group btn-group-justified">
+              <div class="btn-group">
+                <button type="button" class="btn btn-lg btn-success" ng-click="$ctrl.onCreateGame();">Create Game</button>
+              </div>
+            </div>
+          </div>
+        </fieldset>
         <fieldset ng-if="$ctrl.session.getLevel() <= 0">
-          <legend>Dev</legend>
-          <pre>{{game | json}}</pre>
+          <legend>Debug</legend>
+          <mob-dev-footer label="$ctrl.game" watching="$ctrl.game"></mob-dev-footer>
         </fieldset>
       </form>
     </div>
