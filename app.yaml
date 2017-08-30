@@ -10,7 +10,12 @@ handlers:
 - url: /favicon\.ico
   static_files: favicon.ico
   upload: favicon\.ico
-  
+
+# HTACCESS
+- url: /\.htaccess
+  static_files: .htaccess
+  upload: \.htaccess
+
 # Include all of the JavaScript library files
 - url: /js/(.+)$
   static_files: js/\1
