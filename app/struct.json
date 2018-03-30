@@ -24,7 +24,7 @@
 	},
 	"units": {
 		"<uuid>": {
-			"uuid": "<uuid>"
+			"uuid": "<uuid>",
 			"general": {},
 			"hull": {},
 			"shield": {},

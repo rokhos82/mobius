@@ -3,6 +3,7 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////
 
 mobiusEngine.unit = {};
+mobius.unit = {};
 
 mobiusEngine.unit.calculateFirepower = function(unit) {
 	var fp = {
@@ -12,21 +13,21 @@ mobiusEngine.unit.calculateFirepower = function(unit) {
 
 	var _map = function(weapon) {
 		var v = 0;
-		
+
 		if(_.isNumber(weapon.volley)) {
 			v = weapon.volley;
 		}
 		else {
 			_.each(weapon.volley,function(x){ v += x; });
 		}
-		
+
 		return weapon.batteries * weapon.guns * v;
 	};
 	var _pmap = function(weapon) {
 		return weapon.packets * weapon.volley;
 	};
 	var _reduce = function(memo,num) { return memo + num; };
-	
+
 	var direct = unit["direct-fire"];
 	fp.direct = _.chain(direct).map(_map).reduce(_reduce,0).value();
 
@@ -43,22 +44,31 @@ mobiusEngine.unit.validate = function(obj) {
 	// and size attribute.
 	if(!(obj.general && obj.general.name && obj.general.type && obj.general.size)) { valid = false; }
 
-	// Check 
+	// Check
 
 	return valid;
 };
 
-mobiusEngine.unit.controller = function($scope,_data,$uibModal,$state) {
-	var $ctrl = this;
-	
-	this.alerts = [];
+mobiusEngine.unit.controller = function($scope,_data,$uibModal,$state,$rest,$sanitize) {
+	const $ctrl = this;
 
-	this.units = _data.getAllUnits();
+	$ctrl.alerts = [];
+	$ctrl.welcome = "<p>Loading please wait...</p>";
 
-	this.getUnit = _data.getUnit;
-	this.firepower = mobiusEngine.unit.calculateFirepower;
+	$ctrl.units = _data.getAllUnits();
 
-	this.toggleState = function(key) { this.states[key] = !this.states[key]; };
+	$ctrl.getUnit = _data.getUnit;
+	$ctrl.firepower = mobiusEngine.unit.calculateFirepower;
+
+	$ctrl.toggleState = function(key) { this.states[key] = !this.states[key]; };
+
+	$rest.getSettings().then(function s(response){
+		const _data = response.data.general.units;
+		$ctrl.welcome = mobius.functions.arrayToString(_data,"p");
+	},function f(error){
+		console.log(error);
+		$ctrl.welcome = "<p class=\"text-warning\">" + error + "</p>"
+	});
 
 	$ctrl.onImport = function(importJSON) {
 		var imp = JSON.parse(importJSON);
@@ -132,7 +142,7 @@ mobiusEngine.unit.controller = function($scope,_data,$uibModal,$state) {
 			component: "exportModal",
 			resolve: {
 				options: function(){
-					return { 
+					return {
 						title:"Unit Export",
 						msg:"Use the text field below to import a unit JSON string."
 					};
@@ -147,10 +157,26 @@ mobiusEngine.unit.controller = function($scope,_data,$uibModal,$state) {
 			}
 		});
 	};
+
+	$ctrl.createUnit = function() {
+		var modal = $uibModal.open({
+			animation: true,
+			component: "unitWizard",
+			size: "lg",
+			resolve: {
+				options: function() {
+					return {
+						title:"Unit Creation Wizard",
+						types: ["Starship","Gunboat","Fighter","Base","Mecha"]
+					};
+				}
+			}
+		});
+	};
 };
 
 mobiusEngine.app.component("unitMain",{
 	templateUrl: 'app/component/unit/unit.main.html',
-	controller: ["$scope","mobius.data.unit","$uibModal","$state",mobiusEngine.unit.controller],
+	controller: ["$scope","mobius.data.unit","$uibModal","$state","mobius.rest","$sanitize",mobiusEngine.unit.controller],
 	bindings: {}
 });

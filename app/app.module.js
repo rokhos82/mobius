@@ -1,12 +1,31 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////
-// BattleEngine2 Global Namespace Variable
+// Mobius Angular Module
 ////////////////////////////////////////////////////////////////////////////////////////////////
-var mobiusEngine = {};
+(function() {
+    'use strict';
 
-////////////////////////////////////////////////////////////////////////////////////////////////
-// BattleEngine2 angular module
-////////////////////////////////////////////////////////////////////////////////////////////////
-mobiusEngine.app = angular.module('mobiusEngine',['ui.bootstrap','ui.router']);
+    angular
+        .module('app', [
+          /* Shared modules */
+          'app.core',
+          'block.alerts',
+
+          /* Feature modules */
+          'app.combat',
+          'app.dashboard',
+          'app.facilities',
+          'app.fleets',
+          'app.layout',
+          'app.reports',
+          'app.science',
+          'app.simulator',
+          'app.units'
+        ]);
+})();
+
+/*
+mobiusEngine.app = angular.module('mobiusEngine',['ui.bootstrap','ui.router','ngSanitize','ngResource']);
+mobius.app = mobiusEngine.app;
 
 mobiusEngine.app.config(['$compileProvider','$stateProvider','$locationProvider',
     function ($compileProvider,$stateProvider,$locationProvider) {
@@ -93,6 +112,20 @@ mobiusEngine.app.config(['$compileProvider','$stateProvider','$locationProvider'
             resolve: {}
         };
 
+        var scinece = {
+          name: 'science',
+          url: '/science',
+          component: 'scienceMain',
+          resolve: {}
+        };
+
+        var facilities = {
+          name: 'facilities',
+          url: '/facilities',
+          component: 'mobius.facilities.main',
+          resolve: {}
+        };
+
         $stateProvider.state(defaultState);
         $stateProvider.state(combatState);
         $stateProvider.state(fleetState);
@@ -103,4 +136,6 @@ mobiusEngine.app.config(['$compileProvider','$stateProvider','$locationProvider'
         $stateProvider.state(reportState);
         $stateProvider.state(reportDtlState);
         $stateProvider.state(simulator);
-}]);
+        $stateProvider.state(scinece);
+        $stateProvider.state(facilities);
+}]);*/

@@ -1,9 +1,4 @@
 <div class="jumbotron">
-	<h1 class="mobius-title text-shadow-info">Mobius Engine</h1>
-	<p class="text-shadow-info">Welcome to the Mobius Engine.  Mobius Engine is a general purpose combat simulator that using JSON to describe the participating actors.  The engine is intended to be used with Stellar Conflagration and most of the organizational terms reflect the nature of the game.  Mobius Engine and Stellar Conflagration are both works in progress so not all features work or are balanced.</p>
-	<p class="text-shadow-info">Unit definitions can be imported via a JSON string.  The unit detail page is not finished yet, but can be accessed by clicking on the UUID at the bottom of the unit card.</p>
-	<p class="text-shadow-info">Fleets can be created with a name, faction, and breakoff level.  Again the detail page can be accessed by clicking on the UUID at the bottom of the fleet card.  On the detail page, fleet information can be changed and units can be added to the fleet.  Mass addition of units is also allowed and unit names can be changed.</p>
-	<p class="text-shadow-info">The combat simulator now requires that a fleets be added via the Fleets page.  An attacking fleet and a defending fleet can then be selected and then combat ran.  Only a final summary of what units survived the combat is displayed on the combat page.  Saving the combat report allows access to a more detailed version.</p>
-	<p class="text-shadow-info"></p>
-	<p class="text-shadow-info">Please enjoy and report any problems to the GitHub project page <a class="text-warning" href="https://github.com/rokhos82/mobius/issues" target="_blank">here</a>.</p>
+	<h1 class="mobius-title text-shadow-info">Mobius</h1>
+	<p class="text-shadow-info" ng-repeat="message in $ctrl.welcome track by $index" ng-bind-html="message"></p>
 </div>

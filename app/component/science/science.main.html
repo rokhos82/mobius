@@ -1,0 +1,178 @@
+<page-title title="Science Manager" message="{{$ctrl.welcome}}"></page-title>
+<div class="row">
+  <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+    <ul class="breadcrumb">
+      <li><a href="#/">Home</a></li>
+      <li class="active">Science</li>
+    </ul>
+  </div>
+</div>
+<page-alerts alerts="$ctrl.ui.alerts"></page-alerts>
+<div class="row">
+  <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+    <div class="panel panel-default">
+      <div class="panel-body">
+        <div class="btn-group btn-group-justified" role="group">
+          <div class="btn-group">
+            <button href class="btn btn-default" ng-click="$ctrl.onNewProject()">
+              <img src="img/vial-64-lgray.png" alt="Projects" />
+            </button>
+          </div>
+          <div class="btn-group">
+            <button href class="btn btn-default" ng-click="$ctrl.fundProjects($ctrl.projects)">
+              <img src="img/money-stack-64-lgray.png" alt="Funding" />
+            </button>
+          </div>
+          <div class="btn-group">
+            <button href class="btn btn-default" ng-click="$ctrl.onResourceAssign();">
+              <img src="img/airtight-hatch-64-lgray.png" alt="Resources" />
+            </button>
+          </div>
+          <div class="btn-group">
+            <button href class="btn btn-default" ng-click="$ctrl.onBonuses()">
+              <img src="img/upgrade-64-lgray.png" alt="Bonuses" />
+            </button>
+          </div>
+          <div class="btn-group">
+            <button class="btn btn-default" ng-click="$ctrl.onProjectUpdates();">
+              <img src="img/perspective-dice-one-64-lgray.png" alt="Update Projects" />
+            </button>
+          </div>
+          <div class="btn-group">
+            <button href class="btn btn-default" ng-click="$ctrl.rollProjects()">
+              <img src="img/clockwork-64-lgray.png" alt="Next Turn" />
+            </button>
+          </div>
+          <div class="btn-group" uib-dropdown>
+            <button href class="btn btn-default" uib-dropdown-toggle>
+              <img src="img/cog-64-lgray.png" alt="Tools" />
+            </button>
+            <ul class="dropdown-menu" uib-dropdown-menu role="menu">
+              <li role="menuitem"><a href>Import Data</a></li>
+              <li role="menuitem"><a href ng-click="$ctrl.onExportData()">Export Data</a></li>
+              <li role="menuitem"><a href ng-click="$ctrl.clearProjects()">Clear Data</a></li>
+            </ul>
+          </div>
+        </div>
+        <hr class="spacer" />
+        <uib-tabset active="active" justified="false" vertical="false">
+          <uib-tab index="0">
+            <uib-tab-heading><span class="text-info mobius-title">Active</span></uib-tab-heading>
+            <table class="table table-striped table-hover table-bordered">
+              <thead>
+                <tr>
+                  <th>Project</th>
+                  <th>Stage</th>
+                  <th>Turn Funding</th>
+                  <th>Total Funding</th>
+                  <th>Project Bonus</th>
+                  <th>Total Bonus</th>
+                  <th>Roll</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="mobius-table-row" ng-repeat="project in $ctrl.projects | activeResearch track by $index" ng-click="$ctrl.updateProjects(project)" ng-class="{'text-warning':project.stage.index == 0,'text-info':project.stage.index == 1,'text-success':project.stage.index == 2}">
+                  <td>{{project.name}}</td>
+                  <td>{{project.stage.name}}</td>
+                  <td>{{project.funding}}</td>
+                  <td>{{project.totalFunding}}</td>
+                  <td>{{project.bonus}}</td>
+                  <td>{{project.bonus + $ctrl.bonus.global}}</td>
+                  <td>{{project.roll}}</td>
+                  <td>
+                    <img src="img/pause-button-64-warning.png" alt="Suspend Project" height="16" ng-click="$ctrl.onSuspendProject(project); $event.stopPropagation();" />
+                    <img src="img/cancel-64-danger.png" alt="Delete Project" height="16" ng-click="$ctrl.onRemoveProject(project); $event.stopPropagation();" />
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </uib-tab>
+          <uib-tab index="1">
+            <uib-tab-heading><span class="text-info mobius-title">Suspended</span></uib-tab-heading>
+            <table class="table table-striped table-hover table-bordered">
+              <thead>
+                <tr><th>Project</th><th>Stage</th><th>Total Funding</th><th>Project Bonus</th><th></th></tr>
+              </thead>
+              <tbody>
+                <tr class="mobius-table-row" ng-repeat="project in $ctrl.projects | suspendedResearch track by $index">
+                  <td>{{project.name}}</td>
+                  <td>{{project.stage.name}}</td>
+                  <td>{{project.totalFunding}}</td>
+                  <td>{{project.bonus}}</td>
+                  <td>
+                    <img src="img/play-button-64-success.png" alt="Activate Project" height="16" ng-click="$ctrl.onActivateProject(project); $event.stopPropagation();" />
+                    <img src="img/cancel-64-danger.png" alt="Delete Project" height="16" ng-click="$ctrl.onRemoveProject(project); $event.stopPropagation();" />
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </uib-tab>
+          <uib-tab index="2">
+            <uib-tab-heading><span class="text-info mobius-title">Completed</span></uib-tab-heading>
+            <table class="table table-striped table-hover table-bordered">
+              <thead>
+                <tr><th>Project</th><th>Stage</th><th>Total Funding</th><th>Project Bonus</th><th></th></tr>
+              </thead>
+              <tbody>
+                <tr class="mobius-table-row" ng-repeat="project in $ctrl.projects | completedResearch track by $index">
+                  <td>{{project.name}}</td>
+                  <td>{{project.stage.name}}</td>
+                  <td>{{project.totalFunding}}</td>
+                  <td>{{project.bonus}}</td>
+                  <td><span class="glyphicon glyphicon-open text-info" ng-if="project.hasLevels" ng-click="$ctrl.onNewProject(project)"></span></td>
+                </tr>
+              </tbody>
+            </table>
+          </uib-tab>
+          <uib-tab index="3">
+            <uib-tab-heading><span class="text-info mobius-title">Events</span></uib-tab-heading>
+            <table class="table table-striped table-hover table-bordered">
+              <tbody>
+                <tr ng-repeat="event in $ctrl.events track by $index" ng-class="['mobius-table-row']">
+                  <!--<td class="text-info text-right">{{$index+1}}</td>
+                  <td ng-class="{'mob-text-special': event.advance,'text-success': event.success, 'text-danger': event.fail, 'text-warning': (!event.success && !event.fail)}">{{event.text}}</td>-->
+                  <td ng-class="'text-'+(event.type || 'info')">{{event.text}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </uib-tab>
+        </uib-tabset>
+        <div class="well well-sm">
+          <p class="text-info">Project Count: {{$ctrl.projects.length}}</p>
+          <p class="text-success">Total Funding: {{$ctrl.totalFunding()}}</p>
+          <p class="text-info">Global Bonus: {{$ctrl.bonus.global}}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row" ng-if="$ctrl.user.level <= 0">
+  <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+    <div class="panel panel-default">
+      <div class="panel-body">
+        <div class="well well-sm">
+          <form class="form-horizontal">
+            <div class="input-group has-warning">
+              <input type="text" class="form-control" ng-model="commandText" />
+              <span class="input-group-btn">
+                <button class="btn btn-warning" type="submit" ng-click="commandOutput = $ctrl.execute(commandText); commandText=''">Execute</button>
+              </span>
+            </div>
+          </form>
+          <hr />
+          <div class="text-warning" style="text-warp: normal;">{{commandOutput}}</div>
+        </div>
+        <hr />
+        <h4 class="mobius-title-sm">$ctrl.ui</h4>
+        <p><pre>{{$ctrl.ui | json}}</pre></p>
+        <h4 class="mobius-title-sm">$ctrl.projects</h4>
+        <p><pre>{{$ctrl.projects | json}}</pre></p>
+        <h4 class="mobius-title-sm">$ctrl.turns</h4>
+        <p><pre>{{$ctrl.turns | json}}</pre></p>
+        <h4 class="mobius-title-sm">$ctrl.bonus</h4>
+        <p><pre>{{$ctrl.bonus | json}}</pre></p>
+      </div>
+    </div>
+  </div>
+</div>

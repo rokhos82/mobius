@@ -40,7 +40,7 @@ mobiusEngine.data.factory = function($rootScope) {
 	var _data = {
 		"simulations": {},
 		"fleets": {},
-		"units": {}
+		"units": {},
 	};
 
 	var _indexed = undefined;
@@ -88,6 +88,8 @@ mobiusEngine.data.factory = function($rootScope) {
 		$rootScope.$broadcast(mobiusEngine.data.events.dirty);
 	};
 
+	service.getScienceStore = function() { return _data.science; };
+
 	return service;
 };
 
@@ -130,7 +132,7 @@ mobiusEngine.data.simulation = function($rootScope,_mData) {
 		$rootScope.$broadcast(mobiusEngine.data.events.dirty);
 		return obj;
 	};
-	
+
 	service.validateSimulation = function(sim) {
 		var valid = true;
 

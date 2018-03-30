@@ -1,0 +1,45 @@
+runtime: php55
+
+env_variables:
+  MYSQL_DSN: mysql:unix_socket=/cloudsql/mobius-db;dbname=mobius
+  MYSQL_USER: mobius
+  MYSQL_PASSWORD: ''
+
+handlers:
+# Favicon.ico
+- url: /favicon\.ico
+  static_files: favicon.ico
+  upload: favicon\.ico
+  
+# Include all of the JavaScript library files
+- url: /js/(.+)$
+  static_files: js/\1
+  upload: js/(.+)$
+
+# Include all of the AnguarJS application components and other files
+- url: /app/(.+)$
+  static_files: app/\1
+  upload: app/(.+)$
+
+# Include all of the Bootstrap files and other stylesheets
+- url: /css/(.+)$
+  static_files: css/\1
+  upload: css/(.+)$
+
+# Include static image filese
+- url: /img/(.+)$
+  static_files: img/\1
+  upload: img/(.+)$
+
+# Include the AngularJS Bootstrap components
+- url: /uib/(.+)$
+  static_files: uib/\1
+  upload: uib/(.+)$
+
+# Include the RESTful API scripts
+- url: /rest/(.+)$
+  script: rest/\1
+
+# Default URL match
+- url: /.*
+  script: index.php

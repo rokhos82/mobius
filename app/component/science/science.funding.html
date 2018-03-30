@@ -1,0 +1,31 @@
+<div class="modal-header">
+  <h3 class="modal-title mobius-title text-info">Project Funding</h3>
+</div>
+<div class="modal-body">
+  <form class="form-horizontal">
+    <mobius-number label="Funding" placeholder="" value="fundingLevel" mobius-id="fundingLevel"></mobius-number>
+    <div class="form-group">
+      <div class="col-lg-12">
+        <button class="btn btn-warning btn-block" type="submit" ng-click="$ctrl.applyFunding(fundingLevel);">Apply Funding</button>
+      </div>
+    </div>
+  </form>
+  <table class="table table-hover table-stripe">
+    <tfoot>
+      <tr class="mobius-table-row text-warning"><td colspan="5">Total Funding: {{$ctrl.totalFunding()}}</td></tr>
+    </tfoot>
+    <tbody>
+      <tr class="mobius-table-row" ng-repeat="project in $ctrl.options.projects track by project.uuid">
+        <td>{{project.name}}</td>
+        <td>{{project.stage.name}}</td>
+        <td>{{project.success}}</td>
+        <td><input type="number" ng-model="project.funding" ng-change="$ctrl.updateFunding(project)" class="form-control" /></td>
+        <td>{{project.totalFunding}}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<div class="modal-footer">
+  <button class="btn btn-success" type="button" ng-click="$ctrl.confirm()">Fund Project</button>
+  <button class="btn btn-default" type="button" ng-click="$ctrl.cancel()">Cancel</button>
+</div>
