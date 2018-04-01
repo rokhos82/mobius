@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html ng-app="app" ng-strict-di>
 	<head>
-		<title>Mobius</title>
+		<title>Mobius - Beta4r4</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<meta charset="utf-8">
 		<link href="https://fonts.googleapis.com/css?family=Iceberg|Revalia|Stalinist+One|VT323" rel="stylesheet">
 		<link rel="stylesheet" type="text/css" href="css\slate\bootstrap.min.css" />
 		<link rel="stylesheet" type="text/css" href="css\mobius.css" />
-		<base href="/www/">
+		<base href="/">
 	</head>
 	<body>
 		<div ng-include="'app/layout/navbar.html'">
