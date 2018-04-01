@@ -11,15 +11,12 @@ handlers:
   static_files: favicon.ico
   upload: favicon\.ico
 
-# HTACCESS
-- url: /\.htaccess
-  static_files: .htaccess
-  upload: \.htaccess
-
 # Include all of the JavaScript library files
-- url: /js/(.+)$
-  static_files: js/\1
-  upload: js/(.+)$
+# - url: /js/(.+)$
+#  static_files: js/\1
+#  upload: js/(.+)$
+- url: /js
+  static_dir: js
 
 # Include all of the AnguarJS application components and other files
 - url: /app/(.+)$
