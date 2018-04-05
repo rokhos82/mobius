@@ -45,6 +45,7 @@
 		<script type="text/javascript" src="app/directives/pageheader.directive.js"></script>
 		<script type="text/javascript" src="app/layout/layout.module.js"></script>
 		<script type="text/javascript" src="app/layout/nav.controller.js"></script>
+		<script type="text/javascript" src="app/services/localstorage.js"></script>
 		<script type="text/javascript" src="app/services/rest.js"></script>
 		<script type="text/javascript" src="app/services/science.projects.js"></script>
 		<script type="text/javascript" src="app/services/game.service.js"></script>

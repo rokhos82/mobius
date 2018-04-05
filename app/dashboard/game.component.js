@@ -50,6 +50,7 @@
 
     function onCreateGame() {
       $game.create($ctrl.game);
+      $game.save();
       $state.go("dashboard.home");
     }
   }

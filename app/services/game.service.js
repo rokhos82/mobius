@@ -9,6 +9,7 @@
   GameService.$inject = [
     '$window',
     'block.alerts.alertFactory',
+    'service.rest',
     '$log'
   ];
 
@@ -16,11 +17,15 @@
   function GameService(
     $window,
     $alerts,
+    $rest,
     $log
   ) {
-    this.create = create;
-    this.save = save;
-    this.hash = hash;
+    var $service = this;
+    $service.create = create;
+    $service.save = save;
+    $service.hash = hash;
+
+    var _key = "app.core.game";
 
     var _template = {
       general: {
@@ -34,7 +39,7 @@
       players: {}
     };
 
-    var _data = {};
+    var _data = $rest.get(_key);
 
     function create(options) {
       var game = $window.angular.copy(_template);
@@ -51,6 +56,7 @@
     }
 
     function save() {
+      $rest.set(_key,_data);
     }
 
     function hash() {
