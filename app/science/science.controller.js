@@ -5,7 +5,12 @@
         .module('app.science')
         .controller('ScienceController', ScienceController);
 
-    ScienceController.$inject = ['$window'];
+    ScienceController.$inject = [
+      '$window',
+      'blocks.alerts.alertFactory',
+      'blocks.user-login.service',
+      '$filter'
+    ];
 
     /* @ngInject */
     function ScienceController($window) {
@@ -19,7 +24,6 @@
         activate();
 
         function activate() {
-
         }
     }
 })();
