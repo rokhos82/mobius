@@ -9,18 +9,22 @@
   GameService.$inject = [
     '$window',
     'block.alerts.alertFactory',
+    '$log'
   ];
 
   /* @ngInject */
   function GameService(
     $window,
-    $alerts
+    $alerts,
+    $log
   ) {
     this.create = create;
     this.save = save;
+    this.hash = hash;
 
     var _template = {
       general: {
+        uuid: '',
         name: '',
         description: '',
         tags: [],
@@ -30,17 +34,27 @@
       players: {}
     };
 
+    var _data = {};
+
     function create(options) {
       var game = $window.angular.copy(_template);
+      var uuid = $window.uuid.v4();
 
-      game.general.name = options.general.name;
-      game.general.description = options.general.description;
-      game.general.tags;
+      game.general.uuid = uuid;
+      game.general.name = options.name;
+      game.general.description = options.description;
+      game.general.tags = options.tags.split(",").forEach(function(tag){return tag.trim();});
+
+      _data[uuid] = game;
 
       $alerts.create('Game Created!','success',5000);
     }
 
     function save() {
+    }
+
+    function hash() {
+      return _data;
     }
   }
 

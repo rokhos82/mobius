@@ -77,7 +77,7 @@
             </div>
           </div>
         </fieldset>
-        <fieldset ng-if="$ctrl.session.getLevel() <= 0">
+        <fieldset ng-if="$ctrl.session.getLevel() >= 0">
           <legend>Debug</legend>
           <mob-dev-footer label="$ctrl.game" watching="$ctrl.game"></mob-dev-footer>
         </fieldset>

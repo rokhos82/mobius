@@ -26,7 +26,7 @@
     $ctrl.onNewGame = onNewGame;
 
     function activate() {
-      $ctrl.game = undefined;
+      $ctrl.game = $game.hash();
       $ctrl.session = $user.getSession();
 
       // Setup UI object for the controller.

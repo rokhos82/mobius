@@ -19,7 +19,9 @@
     "$window",
     "app.core.game",
     "app.core.game.const.status",
-    "block.user-login.service"
+    "block.user-login.service",
+    "$log",
+    "$state"
   ];
 
   /* @ngInject */
@@ -27,7 +29,9 @@
     $window,
     $game,
     $statuses,
-    $user
+    $user,
+    $log,
+    $state
   ) {
     var $ctrl = this;
 
@@ -45,7 +49,8 @@
     }
 
     function onCreateGame() {
-      $game.create();
+      $game.create($ctrl.game);
+      $state.go("dashboard.home");
     }
   }
 })();
