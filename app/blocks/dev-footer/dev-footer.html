@@ -1,4 +1,4 @@
-<div class="well well-sm">
+<div class="well well-sm" ng-click="$ctrl.show = !$ctrl.show">
   <span class="text-warning">{{$ctrl.label}}</span>
-  <pre>{{$ctrl.watching | json}}</pre>
+  <pre ng-show="$ctrl.show">{{$ctrl.watching | json}}</pre>
 </div>

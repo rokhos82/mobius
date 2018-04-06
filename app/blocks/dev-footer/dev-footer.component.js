@@ -25,6 +25,7 @@
     function DevFooterController($window) {
       var $ctrl = this;
 
+      $ctrl.show = false;
       $ctrl.$onInit = activate;
 
       function activate() {
