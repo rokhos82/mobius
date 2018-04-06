@@ -47,8 +47,10 @@
 
       game.general.uuid = uuid;
       game.general.name = options.name;
-      game.general.description = options.description;
-      game.general.tags = options.tags.split(",").forEach(function(tag){return tag.trim();});
+      game.general.description = options.desc;
+      game.general.tags = options.tags.split(",").map(function(tag){return tag.trim();});
+
+      $log.info(game);
 
       _data[uuid] = game;
 
@@ -72,5 +74,6 @@
     $provide
   ) {
     $provide.constant('app.core.game.const.status',{open:'open',closed:'closed'});
+    //$provide.constant('app.core.game.template',_template);
   }
 })();
