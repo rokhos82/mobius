@@ -7,8 +7,8 @@
 
     ScienceController.$inject = [
       '$window',
-      'blocks.alerts.alertFactory',
-      'blocks.user-login.service',
+      'block.alerts.alertFactory',
+      'block.user-login.service',
       '$filter'
     ];
 
