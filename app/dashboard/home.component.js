@@ -15,13 +15,15 @@
       return component;
     }
 
-    HomeController.$inject = [];
+    HomeController.$inject = ['app.core.game'];
 
-    function HomeController() {
+    function HomeController($game) {
       var $ctrl = this;
 
       $ctrl.$onInit = activate;
 
-      function activate() {}
+      function activate() {
+        $ctrl.games = $game.list();
+      }
     }
 })();

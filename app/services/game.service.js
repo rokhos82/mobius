@@ -24,6 +24,9 @@
     $service.create = create;
     $service.save = save;
     $service.hash = hash;
+    $service.list = list;
+    $service.select = select;
+    $service.get = get;
 
     var _key = "app.core.game";
 
@@ -40,6 +43,7 @@
     };
 
     var _data = $rest.get(_key);
+    var _selected = undefined;
 
     function create(options) {
       var game = $window.angular.copy(_template);
@@ -64,6 +68,20 @@
     function hash() {
       return _data;
     }
+
+    function list() {
+      return _.values(_data);
+    }
+
+    function select(key) {
+      if(_data[key]) {
+        _selected = _data[key];
+      }
+    }
+
+    function get() {
+      return _selected;
+    }
   }
 
   getConstants.$inject = [
@@ -74,6 +92,16 @@
     $provide
   ) {
     $provide.constant('app.core.game.const.status',{open:'open',closed:'closed'});
-    //$provide.constant('app.core.game.template',_template);
+    $provide.constant('app.core.game.template',{
+      general: {
+        uuid: '',
+        name: '',
+        description: '',
+        tags: [],
+        status: 0
+      },
+      races: {},
+      players: {}
+    });
   }
 })();
