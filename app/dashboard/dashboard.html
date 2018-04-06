@@ -4,5 +4,6 @@
   <ui-view></ui-view>
 </div>
 <mob-dev-footer ng-if="$ctrl.session.getLevel() <= 0" label="$ctrl.ui" watching="$ctrl.ui"></mob-dev-footer>
+<mob-dev-footer ng-if="$ctrl.session.getLevel() <= 0" label="$ctrl.games" watching="$ctrl.games"></mob-dev-footer>
 <mob-dev-footer ng-if="$ctrl.session.getLevel() <= 0" label="$ctrl.game" watching="$ctrl.game"></mob-dev-footer>
 <mob-dev-footer ng-if="$ctrl.session.getLevel() <= 0" label="$ctrl.session" watching="$ctrl.session"></mob-dev-footer>

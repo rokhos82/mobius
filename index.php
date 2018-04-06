@@ -49,6 +49,7 @@
 		<script type="text/javascript" src="app/services/rest.js"></script>
 		<script type="text/javascript" src="app/services/science.projects.js"></script>
 		<script type="text/javascript" src="app/services/game.service.js"></script>
+		<script type="text/javascript" src="app/services/game.session.js"></script>
 		<!-- Features -->
 		<script type="text/javascript" src="app/combat/combat.module.js"></script>
 		<script type="text/javascript" src="app/combat/combat.controller.js"></script>

@@ -9,7 +9,8 @@
     "$window",
     "block.alerts.alertFactory",
     "block.user-login.service",
-    'app.core.game'
+    'app.core.game',
+    'app.core.game.session'
   ];
 
   /* @ngInject */
@@ -17,7 +18,8 @@
     $window,
     $alerts,
     $user,
-    $game
+    $game,
+    $gameSession
   ) {
     var $ctrl = this;
 
@@ -26,7 +28,8 @@
     $ctrl.onNewGame = onNewGame;
 
     function activate() {
-      $ctrl.game = $game.hash();
+      $ctrl.games = $game.hash();
+      $ctrl.game = $gameSession.get();
       $ctrl.session = $user.getSession();
 
       // Setup UI object for the controller.

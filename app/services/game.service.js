@@ -79,8 +79,8 @@
       }
     }
 
-    function get() {
-      return _selected;
+    function get(key) {
+      return _data[key];
     }
   }
 

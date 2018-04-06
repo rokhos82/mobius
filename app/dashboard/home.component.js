@@ -15,15 +15,23 @@
       return component;
     }
 
-    HomeController.$inject = ['app.core.game'];
+    HomeController.$inject = [
+      'app.core.game',
+      'app.core.game.session'
+    ];
 
-    function HomeController($game) {
+    function HomeController($game,$gameSession) {
       var $ctrl = this;
 
       $ctrl.$onInit = activate;
+      $ctrl.selectGame = selectGame;
 
       function activate() {
         $ctrl.games = $game.list();
+      }
+
+      function selectGame(key) {
+        $gameSession.select(key);
       }
     }
 })();

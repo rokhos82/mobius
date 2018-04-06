@@ -5,7 +5,9 @@
     .module('app.core')
     .factory('service.alerts', alertsService);
 
-  alertsService.$inject = ['block.alerts.alertFactory'];
+  alertsService.$inject = [
+    'block.alerts.alertFactory'
+  ];
 
   /* @ngInject */
   function alertsService($alerts) {
