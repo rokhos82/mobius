@@ -43,6 +43,13 @@
           title: 'Mobius - New Game',
           resolve: {
           }
+        },
+        {
+          name: 'dashboard.game',
+          component: 'app.dashboard.gameDashboard',
+          title: 'Mobius',
+          resolve: {
+          }
         }
       ];
     }
@@ -61,6 +68,12 @@
             // Not logged in so redirect to the login page.
             return $state.target('login');
           }
+        }
+        // Does the user have a save dashboard state?
+        let dashState = $user.getState();
+        if(!!dashState && dashState !== $to.name) {
+          // Redirect to that specific state
+          return $state.target(dashState);
         }
         // Let the state transition resume.
         return true;

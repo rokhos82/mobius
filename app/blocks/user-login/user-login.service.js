@@ -16,7 +16,8 @@
       'block.user-login.events',
       'block.user-login.levels',
       'block.user-login.session',
-      'block.user-login.fakeBackend'
+      'block.user-login.fakeBackend',
+      'service.localStorage'
     ];
 
     /* @ngInject */
@@ -30,20 +31,27 @@
       $userEvents,
       $userLevels,
       $session,
-      $rest
+      $rest,
+      $localStorage
     ) {
       var _data = {};
-      var _storageKey = ".user.session";
+      var _sessionKey = ".user.session";
+      var _stateKey = ".user.state";
 
       var service = {
+        deleteState: deleteState,
         doLogin: doLogin,
         doLogout: doLogout,
         getSession: getSession,
+        getState: getState,
         isAuthenticated: isAuthenticated,
         isAuthorized: isAuthorized,
         retrieveSession: retrieveSession,
+        retrieveState: retrieveState,
         saveSession: saveSession,
-        setSession: setSession
+        setSession: setSession,
+        saveState: saveState,
+        setState: setState
       };
 
       return service;
@@ -53,8 +61,13 @@
       */
       function deleteSession() {
         delete _data.session;
-        $window.localStorage.removeItem($appConfig.localKey + _storageKey);
+        $window.localStorage.removeItem($appConfig.localKey + _sessionKey);
         // Don't forget to have the backend invalidate the session as well.
+      }
+
+      function deleteState() {
+        delete _data.state;
+        $localStorage.remove($appConfig.localKey + _stateKey);
       }
 
       function doLogin(creds) {
@@ -84,6 +97,10 @@
         return _data.session;
       }
 
+      function getState() {
+        return _data.state;
+      }
+
       function isAuthenticated() {
         return !!_data.session && !isExpired();
       }
@@ -101,7 +118,7 @@
       }
 
       function retrieveSession() {
-        let key = $appConfig.localKey + _storageKey;
+        let key = $appConfig.localKey + _sessionKey;
         let jwt = $window.localStorage[key];
 
         if(!!jwt) {
@@ -112,8 +129,13 @@
         }
       }
 
+      function retrieveState() {
+        let key = $appConfig.localKey + _stateKey;
+        return $localStorage.get(key) || false;
+      }
+
       function saveSession() {
-        let key = $appConfig.localKey + _storageKey;
+        let key = $appConfig.localKey + _sessionKey;
         $window.localStorage[key] = _data.session.jwt;
       }
 
@@ -121,13 +143,27 @@
         _data.session = session;
         saveSession();
       }
+
+      function saveState() {
+        let key = $appConfig.localKey + _stateKey;
+        $localStorage.set(key,_data.state);
+      }
+
+      function setState(state) {
+        _data.state = state;
+        saveState();
+      }
     }
 
     sessionRestore.$inject = ['$window','block.user-login.service'];
     function sessionRestore($window,$user) {
       let session = $user.retrieveSession();
+      let state = $user.retrieveState();
       if(!!session) {
         $user.setSession(session);
+      }
+      if(!!state) {
+        $user.setState(state);
       }
     }
 })();

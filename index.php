@@ -58,6 +58,7 @@
 		<script type="text/javascript" src="app/dashboard/dashboard.controller.js"></script>
 		<script type="text/javascript" src="app/dashboard/game.component.js"></script>
 		<script type="text/javascript" src="app/dashboard/home.component.js"></script>
+		<script type="text/javascript" src="app/dashboard/game/game.dashboard.js"></script>
 		<script type="text/javascript" src="app/dashboard/dashboard.routes.js"></script>
 		<script type="text/javascript" src="app/facilities/facilities.module.js"></script>
 		<script type="text/javascript" src="app/facilities/facilities.controller.js"></script>

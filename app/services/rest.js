@@ -33,6 +33,7 @@
         }
 
         function remove(key) {
+          $local.remove(key);
         }
     }
 })();

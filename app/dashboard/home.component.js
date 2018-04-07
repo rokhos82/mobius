@@ -17,10 +17,12 @@
 
     HomeController.$inject = [
       'app.core.game',
-      'app.core.game.session'
+      'app.core.game.session',
+      '$log',
+      '$state'
     ];
 
-    function HomeController($game,$gameSession) {
+    function HomeController($game,$gameSession,$log,$state) {
       var $ctrl = this;
 
       $ctrl.$onInit = activate;
@@ -32,6 +34,7 @@
 
       function selectGame(key) {
         $gameSession.select(key);
+        $state.go('dashboard.game');
       }
     }
 })();

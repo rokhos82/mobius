@@ -13,7 +13,8 @@
             set: set,
             get: get,
             setObject: setObject,
-            getObject: getObject
+            getObject: getObject,
+            remove: remove
         };
 
         return service;
@@ -32,6 +33,10 @@
 
         function getObject(key) {
           return  $window.angular.fromJson($window.localStorage[key] || '{}');
+        }
+
+        function remove(key) {
+          $window.localStorage.removeItem(key);
         }
     }
 })();
