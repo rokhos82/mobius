@@ -35,8 +35,8 @@
       $localStorage
     ) {
       var _data = {};
-      var _sessionKey = ".user.session";
-      var _stateKey = ".user.state";
+      var _sessionKey = $appConfig.localKey + ".user.session";
+      var _stateKey = $appConfig.localKey + ".user.state";
 
       var service = {
         deleteState: deleteState,
@@ -61,13 +61,13 @@
       */
       function deleteSession() {
         delete _data.session;
-        $window.localStorage.removeItem($appConfig.localKey + _sessionKey);
+        $window.localStorage.removeItem(_sessionKey);
         // Don't forget to have the backend invalidate the session as well.
       }
 
       function deleteState() {
         delete _data.state;
-        $localStorage.remove($appConfig.localKey + _stateKey);
+        $localStorage.remove(_stateKey);
       }
 
       function doLogin(creds) {
@@ -118,7 +118,7 @@
       }
 
       function retrieveSession() {
-        let key = $appConfig.localKey + _sessionKey;
+        let key = _sessionKey;
         let jwt = $window.localStorage[key];
 
         if(!!jwt) {
@@ -130,12 +130,12 @@
       }
 
       function retrieveState() {
-        let key = $appConfig.localKey + _stateKey;
+        let key = _stateKey;
         return $localStorage.get(key) || false;
       }
 
       function saveSession() {
-        let key = $appConfig.localKey + _sessionKey;
+        let key = _sessionKey;
         $window.localStorage[key] = _data.session.jwt;
       }
 
@@ -145,7 +145,7 @@
       }
 
       function saveState() {
-        let key = $appConfig.localKey + _stateKey;
+        let key = _stateKey;
         $localStorage.set(key,_data.state);
       }
 
