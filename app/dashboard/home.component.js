@@ -19,10 +19,11 @@
       'app.core.game',
       'app.core.game.session',
       '$log',
-      '$state'
+      '$state',
+      'library.game'
     ];
 
-    function HomeController($game,$gameSession,$log,$state) {
+    function HomeController($game,$gameSession,$log,$state,$gamesLibrary) {
       var $ctrl = this;
 
       $ctrl.$onInit = activate;

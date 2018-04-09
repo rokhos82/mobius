@@ -1,6 +1,50 @@
 (function() {
   'use strict';
 
+  var _template = {
+    general: {
+      uuid: '',
+      name: '',
+      description: '',
+      tags: [],
+      status: 0
+    },
+    races: {},
+    players: {},
+    turns: {},
+    lastTurn: ''
+  };
+
+  var _turn = {
+    link: {
+      uuid: '',
+      prev: '',
+      next: ''
+    },
+    general: {},
+    economic: {},
+    military: {},
+    science: {},
+    map: {}
+  };
+
+  var _player = {
+    general: {
+      uuid: '',
+      displayName: '',
+      firstName: '',
+      lastName: '',
+      email: ''
+    }
+  };
+
+  var _race = {
+    general: {
+      uuid: '',
+      name: ''
+    }
+  };
+
   angular
     .module('app.core')
     .service('app.core.game', GameService)
@@ -29,18 +73,6 @@
     $service.get = get;
 
     var _key = "app.core.game";
-
-    var _template = {
-      general: {
-        uuid: '',
-        name: '',
-        description: '',
-        tags: [],
-        status: 0
-      },
-      races: {},
-      players: {}
-    };
 
     var _data = $rest.get(_key);
     var _selected = undefined;
@@ -82,6 +114,10 @@
     function get(key) {
       return _data[key];
     }
+
+    function newTurn(game) {
+      var t = $window.angular.copy(_turn);
+    }
   }
 
   getConstants.$inject = [
@@ -92,16 +128,7 @@
     $provide
   ) {
     $provide.constant('app.core.game.const.status',{open:'open',closed:'closed'});
-    $provide.constant('app.core.game.template',{
-      general: {
-        uuid: '',
-        name: '',
-        description: '',
-        tags: [],
-        status: 0
-      },
-      races: {},
-      players: {}
-    });
+    $provide.constant('app.core.game.template',_template);
+    $provide.constant('app.core.game.turn.template',_turn);
   }
 })();
