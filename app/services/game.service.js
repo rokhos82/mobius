@@ -1,7 +1,7 @@
 (function() {
   'use strict';
 
-  var _template = {
+  var _game = {
     general: {
       uuid: '',
       name: '',
@@ -13,36 +13,6 @@
     players: {},
     turns: {},
     lastTurn: ''
-  };
-
-  var _turn = {
-    link: {
-      uuid: '',
-      prev: '',
-      next: ''
-    },
-    general: {},
-    economic: {},
-    military: {},
-    science: {},
-    map: {}
-  };
-
-  var _player = {
-    general: {
-      uuid: '',
-      displayName: '',
-      firstName: '',
-      lastName: '',
-      email: ''
-    }
-  };
-
-  var _race = {
-    general: {
-      uuid: '',
-      name: ''
-    }
   };
 
   angular
@@ -78,7 +48,7 @@
     var _selected = undefined;
 
     function create(options) {
-      var game = $window.angular.copy(_template);
+      var game = $window.angular.copy(_game);
       var uuid = $window.uuid.v4();
 
       game.general.uuid = uuid;
@@ -128,7 +98,7 @@
     $provide
   ) {
     $provide.constant('app.core.game.const.status',{open:'open',closed:'closed'});
-    $provide.constant('app.core.game.template',_template);
+    $provide.constant('app.core.game.template',_game);
     $provide.constant('app.core.game.turn.template',_turn);
   }
 })();
