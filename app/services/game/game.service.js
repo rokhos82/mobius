@@ -7,7 +7,8 @@
       name: '',
       description: '',
       tags: [],
-      status: 0
+      status: 0,
+      gm: '' // The UUID of the GM player.
     },
     races: {},
     players: {},
@@ -99,6 +100,5 @@
   ) {
     $provide.constant('app.core.game.const.status',{open:'open',closed:'closed'});
     $provide.constant('app.core.game.template',_game);
-    $provide.constant('app.core.game.turn.template',_turn);
   }
 })();

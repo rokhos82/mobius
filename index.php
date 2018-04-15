@@ -48,8 +48,10 @@
 		<script type="text/javascript" src="app/services/localstorage.js"></script>
 		<script type="text/javascript" src="app/services/rest.js"></script>
 		<script type="text/javascript" src="app/services/science.projects.js"></script>
-		<script type="text/javascript" src="app/services/game.service.js"></script>
-		<script type="text/javascript" src="app/services/game.session.js"></script>
+		<script type="text/javascript" src="app/services/game/race.service.js"></script>
+		<script type="text/javascript" src="app/services/game/game.service.js"></script>
+		<script type="text/javascript" src="app/services/game/turn.service.js"></script>
+		<script type="text/javascript" src="app/services/game/game.session.js"></script>
 		<!-- Samples -->
 		<script type="text/javascript" src="app/services/game.library.js"></script>
 		<!-- Features -->
