@@ -21,7 +21,7 @@
 		<script type="text/javascript" src="js/angular-touch.js"></script>
 		<script type="text/javascript" src="js/angular-resource.js"></script>
 		<script type="text/javascript" src="js/angular-ui-router.js"></script>
-		<script type="text/javascript" src="js/ui-bootstrap-2.5.0.js"></script>
+		<script type="text/javascript" src="js/ui-bootstrap-3.0.3.js"></script>
 		<script type="text/javascript" src="js/angular-editable-text.js"></script>
 		<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular-sanitize.js"></script>
 		<!-- Shared -->
