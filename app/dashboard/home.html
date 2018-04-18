@@ -1,9 +1,7 @@
 <div class="row">
   <div class="col-lg-12">
-    <div class="card text-white bg-primary mb-3 w-100">
-      <div class="card-header">
-        <h3 class="mobius-title-sm text-info">Annoucements</h3>
-      </div>
+    <div class="card text-white bg-primary border-info mb-3">
+      <h3 class="mobius-title-sm text-info card-header">Annoucements</h3>
       <div class="card-body">
         One well per annoucement?  Or just a paragraph?
       </div>
@@ -12,17 +10,15 @@
 </div>
 <div class="row">
   <div class="col-lg-6">
-    <div class="card text-white bg-primary mb-3">
-      <div class="card-header">
-        <h4 class="mobius-title-sm">Load Game</h4>
-      </div>
+    <div class="card text-white bg-dark border-primary mb-3">
+      <h4 class="mobius-title-sm card-header">Load Game</h4>
       <div class="card-body">
         <button class="btn btn-default" ng-repeat="game in $ctrl.games" ng-click="$ctrl.selectGame(game.general.uuid)">{{game.general.name}}</button>
       </div>
     </div>
   </div>
   <div class="col-lg-6">
-    <div class="card text-white bg-primary mb-3">
+    <div class="card text-white bg-dark border-primary mb-3">
       <div class="card-header">
         <h4 class="mobius-title-sm">Create Game</h4>
       </div>
