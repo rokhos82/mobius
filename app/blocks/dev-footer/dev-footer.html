@@ -1,4 +1,6 @@
-<div class="well well-sm" ng-click="$ctrl.show = !$ctrl.show">
-  <span class="text-warning">{{$ctrl.label}}</span>
-  <pre ng-show="$ctrl.show">{{$ctrl.watching | json}}</pre>
+<div class="card bg-dark p-1 mt-3" ng-click="$ctrl.show = !$ctrl.show">
+  <div class="card-body">
+    <span class="text-warning">{{$ctrl.label}}</span>
+    <pre ng-show="$ctrl.show">{{$ctrl.watching | json}}</pre>
+  </div>
 </div>

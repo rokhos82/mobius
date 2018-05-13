@@ -1,43 +1,38 @@
-<nav class="navbar navbar-inverse navbar-fixed-top" ng-controller="NavController as $ctrl">
+<nav class="navbar navbar-dark navbar-expand-lg bg-dark" ng-controller="NavController as $ctrl">
   <div class="container">
     <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
       <a class="navbar-brand mobius-title" ui-sref="dashboard.home">Mobius</a>
     </div>
     <div id="navbar" class="collapse navbar-collapse">
-      <ul class="nav navbar-nav">
-        <li ng-if="$ctrl.session.hasState('units')" ui-sref-active="active"><a ui-sref="units"><span class="glyphicon glyphicon-send"></span> Units</a></li>
-        <li ng-if="$ctrl.session.hasState('fleets')" ui-sref-active="active"><a ui-sref="fleets"><span class="glyphicon glyphicon-tower"></span> Fleets</a></li>
-        <li ng-if="$ctrl.session.hasState('combat')" ui-sref-active="active"><a ui-sref="combat"><span class="glyphicon glyphicon-fire"></span> Combat</a></li>
-        <li ng-if="$ctrl.session.hasState('reports')" ui-sref-active="active"><a ui-sref="reports"><span class="glyphicon glyphicon-briefcase"></span> Reports</a></li>
-        <li ng-if="$ctrl.session.hasState('simulator')" ui-sref-active="active"><a ui-sref="simulator"><span class="glyphicon glyphicon-expand"></span> Simulator</a></li>
-        <li ng-if="$ctrl.session.hasState('science')" ui-sref-active="active"><a ui-sref="science"><span class="glyphicon glyphicon-education"></span> Science</a></li>
-        <li ng-if="$ctrl.session.hasState('facilities')" ui-sref-active="active"><a ui-sref="facilities">Facilities</a></li>
+      <ul class="navbar-nav mr-auto">
+        <li ng-if="$ctrl.session.hasState('units')" ui-sref-active="active" class="nav-item"><a ui-sref="units" class="nav-link"><span class="glyphicon glyphicon-send"></span> Units</a></li>
+        <li ng-if="$ctrl.session.hasState('fleets')" ui-sref-active="active" class="nav-item"><a ui-sref="fleets" class="nav-link"><span class="glyphicon glyphicon-tower"></span> Fleets</a></li>
+        <li ng-if="$ctrl.session.hasState('combat')" ui-sref-active="active" class="nav-item"><a ui-sref="combat" class="nav-link"><span class="glyphicon glyphicon-fire"></span> Combat</a></li>
+        <li ng-if="$ctrl.session.hasState('reports')" ui-sref-active="active" class="nav-item"><a ui-sref="reports" class="nav-link"><span class="glyphicon glyphicon-briefcase"></span> Reports</a></li>
+        <li ng-if="$ctrl.session.hasState('simulator')" ui-sref-active="active" class="nav-item"><a ui-sref="simulator" class="nav-link"><span class="glyphicon glyphicon-expand"></span> Simulator</a></li>
+        <li ng-if="$ctrl.session.hasState('science')" ui-sref-active="active" class="nav-item"><a ui-sref="science" class="nav-link"><span class="glyphicon glyphicon-education"></span> Science</a></li>
+        <li ng-if="$ctrl.session.hasState('facilities')" ui-sref-active="active" class="nav-item"><a ui-sref="facilities" class="nav-link">Facilities</a></li>
       </ul>
-      <ul class="nav navbar-nav navbar-right">
+      <ul class="navbar-nav navbar-right">
         <!--<li ng-if="!$ctrl.session"><a ng-click="$ctrl.doLogin();"><span class="glyphicon glyphicon-log-in"></span></a></li>-->
-        <li ng-if="!!$ctrl.session"><a ng-click="$ctrl.doLogout();"><span class="glyphicon glyphicon-log-out"></span></a></li>
-        <li class="dropdown" uib-dropdown>
-          <a id="gear-dropdown" href="#" uib-dropdown-toggle>
+        <li ng-if="!!$ctrl.session" class="nav-item"><a ng-click="$ctrl.doLogout();" class="nav-link"><span class="glyphicon glyphicon-log-out"></span>Logout</a></li>
+        <li class="nav-item dropdown" uib-dropdown>
+          <a id="gear-dropdown" href="#" class="nav-link" uib-dropdown-toggle>
             <span class="glyphicon glyphicon-cog" aria-hidden="true" ></span> <span class="caret"></span>
           </a>
           <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="gear-dropdown">
-            <li><a href>Save Data</a></li>
-            <li><a href>Load Data</a></li>
-            <li><a href>Purge Data</a></li>
-            <li class="divider"></li>
-            <li><a href>Export Data</a></li>
-            <li><a href>Import Data</a></li>
-            <li class="divider"></li>
-            <li><a href>Load Example</a></li>
-            <li><a href>Data Dump</a></li>
-            <li class="divider"></li>
-            <li><a role="button" href ng-click="$ctrl.rest()">REST Test</a></li>
+            <li><a href class="dropdown-item">Save Data</a></li>
+            <li><a href class="dropdown-item">Load Data</a></li>
+            <li><a href class="dropdown-item">Purge Data</a></li>
+            <li class="dropdown-divider"></li>
+            <li><a href class="dropdown-item">Export Data</a></li>
+            <li><a href class="dropdown-item">Import Data</a></li>
+            <li class="dropdown-divider"></li>
+            <li><a href class="dropdown-item">Load Example</a></li>
+            <li><a rol="button" href class="dropdown-item" ng-click="$ctrl.loadGameLibrary()">Load Game Library</a></li>
+            <li><a href class="dropdown-item">Data Dump</a></li>
+            <li class="dropdown-divider"></li>
+            <li><a role="button" href class="dropdown-item" ng-click="$ctrl.rest()">REST Test</a></li>
           </ul>
         </li>
       </ul>

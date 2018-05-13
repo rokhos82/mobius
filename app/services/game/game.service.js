@@ -1,6 +1,21 @@
 (function() {
   'use strict';
 
+  var _game = {
+    general: {
+      uuid: '',
+      name: '',
+      description: '',
+      tags: [],
+      status: 0,
+      gm: '' // The UUID of the GM player.
+    },
+    races: {},
+    players: {},
+    turns: {},
+    lastTurn: ''
+  };
+
   angular
     .module('app.core')
     .service('app.core.game', GameService)
@@ -30,31 +45,17 @@
 
     var _key = "app.core.game";
 
-    var _template = {
-      general: {
-        uuid: '',
-        name: '',
-        description: '',
-        tags: [],
-        status: 0
-      },
-      races: {},
-      players: {}
-    };
-
     var _data = $rest.get(_key);
     var _selected = undefined;
 
     function create(options) {
-      var game = $window.angular.copy(_template);
+      var game = $window.angular.copy(_game);
       var uuid = $window.uuid.v4();
 
       game.general.uuid = uuid;
       game.general.name = options.name;
       game.general.description = options.desc;
       game.general.tags = options.tags.split(",").map(function(tag){return tag.trim();});
-
-      $log.info(game);
 
       _data[uuid] = game;
 
@@ -82,6 +83,10 @@
     function get(key) {
       return _data[key];
     }
+
+    function newTurn(game) {
+      var t = $window.angular.copy(_turn);
+    }
   }
 
   getConstants.$inject = [
@@ -92,16 +97,6 @@
     $provide
   ) {
     $provide.constant('app.core.game.const.status',{open:'open',closed:'closed'});
-    $provide.constant('app.core.game.template',{
-      general: {
-        uuid: '',
-        name: '',
-        description: '',
-        tags: [],
-        status: 0
-      },
-      races: {},
-      players: {}
-    });
+    $provide.constant('app.core.game.template',_game);
   }
 })();
