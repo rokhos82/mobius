@@ -57,8 +57,6 @@
       game.general.description = options.desc;
       game.general.tags = options.tags.split(",").map(function(tag){return tag.trim();});
 
-      $log.info(game);
-
       _data[uuid] = game;
 
       $alerts.create('Game Created!','success',5000);

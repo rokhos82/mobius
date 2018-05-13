@@ -3,7 +3,30 @@
     <div class="card text-white bg-primary border-info mb-3">
       <h3 class="mobius-title-sm text-info card-header">Annoucements</h3>
       <div class="card-body">
-        Should there be nested cards here?  Or list item rows on a card body?
+        <div class="card text-dark bg-info border-dark p-2 mb-1">
+          Should there be nested cards here?  Or list item rows on a card body?
+        </div>
+        <div class="card text-dark bg-warning border-dark p-2 mb-1">
+          This is a warning message!
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-lg-12">
+    <div class="card text-white bg-dark border-primary mb-3">
+      <h3 class="mobius-title-sm text-white card-header">Welcome <u>{{$ctrl.session.claims.username}}</u>!</h3>
+      <div class="card-body">
+        <div class="card text-white bg-primary border-primary mb-3">
+          <h6 class="mobius-title-sm text-white card-header">Tools</h6>
+          <div class="card-body">
+            <div class="btn-group mr-2" role="group" aria-label="Mobius user toolbar">
+              <button type="button" class="btn btn-sm btn-primary">New Game</button>
+              <button type="button" class="btn btn-sm btn-secondary">Load Game</button>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>

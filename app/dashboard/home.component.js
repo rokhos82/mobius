@@ -18,16 +18,18 @@
     HomeController.$inject = [
       'app.core.game',
       'app.core.game.session',
+      'block.user-login.service',
       '$log',
       '$state',
       'library.game'
     ];
 
-    function HomeController($game,$gameSession,$log,$state,$gamesLibrary) {
+    function HomeController($game,$gameSession,$user,$log,$state,$gamesLibrary) {
       var $ctrl = this;
 
       $ctrl.$onInit = activate;
       $ctrl.selectGame = selectGame;
+      $ctrl.session = $user.getSession();
 
       function activate() {
         $ctrl.games = $game.list();
